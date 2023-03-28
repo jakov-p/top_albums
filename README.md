@@ -1,3 +1,26 @@
+
+
+PROGRESS:
+
+So far the result from the site is received only in the json format. 
+The next step is to tramsform the json contents into POJO objects. 
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+***********************
+
+
+
 ### Objective
 
 SaltPay is branching into the music business and needs a new Android app.

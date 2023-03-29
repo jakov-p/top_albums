@@ -6,11 +6,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-//https://itunes.apple.com/us/rss/topalbums/limit=100/json`
-class AlbumsRetrofitClient
+class RetrofitClient
 {
     val serverUrl: String = "https://itunes.apple.com"
-    val service: IAlbumsApi
+    val service: IServiceApi
 
     init
     {
@@ -27,7 +26,7 @@ class AlbumsRetrofitClient
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
-        service = retrofit.create(IAlbumsApi::class.java)
+        service = retrofit.create(IServiceApi::class.java)
     }
 }
 

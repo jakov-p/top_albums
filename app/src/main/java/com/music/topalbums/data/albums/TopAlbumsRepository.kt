@@ -1,9 +1,6 @@
-package com.music.topalbums.clientapi.albums.data
+package com.music.topalbums.data.albums
 
 import com.music.topalbums.logger.Logger
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 open class TopAlbumsRepository(val country: String) : BasicAlbumsRepository()
 {
@@ -19,7 +16,5 @@ open class TopAlbumsRepository(val country: String) : BasicAlbumsRepository()
             Logger.loggable.w(TAG, "Null returned????")
             throw Exception()
         }
-
-
     }
 }

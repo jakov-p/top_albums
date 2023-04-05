@@ -1,4 +1,4 @@
-package com.music.topalbums.clientapi.albums.model
+package com.music.topalbums.clientapi.model
 
 
 class ArtistAlbumsCollection

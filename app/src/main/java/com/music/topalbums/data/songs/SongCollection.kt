@@ -1,6 +1,9 @@
-package com.music.topalbums.clientapi.albums.data
+package com.music.topalbums.data.songs
 
-import com.music.topalbums.clientapi.albums.model.*
+import com.music.topalbums.clientapi.model.AlbumSong
+import com.music.topalbums.clientapi.model.AlbumSongsCollection
+import com.music.topalbums.clientapi.model.ArtistSong
+import com.music.topalbums.clientapi.model.ArtistSongsCollection
 
 /*
 class AlbumSong
@@ -165,9 +168,11 @@ class SongCollection private constructor (val list: List<Song>)
 
     constructor(albumSongsCollection: AlbumSongsCollection): this(mutableListOf<Song>())
     {
-        albumSongsCollection.results?.forEach {
-            (list as MutableList).add(Song(it))
-        }
+        albumSongsCollection.results?.
+        filter { it.wrapperType == "track" }?.
+        forEach {
+                (list as MutableList).add(Song(it))
+            }
     }
 
 }

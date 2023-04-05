@@ -1,6 +1,6 @@
 package com.music.topalbums
 
-import com.music.topalbums.clientapi.albums.ClientApi
+import com.music.topalbums.clientapi.ClientApi
 import com.music.topalbums.logger.Logger
 import com.music.topalbums.logger.Logger.loggable
 import kotlinx.coroutines.*

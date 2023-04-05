@@ -1,4 +1,4 @@
-package com.music.topalbums
+package com.music.topalbums.ui.songs
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,17 +12,17 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
-import com.music.topalbums.databinding.FragmentTopAlbumsBinding
-import com.music.topalbums.ui.AlbumListAdapter
+import com.music.topalbums.Utilities.loadImage
+import com.music.topalbums.databinding.FragmentSongsBinding
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
-class TopAlbumsFragment : Fragment()
+class SongsFragment : Fragment()
 {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {
-        binding = FragmentTopAlbumsBinding.inflate(inflater, container, false)
+        binding = FragmentSongsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -32,21 +32,20 @@ class TopAlbumsFragment : Fragment()
         init()
     }
 
-    private lateinit var binding : FragmentTopAlbumsBinding
-    //val viewModel: TopAlbumsViewModel  by viewModel()
-    private val viewModel: TopAlbumsViewModel by lazy{ ViewModelProvider(this )[TopAlbumsViewModel::class.java]}
+    private lateinit var binding : FragmentSongsBinding
+    //val viewModel: SongsViewModel  by viewModel()
+    private val viewModel: SongsViewModel by lazy{
+        ViewModelProvider(this )[SongsViewModel::class.java]
+    }
 
 
-    private val albumListAdapter: AlbumListAdapter = AlbumListAdapter()
+    private val songListAdapter: SongListAdapter = SongListAdapter()
 
     fun init()
     {
         initalizeView()
         initalizeAdapter()
         bindEvents()
-
-        val countryCodeName = binding.selectorInclude.countryCodePicker.selectedCountryNameCode
-        viewModel.start(countryCodeName)
     }
 
     private fun initalizeView() {
@@ -57,31 +56,27 @@ class TopAlbumsFragment : Fragment()
         setHasOptionsMenu(true)
 
         // initialize recyclerView
-        binding.albumsList.adapter = albumListAdapter
+        binding.songsList.adapter = songListAdapter
 
-        viewModel.isTopListLoaded.observe(this, {
-            if(it == true)
-            {
-                lifecycleScope.launch {
-                    viewModel.topAlbums.collectLatest {
-                        albumListAdapter.submitData(it)
-                    }
-                }
+        lifecycleScope.launch {
+            viewModel.songs.collectLatest {
+                songListAdapter.submitData(it)
             }
-        })
+        }
 
+        binding.albumCoverImageView.loadImage( viewModel.album.artworkUrl!!)
         initalizeAdapter()
     }
 
     private fun initalizeAdapter() {
 
-        albumListAdapter.addLoadStateListener { loadState ->
+        songListAdapter.addLoadStateListener { loadState ->
             // show an empty list
-            val isListEmpty = (loadState.refresh is LoadState.NotLoading) && albumListAdapter.isEmpty()
+            val isListEmpty = (loadState.refresh is LoadState.NotLoading) && songListAdapter.isEmpty()
             binding.noResultsTextView.isVisible = isListEmpty
 
             // Only show the albums list if refresh is successful.
-            binding.albumsList.isVisible = loadState.source.refresh is LoadState.NotLoading
+            binding.songsList.isVisible = loadState.source.refresh is LoadState.NotLoading
 
             // Show the retry state in case of initial load or refresh failure
             binding.retryButton.isVisible = loadState.source.refresh is LoadState.Error
@@ -101,19 +96,10 @@ class TopAlbumsFragment : Fragment()
     private fun bindEvents() {
         with(binding) {
 
-            albumsList.setHasFixedSize(true)
+            songsList.setHasFixedSize(true)
 
             retryButton.setOnClickListener {
-                albumListAdapter.retry()
-            }
-
-            with(selectorInclude.countryCodePicker)
-            {
-                setOnCountryChangeListener {
-                    val countryName = selectedCountryName
-                    val countryCodeName = selectedCountryNameCode
-                    viewModel.start(countryCodeName)
-                }
+                songListAdapter.retry()
             }
         }
     }

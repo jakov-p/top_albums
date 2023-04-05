@@ -1,4 +1,4 @@
-package com.music.topalbums.clientapi
+package com.music.topalbums.clientapi.utilities
 
 import okhttp3.Interceptor
 import okhttp3.Request
@@ -38,11 +38,7 @@ class LogJsonInterceptor : Interceptor
             e.printStackTrace()
         }
 
-        //val text1 = """{"id":{"label":"https://music.apple.com/us/album/gettin-old/1666738524?uo=2", "attributes":{"im:id":"1666738524"}}}"""
-        //val text1 = """{"attributes":{"im_id":"1666738524"}}"""
-        //val responseBody = ResponseBody.create(response.body!!.contentType(), text1)
-
-        // Re-create the response before returning it because body can be read only once
+        // Recreate the response before it is returned, because the body can be read only once
         val responseBody = ResponseBody.create(response.body!!.contentType(), rawJson)
         return response.newBuilder().body(responseBody).build()
     }

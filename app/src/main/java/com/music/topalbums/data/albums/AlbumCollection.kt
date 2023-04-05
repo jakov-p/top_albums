@@ -1,9 +1,9 @@
-package com.music.topalbums.clientapi.albums.data
+package com.music.topalbums.data.albums
 
 import com.music.topalbums.clientapi.albums.Entry
 import com.music.topalbums.clientapi.albums.TopAlbumsCollection
-import com.music.topalbums.clientapi.albums.model.ArtistAlbum
-import com.music.topalbums.clientapi.albums.model.ArtistAlbumsCollection
+import com.music.topalbums.clientapi.model.ArtistAlbum
+import com.music.topalbums.clientapi.model.ArtistAlbumsCollection
 
 /*
 class Album

@@ -1,17 +1,17 @@
-package com.music.topalbums.pager
+package com.music.topalbums.ui.topalbums
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.music.topalbums.clientapi.albums.data.BasicAlbumsRepository
-import com.music.topalbums.clientapi.albums.data.TopAlbumsDataManager
+import com.music.topalbums.data.albums.Album
+import com.music.topalbums.data.albums.TopAlbumsDataManager
 import kotlinx.coroutines.delay
 import kotlin.math.min
 
-class AlbumsPagingSource : PagingSource<Int, BasicAlbumsRepository.AlbumWithSongs>()
+class AlbumsPagingSource : PagingSource<Int, Album>()
 {
     override val jumpingSupported: Boolean = true
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, BasicAlbumsRepository.AlbumWithSongs>
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Album>
     {
         try
         {
@@ -24,11 +24,11 @@ class AlbumsPagingSource : PagingSource<Int, BasicAlbumsRepository.AlbumWithSong
                 val fromIndex = pageNumber * params.loadSize
                 val toIndex = min((pageNumber + 1) * params.loadSize, maxIndex)
 
-                val albumsWithSongs = TopAlbumsDataManager.getAlbumsWithSongs(fromIndex, toIndex)
+                val albums = TopAlbumsDataManager.getAlbums(fromIndex, toIndex)
 
                 println("nextKey = " + if (pageNumber < maxPageNumber) pageNumber + 1 else null)
                 return LoadResult.Page(
-                    data = albumsWithSongs,
+                    data = albums,
                     prevKey = if (pageNumber > 0) pageNumber - 1 else null,
                     nextKey = if (pageNumber < maxPageNumber) pageNumber + 1 else null,
                     itemsBefore = fromIndex,
@@ -50,7 +50,7 @@ class AlbumsPagingSource : PagingSource<Int, BasicAlbumsRepository.AlbumWithSong
     }
 
 
-    override fun getRefreshKey(state: PagingState<Int, BasicAlbumsRepository.AlbumWithSongs>): Int?
+    override fun getRefreshKey(state: PagingState<Int, Album>): Int?
     {
         return state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.prevKey

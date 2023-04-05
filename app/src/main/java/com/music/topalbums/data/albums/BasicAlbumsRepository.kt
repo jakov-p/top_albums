@@ -1,7 +1,8 @@
-package com.music.topalbums.clientapi.albums.data
+package com.music.topalbums.data.albums
 
-import com.music.topalbums.clientapi.albums.ClientApi
-import com.music.topalbums.clientapi.albums.model.AlbumSongsCollection
+import com.music.topalbums.clientapi.ClientApi
+import com.music.topalbums.data.songs.Song
+import com.music.topalbums.data.songs.SongCollection
 import com.music.topalbums.logger.Logger.loggable
 
 abstract class BasicAlbumsRepository
@@ -18,7 +19,20 @@ abstract class BasicAlbumsRepository
         return albumCollection.list.size
     }
 
-    fun getAlbumsWithSongs(fromIndex:Int, toIndex: Int): List<AlbumWithSongs>
+    fun getAlbums(fromIndex:Int, toIndex: Int): List<Album>
+    {
+        loggable.i(TAG, "Fetching albums from $fromIndex to $toIndex ...")
+
+        return (fromIndex..toIndex - 1).map {
+            loggable.i(TAG, "Fetched album with index = $it ...")
+            albumCollection.list[it]
+        }.
+        also {
+            loggable.i(TAG, "Fetched albums, in total =  ${it.size}")
+        }
+    }
+
+    suspend fun getAlbumsWithSongs(fromIndex:Int, toIndex: Int): List<AlbumWithSongs>
     {
         loggable.i(TAG, "Fetching albums from $fromIndex to $toIndex ...")
 
@@ -33,16 +47,12 @@ abstract class BasicAlbumsRepository
     }
 
 
-    protected fun getSingleAlbumSongs(album: Album): List<Song>
+    suspend fun getSingleAlbumSongs(album: Album): List<Song>
     {
         loggable.i(TAG, "Fetching songs for an album, album = $album ...")
         album.collectionId?.let {
 
-            //val albumSongsCollection = clientApi.getAlbumSongs(albumId = it)
-            val albumSongsCollection = AlbumSongsCollection()
-            albumSongsCollection.resultCount = 0
-            albumSongsCollection.results = ArrayList()
-
+            val albumSongsCollection = clientApi.getAlbumSongs(albumId = it)
             return SongCollection(albumSongsCollection!!).list
                 .also {
                     loggable.i(TAG, "Fetched songs for an album, total track number = ${it.size}")

@@ -1,9 +1,10 @@
-package com.music.topalbums.clientapi.albums
+package com.music.topalbums.clientapi
 
-import com.music.topalbums.clientapi.CallPerformer
-import com.music.topalbums.clientapi.albums.model.AlbumSongsCollection
-import com.music.topalbums.clientapi.albums.model.ArtistAlbumsCollection
-import com.music.topalbums.clientapi.albums.model.ArtistSongsCollection
+import com.music.topalbums.clientapi.albums.TopAlbumsCollection
+import com.music.topalbums.clientapi.utilities.CallPerformer
+import com.music.topalbums.clientapi.model.AlbumSongsCollection
+import com.music.topalbums.clientapi.model.ArtistAlbumsCollection
+import com.music.topalbums.clientapi.model.ArtistSongsCollection
 
 
 object ClientApi

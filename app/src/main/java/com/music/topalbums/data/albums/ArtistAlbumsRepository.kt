@@ -1,8 +1,4 @@
-package com.music.topalbums.clientapi.albums.data
-
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+package com.music.topalbums.data.albums
 
 class ArtistAlbumsRepository(val artistId : Int) : BasicAlbumsRepository()
 {

@@ -1,4 +1,6 @@
-package com.music.topalbums.clientapi.albums.data
+package com.music.topalbums.data.albums
+
+import com.music.topalbums.data.songs.Song
 
 object TopAlbumsDataManager
 {
@@ -23,8 +25,9 @@ object TopAlbumsDataManager
 
     fun getAlbumsCount(): Int =  topAlbumsRepository.getAlbumsCount()
 
-    fun getAlbumsWithSongs(fromIndex:Int, toIndex: Int): List<BasicAlbumsRepository.AlbumWithSongs> = topAlbumsRepository.getAlbumsWithSongs(fromIndex, toIndex)
+    fun getAlbums(fromIndex:Int, toIndex: Int): List<Album> = topAlbumsRepository.getAlbums(fromIndex, toIndex)
 
+    suspend fun getSingleAlbumSongs(album: Album): List<Song> = topAlbumsRepository.getSingleAlbumSongs(album)
 
     private class FilteredTopAlbumsRepository(country: String): TopAlbumsRepository(country)
     {

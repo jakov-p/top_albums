@@ -1,6 +1,6 @@
-package com.music.topalbums.clientapi.albums
+package com.music.topalbums.clientapi
 
-import com.music.topalbums.clientapi.LogJsonInterceptor
+import com.music.topalbums.clientapi.utilities.LogJsonInterceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

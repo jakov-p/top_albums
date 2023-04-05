@@ -1,4 +1,4 @@
-package com.music.topalbums.clientapi
+package com.music.topalbums.clientapi.utilities
 
 import androidx.lifecycle.MutableLiveData
 import com.music.topalbums.logger.Logger

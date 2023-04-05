@@ -7,6 +7,14 @@
 
     <fragment
         android:id="@+id/topAlbumsFragment"
-        android:name="com.music.topalbums.TopAlbumsFragment"
-        android:label="TopAlbumsFragment" />
+        android:name="com.music.topalbums.ui.topalbums.TopAlbumsFragment"
+        android:label="TopAlbumsFragment" >
+        <action
+            android:id="@+id/action_topAlbumsFragment_to_songsFragment"
+            app:destination="@id/songsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/songsFragment"
+        android:name="com.music.topalbums.ui.songs.SongsFragment"
+        android:label="SongsFragment" />
 </navigation>

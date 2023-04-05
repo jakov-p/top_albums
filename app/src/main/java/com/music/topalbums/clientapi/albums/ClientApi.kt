@@ -6,9 +6,9 @@ import com.music.topalbums.clientapi.albums.model.ArtistAlbumsCollection
 import com.music.topalbums.clientapi.albums.model.ArtistSongsCollection
 
 
-object Repository
+object ClientApi
 {
-    val TAG = Repository::class.java.simpleName
+    val TAG = ClientApi::class.java.simpleName
 
     suspend fun getTopAlbums( country: String, limit: Int): TopAlbumsCollection?
     {

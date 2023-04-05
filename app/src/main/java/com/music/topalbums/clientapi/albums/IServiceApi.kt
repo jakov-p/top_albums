@@ -10,6 +10,7 @@ import retrofit2.http.Query
 
 interface  IServiceApi
 {
+    //https://itunes.apple.com/us/rss/topalbums/limit=10/json}
     @GET("{country}/rss/topalbums/limit={limit}/json")
     suspend fun getTopAlbums(@Path("country") country: String, @Path("limit") limit: Int): Response<TopAlbumsCollection>
 

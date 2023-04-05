@@ -4,10 +4,10 @@ package com.music.topalbums.clientapi.albums.model
 class ArtistAlbumsCollection
 {
     var resultCount = 0
-    var results: ArrayList<Album>? = null
+    var results: ArrayList<ArtistAlbum>? = null
 }
 
-class Album
+class ArtistAlbum
 {
     var wrapperType: String? = null
     var artistType: String? = null
@@ -25,7 +25,7 @@ class Album
     var collectionViewUrl: String? = null
     var artworkUrl60: String? = null
     var artworkUrl100: String? = null
-    var collectionPrice = 0.0
+    var collectionPrice: Float = 0.0f
     var collectionExplicitness: String? = null
     var trackCount = 0
     var copyright: String? = null

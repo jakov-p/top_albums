@@ -1,6 +1,6 @@
 package com.music.topalbums
 
-import com.music.topalbums.clientapi.albums.Repository
+import com.music.topalbums.clientapi.albums.ClientApi
 import com.music.topalbums.logger.Logger
 import com.music.topalbums.logger.Logger.loggable
 import kotlinx.coroutines.*
@@ -19,10 +19,10 @@ object Downloader
         startCoroutine {
             try
             {
-                val topAlbums = Repository.getTopAlbums("us", 10)
-                val albumsSongs = Repository.getAlbumSongs( 1665320666)
-                val artistAlbums = Repository.getArtistAlbums( 909253)
-                val artistSongs = Repository.getArtistSongs( 909253)
+                val topAlbums = ClientApi.getTopAlbums("us", 10)
+                val albumsSongs = ClientApi.getAlbumSongs( 1665320666)
+                val artistAlbums = ClientApi.getArtistAlbums( 909253)
+                val artistSongs = ClientApi.getArtistSongs( 909253)
                 onSuccess()
             }
             catch (exception: CancellationException)

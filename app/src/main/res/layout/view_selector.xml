@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.hbb20.CountryCodePicker
+        android:id="@+id/countryCodePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintBottom_toTopOf="@id/first_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        android:padding="16dp"
+
+        app:ccp_defaultNameCode="us"
+        app:ccpDialog_textColor="#1C2020"
+        app:ccp_countryPreference="us,gb,de,fr,it,jp,br,in"
+
+        app:ccp_showFullName="true"
+        app:ccp_showNameCode="true"
+        app:ccp_showFlag="true"
+        app:ccp_showPhoneCode="false"
+
+        app:ccpDialog_showTitle="true"
+        app:ccpDialog_showNameCode="true"
+        app:ccpDialog_showFlag="true"
+        app:ccpDialog_showPhoneCode="false"
+        />
+
+    <Button
+        android:id="@+id/first_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ok"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/countryCodePicker" />
+</androidx.constraintlayout.widget.ConstraintLayout>

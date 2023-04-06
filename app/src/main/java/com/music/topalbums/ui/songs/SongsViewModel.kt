@@ -13,10 +13,12 @@ class SongsViewModel: ViewModel()
 {
     companion object const val PAGE_SIZE = 10
     val album: Album =  TopAlbumsDataManager.getAlbums(0,1)[0]
+    private val songsDataManager: SongsDataManager = SongsDataManager(album)
+
     val songs = Pager(config = PagingConfig(pageSize = PAGE_SIZE,initialLoadSize = PAGE_SIZE ,prefetchDistance = PAGE_SIZE,
                                     jumpThreshold = PAGE_SIZE * 3, enablePlaceholders = true),
         pagingSourceFactory = {
-            SongsPagingSource(SongsDataManager(album))
+            SongsPagingSource(songsDataManager)
         })
         .flow.cachedIn(viewModelScope)
 }

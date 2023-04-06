@@ -26,9 +26,6 @@ object TopAlbumsDataManager
     fun getAlbumsCount(): Int =  topAlbumsRepository.getAlbumsCount()
 
     fun getAlbums(fromIndex:Int, toIndex: Int): List<Album> = topAlbumsRepository.getAlbums(fromIndex, toIndex)
-
-    suspend fun getSingleAlbumSongs(album: Album): List<Song> = topAlbumsRepository.getSingleAlbumSongs(album)
-
     private class FilteredTopAlbumsRepository(country: String): TopAlbumsRepository(country)
     {
         private lateinit var originalAlbumCollection: AlbumCollection

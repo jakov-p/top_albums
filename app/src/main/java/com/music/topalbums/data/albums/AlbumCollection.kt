@@ -34,13 +34,20 @@ class Album
 }
 
 
-{"wrapperType":"collection", "collectionType":"Album", "artistId":909253, "collectionId":906900960, "amgArtistId":468749, "artistName":"Jack Johnson", "collectionName":"Brushfire Fairytales (Remastered) [Bonus Version]", "collectionCensoredName":"Brushfire Fairytales (Remastered) [Bonus Version]", "artistViewUrl":"https://music.apple.com/us/artist/jack-johnson/909253?uo=4", "collectionViewUrl":"https://music.apple.com/us/album/brushfire-fairytales-remastered-bonus-version/906900960?uo=4", "artworkUrl60":"https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/6c/3a/c5/6c3ac504-80fb-a60f-0f9a-09da88b6b3fc/181229100723.jpg/60x60bb.jpg", "artworkUrl100":"https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/6c/3a/c5/6c3ac504-80fb-a60f-0f9a-09da88b6b3fc/181229100723.jpg/100x100bb.jpg", "collectionPrice":9.99, "collectionExplicitness":"notExplicit", "trackCount":15, "copyright":"℗ 2011 Everloving Records", "country":"USA", "currency":"USD", "releaseDate":"2011-04-12T07:00:00Z", "primaryGenreName":"Rock"},
+{"wrapperType":"collection", "collectionType":"Album", "artistId":909253, "collectionId":906900960, "amgArtistId":468749, "artistName":"Jack Johnson", "collectionName":"Brushfire Fairytales (Remastered) [Bonus Version]", "collectionCensoredName":"Brushfire Fairytales (Remastered) [Bonus Version]",
+"artistViewUrl":"https://music.apple.com/us/artist/jack-johnson/909253?uo=4",
+"collectionViewUrl":"https://music.apple.com/us/album/brushfire-fairytales-remastered-bonus-version/906900960?uo=4",
+"artworkUrl60":"https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/6c/3a/c5/6c3ac504-80fb-a60f-0f9a-09da88b6b3fc/181229100723.jpg/60x60bb.jpg",
+"artworkUrl100":"https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/6c/3a/c5/6c3ac504-80fb-a60f-0f9a-09da88b6b3fc/181229100723.jpg/100x100bb.jpg",
+"collectionPrice":9.99, "collectionExplicitness":"notExplicit", "trackCount":15, "copyright":"℗ 2011 Everloving Records", "country":"USA", "currency":"USD", "releaseDate":"2011-04-12T07:00:00Z", "primaryGenreName":"Rock"},
  */
 
 
 data class Album(
     val artistName: String?,
-    val artworkUrl: String? = null,
+    val artistViewUrl: String?,
+    val collectionImageUrl: String? = null,
+    val collectionViewUrl: String?,
     val primaryGenreName: String? = null,
     val primaryGenreId:Int? = null,
     val collectionId:Int? = null,
@@ -54,7 +61,10 @@ data class Album(
     constructor(artistAlbum: ArtistAlbum) : this(
 
         artistName = artistAlbum.artistName,
-        artworkUrl = artistAlbum.artworkUrl100,
+        artistViewUrl = artistAlbum.artistLinkUrl,
+
+        collectionImageUrl = artistAlbum.artworkUrl100,
+        collectionViewUrl = artistAlbum.collectionViewUrl,
 
         primaryGenreName = artistAlbum.primaryGenreName,
         primaryGenreId = artistAlbum.primaryGenreId,
@@ -71,7 +81,9 @@ data class Album(
     constructor(entry: Entry) : this(
 
         artistName = entry.im_artist?.label,
-        artworkUrl = entry.im_image?.get(2)?.label,
+        artistViewUrl = entry.im_artist?.attributes?.href,
+        collectionImageUrl = entry.im_image?.get(2)?.label,
+        collectionViewUrl = entry.id?.label,
 
         primaryGenreName = entry.category?.attributes?.term,
         primaryGenreId = entry.category?.attributes?.im_id?.toInt(),

@@ -63,7 +63,7 @@ data class Song(
     val country: String?,
 
     val collectionName: String?,
-    val artworkUrl100: String?,
+    val artistViewUrl: String?,
 
     val collectionPrice: Float?,
     val currency: String?,
@@ -94,7 +94,7 @@ data class Song(
         country = albumSong.country,
 
         collectionName = albumSong.collectionName,
-        artworkUrl100 = albumSong.artworkUrl100,
+        artistViewUrl = albumSong.artistViewUrl,
 
         collectionPrice= albumSong.collectionPrice,
         currency = albumSong.currency,
@@ -126,7 +126,7 @@ data class Song(
         country = artistSong.country,
 
         collectionName = artistSong.collectionName,
-        artworkUrl100 = artistSong.artworkUrl100,
+        artistViewUrl = artistSong.artistViewUrl,
 
         collectionPrice= artistSong.collectionPrice,
         currency = artistSong.currency,

@@ -8,7 +8,7 @@ open class SongsRepository(val collectionId: Int)
     val TAG = SongsRepository::class.java.simpleName
 
     protected val clientApi: ClientApi = ClientApi
-    protected lateinit var songCollection: SongCollection
+    protected var songCollection: SongCollection? = null
 
     private suspend fun loadSongs(): SongCollection
     {
@@ -38,12 +38,12 @@ open class SongsRepository(val collectionId: Int)
         }
     }
 
-    private suspend fun fetchSongCollection():SongCollection
+    protected suspend fun fetchSongCollection():SongCollection
     {
-        if (!::songCollection.isInitialized)
+        if (songCollection == null)
         {
             songCollection = loadSongs()
         }
-        return songCollection
+        return songCollection!!
     }
 }

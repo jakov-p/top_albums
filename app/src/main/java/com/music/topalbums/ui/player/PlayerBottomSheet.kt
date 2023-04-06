@@ -127,6 +127,12 @@ class PlayerBottomSheet(val song:Song) : BottomSheetDialogFragment()
         playButton.callOnClick()
     }
 
+    override fun onPause()
+    {
+        super.onPause()
+        dismiss();
+    }
+
     override fun onDestroy()
     {
         super.onDestroy()

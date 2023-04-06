@@ -32,37 +32,4 @@ abstract class BasicAlbumsRepository
         }
     }
 
-    suspend fun getAlbumsWithSongs(fromIndex:Int, toIndex: Int): List<AlbumWithSongs>
-    {
-        loggable.i(TAG, "Fetching albums from $fromIndex to $toIndex ...")
-
-        return (fromIndex..toIndex - 1).map {
-            val album = albumCollection.list[it]
-            loggable.i(TAG, "Fetching album with index = $it ...")
-            AlbumWithSongs(album, getSingleAlbumSongs(album))
-        }.
-        also {
-            loggable.i(TAG, "Fetched albums, in total =  ${it.size}")
-        }
-    }
-
-
-    suspend fun getSingleAlbumSongs(album: Album): List<Song>
-    {
-        loggable.i(TAG, "Fetching songs for an album, album = $album ...")
-        album.collectionId?.let {
-
-            val albumSongsCollection = clientApi.getAlbumSongs(albumId = it)
-            return SongCollection(albumSongsCollection!!).list
-                .also {
-                    loggable.i(TAG, "Fetched songs for an album, total track number = ${it.size}")
-                }
-        } ?:
-            throw Exception()
-    }
-
-    data class AlbumWithSongs(val album: Album, val songs: List<Song>)
-    {
-        val artistId: Int? = if (songs.size > 0) songs[0].artistId else null
-    }
 }

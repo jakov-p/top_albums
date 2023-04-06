@@ -38,7 +38,7 @@ class AlbumsListAdapter(val onSelectedItem:(album: Album) -> Unit):PagingDataAda
             {
                 restTextView.text = restText
                 nameTextView.text = "${album.collectionName}"
-                albumCoverImageView.loadImage(album.artworkUrl!!)
+                albumCoverImageView.loadImage(album.collectionImageUrl!!)
 
                 setDoubleClickListener(album)
             }

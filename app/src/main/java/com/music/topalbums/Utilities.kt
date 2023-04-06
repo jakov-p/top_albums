@@ -10,4 +10,9 @@ object Utilities
             .load(url)
             .into(this)
     }
+
+    fun formatTimeMinSec(timeInSec:Int):String
+    {
+        return "${timeInSec/60}".padStart(2, '0') + ":"  + "${timeInSec%60}".padStart(2, '0')
+    }
 }

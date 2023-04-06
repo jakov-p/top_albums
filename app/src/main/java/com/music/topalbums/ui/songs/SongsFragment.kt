@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.allViews
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -13,7 +14,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import com.music.topalbums.Utilities.loadImage
+import com.music.topalbums.data.albums.Album
+import com.music.topalbums.data.songs.Song
 import com.music.topalbums.databinding.FragmentSongsBinding
+import com.music.topalbums.ui.player.PlayerBottomSheet
+import com.pedromassango.doubleclick.DoubleClick
+import com.pedromassango.doubleclick.DoubleClickListener
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -39,7 +45,10 @@ class SongsFragment : Fragment()
     }
 
 
-    private val songListAdapter: SongListAdapter = SongListAdapter()
+    private val songListAdapter: SongListAdapter = SongListAdapter({
+        val bottomSheetFragment = PlayerBottomSheet(it)
+        bottomSheetFragment.show(requireActivity().supportFragmentManager, "PlayerDialogFragment")
+    })
 
     fun init()
     {
@@ -92,7 +101,6 @@ class SongsFragment : Fragment()
     }
 
 
-
     private fun bindEvents() {
         with(binding) {
 
@@ -120,4 +128,6 @@ class SongsFragment : Fragment()
 
         }
     }
+
+
 }

@@ -30,6 +30,7 @@ object Utilities
                 url
             }
 
+            //TODO checking for browser is missing
             val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(adjustedUrl))
             context.startActivity(browserIntent)
         }

@@ -15,6 +15,7 @@ import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import com.music.topalbums.R
 import com.music.topalbums.databinding.FragmentTopAlbumsBinding
+import com.music.topalbums.ui.songs.SongsViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -39,8 +40,8 @@ class TopAlbumsFragment : Fragment()
         ViewModelProvider(this )[TopAlbumsViewModel::class.java]
     }
 
-
     private val albumsListAdapter: AlbumsListAdapter = AlbumsListAdapter({
+        SongsViewModel.album = it
         findNavController().navigate(R.id.action_topAlbumsFragment_to_songsFragment)
     })
 
@@ -49,9 +50,6 @@ class TopAlbumsFragment : Fragment()
         initalizeView()
         initalizeAdapter()
         bindEvents()
-
-        val countryCodeName = binding.selectorInclude.countryCodePicker.selectedCountryNameCode
-        viewModel.start(countryCodeName)
     }
 
     private fun initalizeView() {
@@ -61,21 +59,16 @@ class TopAlbumsFragment : Fragment()
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
         setHasOptionsMenu(true)
 
+        initalizeAdapter()
+
         // initialize recyclerView
         binding.albumsList.adapter = albumsListAdapter
 
-        viewModel.isTopListLoaded.observe(this, {
-            if(it == true)
-            {
-                lifecycleScope.launch {
-                    viewModel.topAlbums.collectLatest {
-                        albumsListAdapter.submitData(it)
-                    }
-                }
+        lifecycleScope.launch {
+            viewModel.topAlbums.collectLatest {
+                albumsListAdapter.submitData(it)
             }
-        })
-
-        initalizeAdapter()
+        }
     }
 
     private fun initalizeAdapter() {
@@ -117,7 +110,8 @@ class TopAlbumsFragment : Fragment()
                 setOnCountryChangeListener {
                     val countryName = selectedCountryName
                     val countryCodeName = selectedCountryNameCode
-                    viewModel.start(countryCodeName)
+                    viewModel.startNewLoad(countryCodeName)
+                    binding.albumsList.scrollToPosition(0)
                 }
             }
         }

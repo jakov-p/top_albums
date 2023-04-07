@@ -4,10 +4,12 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.music.topalbums.data.albums.Album
 import com.music.topalbums.data.albums.TopAlbumsDataManager
-import kotlinx.coroutines.delay
+import com.music.topalbums.data.albums.TopAlbumsDataManager_with_filter
+import kotlin.io.path.fileVisitor
 import kotlin.math.min
 
-class AlbumsPagingSource : PagingSource<Int, Album>()
+//TODO maybe to change this naive approach where initial load size == load size
+class AlbumsPagingSource(val topAlbumsDataManager: TopAlbumsDataManager) : PagingSource<Int, Album>()
 {
     override val jumpingSupported: Boolean = true
 
@@ -15,40 +17,30 @@ class AlbumsPagingSource : PagingSource<Int, Album>()
     {
         try
         {
-            if(TopAlbumsDataManager.isLoaded)
-            {
-                val maxIndex = TopAlbumsDataManager.getAlbumsCount()
-                val maxPageNumber = maxIndex / params.loadSize;
+            val maxIndex = topAlbumsDataManager.getAlbumsCount()
+            val maxPageNumber = maxIndex / params.loadSize;
 
-                val pageNumber = params.key ?: 0
-                val fromIndex = pageNumber * params.loadSize
-                val toIndex = min((pageNumber + 1) * params.loadSize, maxIndex)
+            val pageNumber = params.key ?: 0
+            val fromIndex = pageNumber * params.loadSize
+            val toIndex = min((pageNumber + 1) * params.loadSize, maxIndex)
 
-                val albums = TopAlbumsDataManager.getAlbums(fromIndex, toIndex)
+            val albums = topAlbumsDataManager.getAlbums(fromIndex, toIndex)
 
-                println("nextKey = " + if (pageNumber < maxPageNumber) pageNumber + 1 else null)
-                return LoadResult.Page(
-                    data = albums,
-                    prevKey = if (pageNumber > 0) pageNumber - 1 else null,
-                    nextKey = if (pageNumber < maxPageNumber) pageNumber + 1 else null,
-                    itemsBefore = fromIndex,
-                    itemsAfter = maxIndex - toIndex,
-                )
-            }
-            else
-            {
-                println("TopAlbumsDataManager.isLoaded = " + TopAlbumsDataManager.isLoaded)
-                delay(300)
-                return LoadResult.Invalid()
-                //return LoadResult.Error(Exception())
-            }
+            println("nextKey = " + if (pageNumber < maxPageNumber) pageNumber + 1 else null)
+            return LoadResult.Page(
+                data = albums,
+                prevKey = if (pageNumber > 0) pageNumber - 1 else null,
+                nextKey = if (pageNumber < maxPageNumber) pageNumber + 1 else null,
+                itemsBefore = fromIndex,
+                itemsAfter = maxIndex - toIndex,
+            )
+
         }
         catch (e: Exception)
         {
             return LoadResult.Error(e)
         }
     }
-
 
     override fun getRefreshKey(state: PagingState<Int, Album>): Int?
     {

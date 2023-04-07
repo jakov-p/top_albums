@@ -7,12 +7,11 @@ import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.music.topalbums.data.albums.Album
 import com.music.topalbums.data.albums.TopAlbumsDataManager
+import com.music.topalbums.data.albums.TopAlbumsDataManager_with_filter
 import com.music.topalbums.data.songs.SongsDataManager
 
 class SongsViewModel: ViewModel()
 {
-    companion object const val PAGE_SIZE = 10
-    val album: Album =  TopAlbumsDataManager.getAlbums(0,1)[0]
     private val songsDataManager: SongsDataManager = SongsDataManager(album)
 
     val songs = Pager(config = PagingConfig(pageSize = PAGE_SIZE,initialLoadSize = PAGE_SIZE ,prefetchDistance = PAGE_SIZE,
@@ -21,4 +20,10 @@ class SongsViewModel: ViewModel()
             SongsPagingSource(songsDataManager)
         })
         .flow.cachedIn(viewModelScope)
+
+    companion object
+    {
+        const val PAGE_SIZE = 10
+        lateinit var album: Album
+    }
 }

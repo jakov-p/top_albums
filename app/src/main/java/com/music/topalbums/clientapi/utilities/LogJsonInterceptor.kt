@@ -33,7 +33,7 @@ class LogJsonInterceptor : Interceptor
             }
             println(jsonLog)
         }
-        catch (e: JSONException)
+        catch (e: Exception)
         {
             e.printStackTrace()
         }

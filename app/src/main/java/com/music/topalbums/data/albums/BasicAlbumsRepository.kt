@@ -10,26 +10,33 @@ abstract class BasicAlbumsRepository
     val TAG = BasicAlbumsRepository::class.java.simpleName
 
     protected val clientApi: ClientApi = ClientApi
-    protected  lateinit var albumCollection: AlbumCollection
-
-    suspend abstract fun loadAlbums(onFinished: () -> Unit)
-
-    fun getAlbumsCount(): Int
+    protected var albumCollection: AlbumCollection? = null
+    protected suspend abstract fun loadAlbums():AlbumCollection
+    suspend  fun getAlbumsCount(): Int
     {
-        return albumCollection.list.size
+        return fetchAlbumCollection().list.size
     }
 
-    fun getAlbums(fromIndex:Int, toIndex: Int): List<Album>
+    suspend fun getAlbums(fromIndex:Int, toIndex: Int): List<Album>
     {
         loggable.i(TAG, "Fetching albums from $fromIndex to $toIndex ...")
 
         return (fromIndex..toIndex - 1).map {
             loggable.i(TAG, "Fetched album with index = $it ...")
-            albumCollection.list[it]
+            fetchAlbumCollection().list[it]
         }.
         also {
             loggable.i(TAG, "Fetched albums, in total =  ${it.size}")
         }
+    }
+
+    protected suspend fun fetchAlbumCollection():AlbumCollection
+    {
+        if (albumCollection == null)
+        {
+            albumCollection = loadAlbums()
+        }
+        return albumCollection!!
     }
 
 }

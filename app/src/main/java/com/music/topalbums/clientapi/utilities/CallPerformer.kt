@@ -6,6 +6,9 @@ import com.music.topalbums.logger.Logger.loggable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Response
+import kotlin.concurrent.timer
+import kotlin.system.measureTimeMillis
+import kotlin.time.measureTime
 
 class CallPerformer<T>(val commandName :String, val methodCall: suspend ()-> Response<T>)
 {
@@ -21,33 +24,35 @@ class CallPerformer<T>(val commandName :String, val methodCall: suspend ()-> Res
 
             Logger.printTitle(TAG, commandName)
 
-            val response = methodCall.invoke()
+            val response:Response<T>
+            measureTimeMillis  {
+                response = methodCall.invoke()
+            }.also {
+                loggable.i(TAG,  "The execution time  = " + it.toFloat()/1000)
+            }
 
-            withContext(Dispatchers.Main)
+            isRunning.value = false
+            if (response.isSuccessful)
             {
-                isRunning.value = false
-                if (response.isSuccessful)
-                {
-                    loggable.i(TAG,  response.message())
-                    val data: T? = response.body()
-                    val code = response.code()
+                loggable.i(TAG,  response.message())
+                val data: T? = response.body()
+                val code = response.code()
 
-                    loggable.i(TAG, "response = $response")
-                    loggable.i(TAG, "code = $code")
-                    loggable.i(TAG, "body = " +  data.toString())
+                loggable.i(TAG, "response = $response")
+                loggable.i(TAG, "code = $code")
+                loggable.i(TAG, "body = " +  data.toString())
 
-                    return@withContext data
-                }
-                else
-                {
-                    loggable.e(TAG, "$commandName failed")
-                    loggable.e(TAG, "response = $response")
-                    loggable.e(TAG, "code = " + response.code().toString())
+                return data
+            }
+            else
+            {
+                loggable.e(TAG, "$commandName failed")
+                loggable.e(TAG, "response = $response")
+                loggable.e(TAG, "code = " + response.code().toString())
 
-                    val errorBody = response.errorBody()?.string() ?:""
-                    loggable.e(TAG, "body = " + errorBody) 
-                    throw Exception()
-                }
+                val errorBody = response.errorBody()?.string() ?:""
+                loggable.e(TAG, "body = " + errorBody)
+                throw Exception()
             }
         }
         catch (ex: Exception)

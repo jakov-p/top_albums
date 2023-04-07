@@ -14,6 +14,7 @@ import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import com.music.topalbums.Utilities.loadImage
 import com.music.topalbums.Utilities.openWebPage
+import com.music.topalbums.data.albums.Album
 import com.music.topalbums.databinding.FragmentSongsBinding
 import com.music.topalbums.ui.player.PlayerBottomSheet
 import kotlinx.coroutines.flow.collectLatest
@@ -69,7 +70,7 @@ class SongsFragment : Fragment()
             }
         }
 
-        binding.albumCoverImageView.loadImage( viewModel.album.collectionImageUrl!!)
+        binding.albumCoverImageView.loadImage( getAlbum().collectionImageUrl!!)
         initalizeAdapter()
     }
 
@@ -107,16 +108,18 @@ class SongsFragment : Fragment()
             }
 
             albumWebButton.setOnClickListener{
-                openWebPage(requireActivity(), viewModel.album.collectionViewUrl!!)
+                openWebPage(requireActivity(), getAlbum().collectionViewUrl!!)
             }
 
             artistWebButton.setOnClickListener{
-                viewModel.album.artistViewUrl?.let {
+                getAlbum().artistViewUrl?.let {
                     openWebPage(requireActivity(), it)
                 }
             }
         }
     }
+
+    private fun getAlbum():Album = SongsViewModel.album
 
     protected open fun showToastMessage(message: String?) {
         Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()

@@ -1,6 +1,7 @@
-package com.music.topalbums.data.albums
+package com.music.topalbums.data.albums.artistalbums
 
-import com.music.topalbums.data.songs.SongCollection
+import com.music.topalbums.data.albums.AlbumCollection
+import com.music.topalbums.data.albums.BasicAlbumsRepository
 import com.music.topalbums.logger.Logger
 
 class ArtistAlbumsRepository(val artistId : Int) : BasicAlbumsRepository()

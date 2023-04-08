@@ -6,8 +6,6 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.music.topalbums.data.albums.Album
-import com.music.topalbums.data.albums.TopAlbumsDataManager
-import com.music.topalbums.data.albums.TopAlbumsDataManager_with_filter
 import com.music.topalbums.data.songs.SongsDataManager
 
 class SongsViewModel: ViewModel()

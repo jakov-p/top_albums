@@ -31,7 +31,8 @@ class CallPerformer<T>(val commandName :String, val methodCall: suspend ()-> Res
                 loggable.i(TAG,  "The execution time  = " + it.toFloat()/1000)
             }
 
-            isRunning.value = false
+            isRunning.postValue(false)
+
             if (response.isSuccessful)
             {
                 loggable.i(TAG,  response.message())

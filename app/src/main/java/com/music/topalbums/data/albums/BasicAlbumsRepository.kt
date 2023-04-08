@@ -12,12 +12,12 @@ abstract class BasicAlbumsRepository
     protected val clientApi: ClientApi = ClientApi
     protected var albumCollection: AlbumCollection? = null
     protected suspend abstract fun loadAlbums():AlbumCollection
-    suspend  fun getAlbumsCount(): Int
+    open suspend  fun getAlbumsCount(): Int
     {
         return fetchAlbumCollection().list.size
     }
 
-    suspend fun getAlbums(fromIndex:Int, toIndex: Int): List<Album>
+    open suspend fun getAlbums(fromIndex:Int, toIndex: Int): List<Album>
     {
         loggable.i(TAG, "Fetching albums from $fromIndex to $toIndex ...")
 
@@ -30,7 +30,7 @@ abstract class BasicAlbumsRepository
         }
     }
 
-    protected suspend fun fetchAlbumCollection():AlbumCollection
+    protected open suspend fun fetchAlbumCollection():AlbumCollection
     {
         if (albumCollection == null)
         {

@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
+import androidx.paging.PagingData
 import com.music.topalbums.R
 import com.music.topalbums.databinding.FragmentTopAlbumsBinding
 import com.music.topalbums.ui.songs.SongsViewModel
@@ -108,10 +109,13 @@ class TopAlbumsFragment : Fragment()
             with(selectorInclude.countryCodePicker)
             {
                 setOnCountryChangeListener {
+                    //to clear the recycleView control of the old stuff
+                    binding.albumsList.adapter = null
+                    binding.albumsList.adapter = albumsListAdapter
+
                     val countryName = selectedCountryName
                     val countryCodeName = selectedCountryNameCode
                     viewModel.startNewLoad(countryCodeName)
-                    binding.albumsList.scrollToPosition(0)
                 }
             }
         }

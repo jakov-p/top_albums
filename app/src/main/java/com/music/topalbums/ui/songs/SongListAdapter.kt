@@ -62,6 +62,17 @@ class SongListAdapter(val onSelectedItem:(song: Song) -> Unit):PagingDataAdapter
                 root.allViews.forEach {
                     it.setOnClickListener(doubleClick)
                 }
+
+                root.setOnLongClickListener{
+                    onSelectedItem(song)
+                    true
+                }
+                root.allViews.forEach {
+                    it.setOnLongClickListener{
+                        onSelectedItem(song)
+                        true
+                    }
+                }
             }
         }
 

@@ -109,6 +109,10 @@ class TopAlbumsFragment : Fragment()
             with(selectorInclude.countryCodePicker)
             {
                 setOnCountryChangeListener {
+
+                    //albumsListAdapter.submitData(lifecycle, PagingData.empty())
+                    //binding.albumsList.swapAdapter(albumsListAdapter, true)
+
                     //to clear the recycleView control of the old stuff
                     binding.albumsList.adapter = null
                     binding.albumsList.adapter = albumsListAdapter

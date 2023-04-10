@@ -41,39 +41,7 @@ class SongListAdapter(val onSelectedItem:(song: Song) -> Unit):PagingDataAdapter
             binding.nameTextView.text = "${song.trackName}"
             binding.durationTextView.text = composeDuration(song.trackTimeMillis!!)
 
-            setDoubleClickListener(song)
-        }
-
-        private fun setDoubleClickListener(song: Song)
-        {
-            val doubleClick = DoubleClick(object : DoubleClickListener {
-                override fun onSingleClick(view: View) {
-                    // DO STUFF SINGLE CLICK
-                }
-
-                override fun onDoubleClick(view: View) {
-                    onSelectedItem(song)
-                }
-            })
-
-            with(binding)
-            {
-                root.setOnClickListener(doubleClick)
-                root.allViews.forEach {
-                    it.setOnClickListener(doubleClick)
-                }
-
-                root.setOnLongClickListener{
-                    onSelectedItem(song)
-                    true
-                }
-                root.allViews.forEach {
-                    it.setOnLongClickListener{
-                        onSelectedItem(song)
-                        true
-                    }
-                }
-            }
+            ClickListenerHandler(binding, onSelectedItem).setListeners(song)
         }
 
         fun bindPlaceHolder()

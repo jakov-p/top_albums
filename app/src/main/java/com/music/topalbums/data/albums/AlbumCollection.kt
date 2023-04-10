@@ -1,9 +1,11 @@
 package com.music.topalbums.data.albums
 
+import android.os.Parcelable
 import com.music.topalbums.clientapi.albums.Entry
 import com.music.topalbums.clientapi.albums.TopAlbumsCollection
 import com.music.topalbums.clientapi.model.ArtistAlbum
 import com.music.topalbums.clientapi.model.ArtistAlbumsCollection
+import kotlinx.android.parcel.Parcelize
 
 /*
 class Album
@@ -42,7 +44,7 @@ class Album
 "collectionPrice":9.99, "collectionExplicitness":"notExplicit", "trackCount":15, "copyright":"℗ 2011 Everloving Records", "country":"USA", "currency":"USD", "releaseDate":"2011-04-12T07:00:00Z", "primaryGenreName":"Rock"},
  */
 
-
+@Parcelize
 data class Album(
     val artistName: String?,
     val artistViewUrl: String?,
@@ -56,7 +58,8 @@ data class Album(
     val currency: String? = null,
 
     val trackCount:Int? = null,
-    val releaseDate: String? = null)  //Date
+    //Date
+    val releaseDate: String? = null)  : Parcelable
 {
     constructor(artistAlbum: ArtistAlbum) : this(
 

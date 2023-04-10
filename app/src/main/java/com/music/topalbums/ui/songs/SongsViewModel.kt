@@ -1,6 +1,7 @@
 package com.music.topalbums.ui.songs
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -8,7 +9,7 @@ import androidx.paging.cachedIn
 import com.music.topalbums.data.albums.Album
 import com.music.topalbums.data.songs.SongsDataManager
 
-class SongsViewModel: ViewModel()
+class SongsViewModel(val album: Album): ViewModel()
 {
     private val songsDataManager: SongsDataManager = SongsDataManager(album)
 
@@ -22,6 +23,11 @@ class SongsViewModel: ViewModel()
     companion object
     {
         const val PAGE_SIZE = 10
-        lateinit var album: Album
+    }
+
+    class Factory(private val album: Album) : ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            return SongsViewModel(album) as T
+        }
     }
 }

@@ -16,5 +16,9 @@
     <fragment
         android:id="@+id/songsFragment"
         android:name="com.music.topalbums.ui.songs.SongsFragment"
-        android:label="SongsFragment" />
+        android:label="SongsFragment" >
+        <argument
+            android:name="album"
+            app:argType="com.music.topalbums.data.albums.Album" />
+    </fragment>
 </navigation>

@@ -13,7 +13,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
-import androidx.paging.PagingData
 import com.music.topalbums.R
 import com.music.topalbums.databinding.FragmentTopAlbumsBinding
 import com.music.topalbums.ui.songs.SongsViewModel
@@ -42,8 +41,9 @@ class TopAlbumsFragment : Fragment()
     }
 
     private val albumsListAdapter: AlbumsListAdapter = AlbumsListAdapter({
-        SongsViewModel.album = it
-        findNavController().navigate(R.id.action_topAlbumsFragment_to_songsFragment)
+        val bundle = Bundle()
+        bundle.putParcelable("album", it)
+        findNavController().navigate(R.id.action_topAlbumsFragment_to_songsFragment, bundle)
     })
 
     fun init()

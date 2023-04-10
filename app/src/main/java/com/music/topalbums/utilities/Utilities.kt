@@ -1,4 +1,4 @@
-package com.music.topalbums
+package com.music.topalbums.utilities
 
 import android.content.Context
 import android.content.Intent

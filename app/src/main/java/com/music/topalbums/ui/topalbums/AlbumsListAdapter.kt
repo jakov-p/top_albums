@@ -7,7 +7,7 @@ import androidx.core.view.allViews
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.music.topalbums.Utilities.loadImage
+import com.music.topalbums.utilities.Utilities.loadImage
 import com.music.topalbums.data.albums.Album
 import com.music.topalbums.databinding.AlbumItemBinding
 import com.pedromassango.doubleclick.DoubleClick

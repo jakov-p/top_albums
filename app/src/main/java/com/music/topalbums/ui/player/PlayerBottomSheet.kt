@@ -9,7 +9,7 @@ import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.music.topalbums.Utilities
+import com.music.topalbums.utilities.Utilities
 import com.music.topalbums.data.songs.Song
 import com.music.topalbums.databinding.BottomSheetPlayerBinding
 

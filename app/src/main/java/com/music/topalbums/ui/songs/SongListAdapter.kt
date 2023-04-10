@@ -1,20 +1,13 @@
 package com.music.topalbums.ui.songs
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.allViews
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.music.topalbums.Utilities.formatTimeMinSec
-import com.music.topalbums.Utilities.loadImage
-import com.music.topalbums.data.albums.Album
+import com.music.topalbums.utilities.Utilities.formatTimeMinSec
 import com.music.topalbums.data.songs.Song
 import com.music.topalbums.databinding.SongItemBinding
-import com.music.topalbums.ui.player.PlayerBottomSheet
-import com.pedromassango.doubleclick.DoubleClick
-import com.pedromassango.doubleclick.DoubleClickListener
 
 class SongListAdapter(val onSelectedItem:(song: Song) -> Unit):PagingDataAdapter<Song, SongListAdapter.SongListViewHolder>(DiffCallback)
 {

@@ -8,12 +8,13 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
-import com.music.topalbums.Utilities.loadImage
-import com.music.topalbums.Utilities.openWebPage
+import com.music.topalbums.utilities.Utilities.loadImage
+import com.music.topalbums.utilities.Utilities.openWebPage
 import com.music.topalbums.data.albums.Album
 import com.music.topalbums.databinding.FragmentSongsBinding
 import com.music.topalbums.ui.player.PlayerBottomSheet
@@ -36,9 +37,10 @@ class SongsFragment : Fragment()
     }
 
     private lateinit var binding : FragmentSongsBinding
-    //val viewModel: SongsViewModel  by viewModel()
     private val viewModel: SongsViewModel by lazy{
-        ViewModelProvider(this )[SongsViewModel::class.java]
+        val album = arguments?.getParcelable("album") as Album?
+        val factory = SongsViewModel.Factory(album!!)
+        ViewModelProvider(this, factory )[SongsViewModel::class.java]
     }
 
 
@@ -70,7 +72,7 @@ class SongsFragment : Fragment()
             }
         }
 
-        binding.albumCoverImageView.loadImage( getAlbum().collectionImageUrl!!)
+        binding.albumCoverImageView.loadImage( viewModel.album.collectionImageUrl!!)
         initalizeAdapter()
     }
 
@@ -108,18 +110,16 @@ class SongsFragment : Fragment()
             }
 
             albumWebButton.setOnClickListener{
-                openWebPage(requireActivity(), getAlbum().collectionViewUrl!!)
+                openWebPage(requireActivity(), viewModel.album.collectionViewUrl!!)
             }
 
             artistWebButton.setOnClickListener{
-                getAlbum().artistViewUrl?.let {
+                viewModel.album.artistViewUrl?.let {
                     openWebPage(requireActivity(), it)
                 }
             }
         }
     }
-
-    private fun getAlbum():Album = SongsViewModel.album
 
     protected open fun showToastMessage(message: String?) {
         Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()

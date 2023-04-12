@@ -17,7 +17,7 @@ import com.music.topalbums.utilities.Utilities.loadImage
 import com.music.topalbums.utilities.Utilities.openWebPage
 import com.music.topalbums.data.albums.Album
 import com.music.topalbums.databinding.FragmentSongsBinding
-import com.music.topalbums.ui.player.PlayerBottomSheet
+import com.music.topalbums.ui.songs.player.PlayerBottomSheet
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 

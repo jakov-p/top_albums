@@ -5,4 +5,22 @@
     <string name="no_results">No Results</string>
     <string name="retry">retry</string>
 
+
+    <string name="pop_genre">Pop</string>
+    <string name="alternative_genre">Alternative</string>
+    <string name="rock_genre">Rock</string>
+    <string name="country_genre">Country</string>
+    <string name="christian_genre">Christian &amp; Gospel</string>
+    <string name="classical_genre">Classical</string>
+    <string name="singer_genre">Singer/Songwriter</string>
+    <string name="hard_rock_genre">Hard Rock</string>
+    <string name="musicals_genre">Musicals</string>
+    <string name="soundtrack_genre">Soundtrack</string>
+
+    <string name="newer_than_one_week_time">Newer Than 1 Week</string>
+    <string name="newer_than_one_month_time">Newer Than 1 Month</string>
+    <string name="newer_than_one_year_time">Newer Than 1 Year</string>
+    <string name="older_over_one_year_time">Older Than 1 Year</string>
+    <string name="older_over_five_years_time">Older Than 5 Years</string>
+
 </resources>

@@ -1,8 +1,11 @@
 package com.music.topalbums.ui.topalbums
 
+import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.text.bold
+import androidx.core.text.italic
 import androidx.core.view.allViews
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
@@ -15,6 +18,8 @@ import com.pedromassango.doubleclick.DoubleClickListener
 
 class AlbumsListAdapter(val onSelectedItem:(album: Album) -> Unit):PagingDataAdapter<Album, AlbumsListAdapter.AlbumListViewHolder>(DiffCallback)
 {
+    private var searchText:String? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlbumListViewHolder
     {
         val binding = AlbumItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -29,19 +34,51 @@ class AlbumsListAdapter(val onSelectedItem:(album: Album) -> Unit):PagingDataAda
             holder.bindPlaceHolder()
     }
 
+    fun applySearch(searchText:String?)
+    {
+        this@AlbumsListAdapter.searchText = searchText
+    }
+
     inner class AlbumListViewHolder(val binding: AlbumItemBinding) : ViewHolder(binding.root)
     {
         fun bind(album: Album, position: Int)
         {
-            val restText = "price =  ${album.collectionPrice} ${album.currency} \n pos = $position "
+            val restText = SpannableStringBuilder()
+                .append("price =  ${album.collectionPrice} ${album.currency}")
+                .append("\n")
+                .append("date =  ${album.releaseDate}")
+                .append("\n")
+                .append("genre =  ${album.primaryGenreName}")
+                .append("\n")
+                .italic { append("pos = $position") }
+
+            //val restText = "price =  ${album.collectionPrice} ${album.currency} \n pos = $position "
             with(binding)
             {
                 restTextView.text = restText
-                nameTextView.text = "${album.collectionName}"
+                nameTextView.text = composeFieldInColor("${album.collectionName}").first
                 albumCoverImageView.loadImage(album.collectionImageUrl!!)
 
                 setDoubleClickListener(album)
             }
+        }
+
+        fun composeFieldInColor(field:String? ): Pair<SpannableStringBuilder, Boolean>
+        {
+            searchText?.lowercase()?.let {searchText->
+
+                val startIndex: Int? = field?.lowercase()?.indexOf(searchText)
+                if(startIndex!= null && startIndex!=-1)
+                {
+                    val textInColor: SpannableStringBuilder = SpannableStringBuilder()
+                        .append(field.subSequence(0, startIndex))
+                        .bold { append(field.subSequence(startIndex, startIndex + searchText.length)) }
+                        .append(field.substring(startIndex + searchText.length))
+                    return Pair(textInColor, true)
+                }
+            }
+
+            return Pair(SpannableStringBuilder(field), false)
         }
 
         fun setDoubleClickListener(album: Album)

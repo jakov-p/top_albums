@@ -6,7 +6,6 @@ import com.music.topalbums.data.albums.Album
 import com.music.topalbums.data.albums.topalbums.ITopAlbumsDataManager
 import kotlin.math.min
 
-//TODO maybe to change this naive approach where initial load size == load size
 class AlbumsPagingSource(val topAlbumsDataManager: ITopAlbumsDataManager) : PagingSource<Int, Album>()
 {
     override val jumpingSupported: Boolean = true
@@ -59,7 +58,7 @@ class AlbumsPagingSource(val topAlbumsDataManager: ITopAlbumsDataManager) : Pagi
                 if (pageNumber == 0)
                 {
                     fromIndex = 0
-                    toIndex = firstPageSize!! -1
+                    toIndex = firstPageSize!!
                     albums = topAlbumsDataManager.getAlbums(false, fromIndex, toIndex)
                     println("pageNumber == 0")
                 }
@@ -94,7 +93,7 @@ class AlbumsPagingSource(val topAlbumsDataManager: ITopAlbumsDataManager) : Pagi
                 if (pageNumber == 0)
                 {
                     fromIndex = 0
-                    toIndex = firstPageSize!! -1
+                    toIndex = firstPageSize!!
                 }
                 else
                 {

@@ -1,4 +1,4 @@
-package com.music.topalbums.ui.player
+package com.music.topalbums.ui.songs.player
 
 import android.os.Bundle
 import android.view.LayoutInflater

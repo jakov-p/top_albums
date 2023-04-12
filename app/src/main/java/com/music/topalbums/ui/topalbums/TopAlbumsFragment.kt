@@ -15,7 +15,9 @@ import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import com.music.topalbums.R
 import com.music.topalbums.databinding.FragmentTopAlbumsBinding
-import com.music.topalbums.ui.songs.SongsViewModel
+import com.music.topalbums.ui.topalbums.filter.FilterBottomSheet
+import com.music.topalbums.ui.topalbums.filter.FilterDisplayer
+import com.music.topalbums.ui.topalbums.search.SearchHandler
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -35,16 +37,19 @@ class TopAlbumsFragment : Fragment()
     }
 
     private lateinit var binding : FragmentTopAlbumsBinding
-    //val viewModel: TopAlbumsViewModel  by viewModel()
+
     private val viewModel: TopAlbumsViewModel by lazy{
         ViewModelProvider(this )[TopAlbumsViewModel::class.java]
     }
 
-    private val albumsListAdapter: AlbumsListAdapter = AlbumsListAdapter({
+    private lateinit var filterDisplayer : FilterDisplayer
+    private lateinit var searchHandler: SearchHandler
+
+    private val albumsListAdapter: AlbumsListAdapter = AlbumsListAdapter{
         val bundle = Bundle()
         bundle.putParcelable("album", it)
         findNavController().navigate(R.id.action_topAlbumsFragment_to_songsFragment, bundle)
-    })
+    }
 
     fun init()
     {
@@ -57,7 +62,6 @@ class TopAlbumsFragment : Fragment()
 
         // initialize toolbar
         (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(true)
-        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
         setHasOptionsMenu(true)
 
         initalizeAdapter()
@@ -122,8 +126,30 @@ class TopAlbumsFragment : Fragment()
                     viewModel.startNewLoad(countryCodeName)
                 }
             }
+
+            filterDisplayer = FilterDisplayer(filterInclude) {
+                val filterBottomSheetFragment = FilterBottomSheet(viewModel.albumFilter) {
+                    viewModel.applyFilter(it)
+                    filterDisplayer.applyFilter(it)
+                }
+                filterBottomSheetFragment.show(requireActivity().supportFragmentManager, "FilterDialogFragment")
+            }
+            filterDisplayer.applyFilter(viewModel.albumFilter)
+
+
+            searchHandler = SearchHandler(searchInclude, {searchText ->
+
+                albumsListAdapter.applySearch(searchText)
+                //to clear the recycleView control of the old stuff
+                binding.albumsList.adapter = null
+                binding.albumsList.adapter = albumsListAdapter
+
+                viewModel.applySearch(searchText)
+            })
+
         }
     }
+
 
     protected open fun showToastMessage(message: String?) {
         Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()

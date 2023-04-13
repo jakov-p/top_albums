@@ -4,10 +4,13 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.music.topalbums.data.albums.Album
 import com.music.topalbums.data.albums.topalbums.ITopAlbumsDataManager
+import com.music.topalbums.logger.Logger.loggable
 import kotlin.math.min
 
 class AlbumsPagingSource(val topAlbumsDataManager: ITopAlbumsDataManager) : PagingSource<Int, Album>()
 {
+    val TAG = AlbumsPagingSource::class.java.simpleName
+
     override val jumpingSupported: Boolean = true
 
     private var firstPageSize:Int? = null
@@ -34,13 +37,14 @@ class AlbumsPagingSource(val topAlbumsDataManager: ITopAlbumsDataManager) : Pagi
     {
         try
         {
+            println("************************************** params.key =" + params.key)
             val pageNumber = params.key ?: 0
             val fromIndex:Int
             val toIndex:Int
             val nextKey:Int?
 
-            val isFullyLoaded = topAlbumsDataManager.isFullyLoaded
-            val albumsCount = topAlbumsDataManager.getAlbumsCount(isFullyLoaded)
+            var isFullyLoaded = topAlbumsDataManager.isFullyLoaded
+            var albumsCount = topAlbumsDataManager.getAlbumsCount(isFullyLoaded)
             val albums: List<Album>
 
             if (firstPageSize == null )
@@ -52,6 +56,21 @@ class AlbumsPagingSource(val topAlbumsDataManager: ITopAlbumsDataManager) : Pagi
                 }
             }
 
+            if(!isFullyLoaded  && (calculateIndexNotFull(pageNumber, params.loadSize) >= albumsCount))
+            {
+                //loggable.
+                println("prelazak na full")
+                albumsCount = topAlbumsDataManager.getAlbumsCount(true)
+                isFullyLoaded = true
+            }
+
+            if(!isFullyLoaded  &&  albumsCount == 0)
+            {
+                //loggable.
+                println("prelazak na full, albumsCount == 0")
+                albumsCount = topAlbumsDataManager.getAlbumsCount(true)
+                isFullyLoaded = true
+            }
 
             if(!isFullyLoaded)
             {
@@ -81,8 +100,8 @@ class AlbumsPagingSource(val topAlbumsDataManager: ITopAlbumsDataManager) : Pagi
                         }
                         else
                         {
-                            albums = topAlbumsDataManager.getAlbums(true, fromIndex, toIndex)
-                            println("prelazak na full")
+                            println("prelazak na full se trebao vec dogoditi !!!???")
+                            albums = listOf()
                         }
                     }
                 }

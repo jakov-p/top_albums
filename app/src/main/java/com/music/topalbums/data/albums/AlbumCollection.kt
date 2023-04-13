@@ -46,6 +46,7 @@ class Album
 
 @Parcelize
 data class Album(
+    val originalPos: Int?,
     val artistName: String?,
     val artistViewUrl: String?,
     val collectionImageUrl: String? = null,
@@ -61,8 +62,9 @@ data class Album(
     //Date
     val releaseDate: String? = null)  : Parcelable
 {
-    constructor(artistAlbum: ArtistAlbum) : this(
+    constructor(originalPos:Int?, artistAlbum: ArtistAlbum) : this(
 
+        originalPos = originalPos,
         artistName = artistAlbum.artistName,
         artistViewUrl = artistAlbum.artistLinkUrl,
 
@@ -81,8 +83,8 @@ data class Album(
         releaseDate = artistAlbum.releaseDate  //Date
     )
 
-    constructor(entry: Entry) : this(
-
+    constructor(originalPos:Int?, entry: Entry) : this(
+        originalPos = originalPos,
         artistName = entry.im_artist?.label,
         artistViewUrl = entry.im_artist?.attributes?.href,
         collectionImageUrl = entry.im_image?.get(2)?.label,
@@ -102,7 +104,8 @@ data class Album(
 
     override fun toString(): String
     {
-        return "'$collectionName($primaryGenreName)' by '$artistName', $releaseDate ( $collectionPrice $currency )"
+        val releaseDateShortened = releaseDate?.split("T")?.get(0)
+        return "'[$originalPos] $collectionName($primaryGenreName)' by '$artistName', $releaseDateShortened ( $collectionPrice $currency )"
     }
 
 }
@@ -112,16 +115,16 @@ class AlbumCollection  (val list: List<Album>)
 {
     constructor(topAlbumsCollection: TopAlbumsCollection): this(mutableListOf<Album>())
     {
-       topAlbumsCollection.feed?.entry?.forEach {
-            (list as MutableList).add(Album(it))
+       topAlbumsCollection.feed?.entry?.forEachIndexed() { i: Int, entry: Entry ->
+           (list as MutableList).add(Album(i, entry))
         }
     }
 
 
     constructor(artistAlbumsCollection: ArtistAlbumsCollection): this(mutableListOf<Album>())
     {
-        artistAlbumsCollection.results?.forEach {
-            (list as MutableList).add(Album(it))
+        artistAlbumsCollection.results?.forEachIndexed { i: Int, artistAlbum: ArtistAlbum ->
+            (list as MutableList).add(Album(i, artistAlbum))
         }
     }
 

@@ -36,7 +36,6 @@ open class FilteredTopAlbumsRepository(country: String, limit :Int): TopAlbumsRe
 
     private suspend fun applyFilter(): List<Album>?
     {
-        val _filter = filter ?: {true}
-        return  fetchAlbumCollection().list.filter { _filter(it) }
+        return  fetchAlbumCollection().list.filter { filter?.invoke(it) ?: true }
     }
 }

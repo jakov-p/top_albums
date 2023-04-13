@@ -78,6 +78,9 @@ class TopAlbumsFragment : Fragment()
 
     private fun initalizeAdapter() {
 
+        albumsListAdapter.addOnPagesUpdatedListener {
+
+        }
         albumsListAdapter.addLoadStateListener { loadState ->
             // show an empty list
             val isListEmpty = (loadState.refresh is LoadState.NotLoading) && albumsListAdapter.isEmpty()
@@ -116,14 +119,18 @@ class TopAlbumsFragment : Fragment()
 
                     //albumsListAdapter.submitData(lifecycle, PagingData.empty())
                     //binding.albumsList.swapAdapter(albumsListAdapter, true)
+                    binding.albumsList.scrollToPosition(0)
 
-                    //to clear the recycleView control of the old stuff
-                    binding.albumsList.adapter = null
-                    binding.albumsList.adapter = albumsListAdapter
+                    handler.postDelayed({
+                        //to clear the recycleView control of the old stuff
 
-                    val countryName = selectedCountryName
-                    val countryCodeName = selectedCountryNameCode
-                    viewModel.startNewLoad(countryCodeName)
+                        binding.albumsList.adapter = null
+                        binding.albumsList.adapter = albumsListAdapter
+
+                        val countryName = selectedCountryName
+                        val countryCodeName = selectedCountryNameCode
+                        viewModel.startNewLoad(countryCodeName)
+                    }, 500)
                 }
             }
 

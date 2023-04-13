@@ -3,6 +3,7 @@ package com.music.topalbums.utilities
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Looper
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 
@@ -39,4 +40,6 @@ object Utilities
             ex.printStackTrace()
         }
     }
+
+    val Thread.isMain get() = Looper.getMainLooper().thread == Thread.currentThread()
 }

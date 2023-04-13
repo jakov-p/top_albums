@@ -1,6 +1,7 @@
 package com.music.topalbums.clientapi
 
 import com.music.topalbums.clientapi.utilities.LogJsonInterceptor
+import com.music.topalbums.clientapi.utilities.NetworkConnectionInterceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -18,6 +19,7 @@ class RetrofitClient
             .readTimeout(15, TimeUnit.SECONDS)
             .writeTimeout(15, TimeUnit.SECONDS)
             .addInterceptor(LogJsonInterceptor())
+            //.addInterceptor(NetworkConnectionInterceptor())
             .build()
 
         val retrofit = Retrofit.Builder()

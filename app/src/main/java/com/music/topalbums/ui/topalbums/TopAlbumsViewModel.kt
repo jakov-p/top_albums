@@ -12,7 +12,7 @@ import com.music.topalbums.ui.topalbums.filter.FilterTranslator
 
 class TopAlbumsViewModel: ViewModel()
 {
-    var country: String  = "us"
+    var country: String  = "bg"
         private set
 
     var albumFilter: AlbumFilter = AlbumFilter(null, null)

@@ -1,9 +1,10 @@
 package com.music.topalbums.ui.songs.player
 
 import android.media.MediaPlayer
+import android.media.MediaPlayer.OnErrorListener
 import android.os.Handler
 
-class PlayerWrapper(var audioUrl:String)
+class PlayerWrapper(var audioUrl:String, val onError: ()-> Unit)
 {
     private lateinit var mediaPlayer: MediaPlayer
     private var isPaused: Boolean = false
@@ -16,76 +17,104 @@ class PlayerWrapper(var audioUrl:String)
 
     fun play()
     {
-        if (isPaused)
+        runInsideTry()
         {
-            mediaPlayer.seekTo(mediaPlayer.currentPosition)
-            isPaused = false
-        }
-        else
-        {
-            mediaPlayer = MediaPlayer()
-            mediaPlayer.setDataSource(audioUrl)
-            mediaPlayer.prepare()
-            mediaPlayer.setVolume(0.5f, 0.5f)
-            mediaPlayer.isLooping = false
-        }
-        startProgressEvents()
+            if (isPaused)
+            {
+                mediaPlayer.seekTo(mediaPlayer.currentPosition)
+                isPaused = false
+            }
+            else
+            {
+                mediaPlayer = MediaPlayer()
+                mediaPlayer.setOnErrorListener { _, _, _ ->
+                    onError()
+                    true
+                }
+                mediaPlayer.setDataSource(audioUrl)
+                mediaPlayer.prepare()
+                mediaPlayer.setVolume(0.5f, 0.5f)
+                mediaPlayer.isLooping = false
+            }
+            startProgressEvents()
 
-        eventListener?.onPlay()
-        mediaPlayer.start()
-        isStopped = false;
+            eventListener?.onPlay()
+            mediaPlayer.start()
+            isStopped = false;
 
-        mediaPlayer.setOnCompletionListener {
-            eventListener?.onStop()
+            mediaPlayer.setOnCompletionListener {
+                eventListener?.onStop()
+            }
         }
     }
 
     fun pause()
     {
-        if (mediaPlayer.isPlaying)
+        runInsideTry()
         {
-            mediaPlayer.pause()
-            isPaused = true
-            isStopped = false;
+            if (mediaPlayer.isPlaying)
+            {
+                mediaPlayer.pause()
+                isPaused = true
+                isStopped = false;
 
-            eventListener?.onPause()
+                eventListener?.onPause()
+            }
         }
     }
 
     fun stop()
     {
-        if (mediaPlayer.isPlaying || isPaused)
+        runInsideTry()
         {
-            isPaused = false
-            mediaPlayer.stop()
-            mediaPlayer.reset()
-            mediaPlayer.release()
-            isStopped = true;
+            if (mediaPlayer.isPlaying || isPaused)
+            {
+                isPaused = false
+                mediaPlayer.stop()
+                mediaPlayer.reset()
+                mediaPlayer.release()
+                isStopped = true;
 
-            handler.removeCallbacks(runnable)
+                handler.removeCallbacks(runnable)
 
-            eventListener?.onStop()
+                eventListener?.onStop()
+            }
         }
     }
 
     fun destroy()
     {
-        if(::mediaPlayer.isInitialized)
+        runInsideTry()
         {
-            if (!isStopped)
+            if (::mediaPlayer.isInitialized)
             {
-                mediaPlayer.stop()
-                mediaPlayer.reset()
-                mediaPlayer.release()
+                if (!isStopped)
+                {
+                    mediaPlayer.stop()
+                    mediaPlayer.reset()
+                    mediaPlayer.release()
+                }
             }
-        }
 
-        if(::runnable.isInitialized)
-        {
-            handler.removeCallbacks(runnable)
+            if (::runnable.isInitialized)
+            {
+                handler.removeCallbacks(runnable)
+            }
         }
     }
 
+    private fun runInsideTry(block:()->Unit)
+    {
+        try
+        {
+            block.invoke()
+        }
+        catch(ex:Exception)
+        {
+            println("player exception = "+ ex.message)
+            onError.invoke()
+        }
+    }
 
     // Method to initialize seek bar and audio stats
     private fun startProgressEvents()

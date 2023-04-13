@@ -43,10 +43,12 @@ class AlbumsListAdapter(val onSelectedItem:(album: Album) -> Unit):PagingDataAda
     {
         fun bind(album: Album, position: Int)
         {
+            val releaseDateShortened = album.releaseDate?.split("T")?.get(0)
+
             val restText = SpannableStringBuilder()
                 .append("price =  ${album.collectionPrice} ${album.currency}")
                 .append("\n")
-                .append("date =  ${album.releaseDate}")
+                .append("date =  ${releaseDateShortened}")
                 .append("\n")
                 .append("genre =  ${album.primaryGenreName}")
                 .append("\n")

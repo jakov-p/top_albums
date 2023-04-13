@@ -4,11 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.CombinedLoadStates
@@ -18,6 +16,7 @@ import com.music.topalbums.utilities.Utilities.openWebPage
 import com.music.topalbums.data.albums.Album
 import com.music.topalbums.databinding.FragmentSongsBinding
 import com.music.topalbums.ui.songs.player.PlayerBottomSheet
+import com.music.topalbums.utilities.Utilities.showToastMessage
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -120,11 +119,6 @@ class SongsFragment : Fragment()
             }
         }
     }
-
-    protected open fun showToastMessage(message: String?) {
-        Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()
-    }
-
 
     private fun getIfAnyError(loadState: CombinedLoadStates): LoadState.Error?
     {

@@ -5,6 +5,8 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Looper
 import android.widget.ImageView
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 
 object Utilities
@@ -40,6 +42,14 @@ object Utilities
             ex.printStackTrace()
         }
     }
+
+
+    fun showToastMessage(context:Context, message: String?)
+    {
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+    }
+
+    fun Fragment.showToastMessage( message: String?) = Utilities.showToastMessage(this.requireContext(), message)
 
     val Thread.isMain get() = Looper.getMainLooper().thread == Thread.currentThread()
 }

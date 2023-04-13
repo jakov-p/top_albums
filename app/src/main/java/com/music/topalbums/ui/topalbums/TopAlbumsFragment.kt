@@ -4,15 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.paging.CombinedLoadStates
-import androidx.paging.LoadState
 import com.music.topalbums.R
 import com.music.topalbums.databinding.FragmentTopAlbumsBinding
 import com.music.topalbums.ui.topalbums.filter.FilterBottomSheet
@@ -50,11 +46,13 @@ class TopAlbumsFragment : Fragment()
         bundle.putParcelable("album", it)
         findNavController().navigate(R.id.action_topAlbumsFragment_to_songsFragment, bundle)
     }
+    private lateinit var albumsLoadStateListener: AlbumsLoadStateListener
 
     fun init()
     {
+        albumsLoadStateListener = AlbumsLoadStateListener(requireContext(), binding, albumsListAdapter)
+
         initalizeView()
-        initalizeAdapter()
         bindEvents()
     }
 
@@ -64,8 +62,6 @@ class TopAlbumsFragment : Fragment()
         (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(true)
         setHasOptionsMenu(true)
 
-        initalizeAdapter()
-
         // initialize recyclerView
         binding.albumsList.adapter = albumsListAdapter
 
@@ -74,34 +70,9 @@ class TopAlbumsFragment : Fragment()
                 albumsListAdapter.submitData(it)
             }
         }
+
+        albumsListAdapter.addLoadStateListener(albumsLoadStateListener::process)
     }
-
-    private fun initalizeAdapter() {
-
-        albumsListAdapter.addOnPagesUpdatedListener {
-
-        }
-        albumsListAdapter.addLoadStateListener { loadState ->
-            // show an empty list
-            val isListEmpty = (loadState.refresh is LoadState.NotLoading) && albumsListAdapter.isEmpty()
-            binding.noResultsTextView.isVisible = isListEmpty
-
-            // Only show the albums list if refresh is successful.
-            binding.albumsList.isVisible = loadState.source.refresh is LoadState.NotLoading
-
-            // Show the retry state in case of initial load or refresh failure
-            binding.retryButton.isVisible = loadState.source.refresh is LoadState.Error
-
-            // Show the progress bar while loading
-            binding.progressbar.isVisible = loadState.source.refresh is LoadState.Loading
-
-            // If any error, show a toast
-            getIfAnyError(loadState)?.let {
-                showToastMessage(it.error.message.toString())
-            }
-        }
-    }
-
 
 
     private fun bindEvents() {
@@ -134,13 +105,8 @@ class TopAlbumsFragment : Fragment()
                 }
             }
 
-            filterDisplayer = FilterDisplayer(filterInclude) {
-                val filterBottomSheetFragment = FilterBottomSheet(viewModel.albumFilter) {
-                    viewModel.applyFilter(it)
-                    filterDisplayer.applyFilter(it)
-                }
-                filterBottomSheetFragment.show(requireActivity().supportFragmentManager, "FilterDialogFragment")
-            }
+
+            filterDisplayer = FilterDisplayer(filterInclude, ::showFilterBottomSheet)
             filterDisplayer.applyFilter(viewModel.albumFilter)
 
 
@@ -153,25 +119,28 @@ class TopAlbumsFragment : Fragment()
 
                 viewModel.applySearch(searchText)
             })
-
         }
     }
 
 
-    protected open fun showToastMessage(message: String?) {
-        Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()
-    }
-
-
-    private fun getIfAnyError(loadState: CombinedLoadStates): LoadState.Error?
+    private fun showFilterBottomSheet()
     {
-        return when
+        if(!FilterBottomSheet.isShownOnScreen)
         {
-            loadState.refresh is LoadState.Error -> loadState.refresh as LoadState.Error
-            loadState.append  is LoadState.Error -> loadState.append  as LoadState.Error
-            loadState.prepend is LoadState.Error -> loadState.prepend as LoadState.Error
-            else -> null
+            val filterBottomSheetFragment = FilterBottomSheet(viewModel.albumFilter) {
+                viewModel.applyFilter(it)
+                filterDisplayer.applyFilter(it)
 
+            }
+            filterBottomSheetFragment.show(requireActivity().supportFragmentManager, "FilterDialogFragment")
+        }
+        else
+        {
+            println("'FilterBottomSheet' is already on the screen --> the click will be ignored")
         }
     }
+
+
+
+
 }

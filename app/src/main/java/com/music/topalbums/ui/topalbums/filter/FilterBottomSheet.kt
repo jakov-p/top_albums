@@ -18,6 +18,7 @@ class FilterBottomSheet(val initAlbumFilter: AlbumFilter, val onClosed: (AlbumFi
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {
+        isShownOnScreen = true
         binding = BottomSheetFilterSelectorBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -32,26 +33,28 @@ class FilterBottomSheet(val initAlbumFilter: AlbumFilter, val onClosed: (AlbumFi
     {
         setFilter(initAlbumFilter)
 
-        binding.genreEnablerCheckBox.setOnClickListener {
-            if((it as CheckBox).isChecked)
-            {
-                setGenreControls(AlbumFilter.Genre.ALTERNATIVE)
+        with(binding)
+        {
+            genreEnablerCheckBox.setOnClickListener {
+                if ((it as CheckBox).isChecked)
+                {
+                    setGenreControls(AlbumFilter.Genre.ALTERNATIVE)
+                } else
+                {
+                    setGenreControls(null)
+                }
             }
-            else
-            {
-                setGenreControls(null)
-            }
-        }
 
-        binding.releaseTimeEnablerCheckBox.setOnClickListener {
-            if((it as CheckBox).isChecked)
-            {
-                setReleaseTimeControls(AlbumFilter.ReleaseTime.NEWER_THAN_ONE_YEAR)
+            releaseTimeEnablerCheckBox.setOnClickListener {
+                if ((it as CheckBox).isChecked)
+                {
+                    setReleaseTimeControls(AlbumFilter.ReleaseTime.NEWER_THAN_ONE_YEAR)
+                } else
+                {
+                    setReleaseTimeControls(null)
+                }
             }
-            else
-            {
-                setReleaseTimeControls(null)
-            }
+
         }
     }
 
@@ -116,5 +119,12 @@ class FilterBottomSheet(val initAlbumFilter: AlbumFilter, val onClosed: (AlbumFi
     {
         onClosed(getFilter())
         super.onDismiss(dialog)
+        isShownOnScreen = false
+    }
+
+
+    companion object
+    {
+        var isShownOnScreen :Boolean = false
     }
  }

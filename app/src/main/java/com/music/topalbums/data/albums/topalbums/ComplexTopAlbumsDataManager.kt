@@ -26,6 +26,8 @@ class ComplexTopAlbumsDataManager(country: String): ITopAlbumsDataManager
 
     override suspend  fun getAlbumsCount(isForFullLoad:Boolean): Int
     {
+        restartFullLoadIfNeeded()
+
         if(!isForFullLoad)
         {
             return reducedTopAlbumsRepository.getAlbumsCount()
@@ -39,6 +41,8 @@ class ComplexTopAlbumsDataManager(country: String): ITopAlbumsDataManager
 
     override suspend fun getAlbums(isForFullLoad:Boolean, fromIndex:Int, toIndex: Int): List<Album>
     {
+        restartFullLoadIfNeeded()
+
         if(!isForFullLoad)
         {
             return reducedTopAlbumsRepository.getAlbums(fromIndex, toIndex)
@@ -52,11 +56,23 @@ class ComplexTopAlbumsDataManager(country: String): ITopAlbumsDataManager
 
     private fun startFullLoad()
     {
+        //TODO fix scope
         fullDeferredJob = CoroutineScope(Dispatchers.IO).async {
             fullTopAlbumsRepository.getAlbumsCount()
             isFullyLoaded = true
         }
+
     }
+
+    private fun restartFullLoadIfNeeded()
+    {
+        if(!fullDeferredJob.isActive && isFullyLoaded == false)
+        {
+            println("Restarting the full load...")
+            startFullLoad()
+        }
+    }
+
 
     override var filter: ((album: Album)-> Boolean)? = null
         set(value) {

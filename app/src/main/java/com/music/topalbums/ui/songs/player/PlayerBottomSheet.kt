@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.SeekBar
 import android.widget.TextView
-import android.widget.Toast
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.music.topalbums.utilities.Utilities
 import com.music.topalbums.data.songs.Song
 import com.music.topalbums.databinding.BottomSheetPlayerBinding
+import com.music.topalbums.utilities.Utilities.showToastMessage
 
 
 class PlayerBottomSheet(val song:Song) : BottomSheetDialogFragment()
@@ -25,7 +25,8 @@ class PlayerBottomSheet(val song:Song) : BottomSheetDialogFragment()
 
     private lateinit var binding: BottomSheetPlayerBinding
 
-    private val playerWrapper: PlayerWrapper = PlayerWrapper(song.previewUrl!!)
+    private val playerWrapper: PlayerWrapper = PlayerWrapper(song.previewUrl!!, ::onPlayerError)
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {
@@ -127,6 +128,20 @@ class PlayerBottomSheet(val song:Song) : BottomSheetDialogFragment()
         playButton.callOnClick()
     }
 
+    private fun onPlayerError()
+    {
+        try
+        {
+            println("An error occurred. Player can not play the song.")
+            showToastMessage(requireContext(), "An error occurred. Player can not play the song.") //TODO resource
+            dismiss();
+        }
+        catch (ex:Exception)
+        {
+            ex.printStackTrace()
+        }
+    }
+
     override fun onPause()
     {
         super.onPause()
@@ -139,8 +154,4 @@ class PlayerBottomSheet(val song:Song) : BottomSheetDialogFragment()
         playerWrapper.destroy()
     }
 
-
-    protected open fun showToastMessage(message: String?) {
-        Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()
-    }
 }

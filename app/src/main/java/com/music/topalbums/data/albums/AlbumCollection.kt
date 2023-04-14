@@ -1,67 +1,43 @@
 package com.music.topalbums.data.albums
 
 import android.os.Parcelable
-import com.music.topalbums.clientapi.albums.Entry
+import com.music.topalbums.clientapi.albums.TopAlbum
 import com.music.topalbums.clientapi.albums.TopAlbumsCollection
 import com.music.topalbums.clientapi.model.ArtistAlbum
 import com.music.topalbums.clientapi.model.ArtistAlbumsCollection
 import kotlinx.android.parcel.Parcelize
 
-/*
-class Album
-{
-    var artistType: String? = null
-    var artistId = 0
-    var amgArtistId = 0
-    var artistName: String? = null
-    var artistLinkUrl: String? = null
-    var artistViewUrl: String? = null
-    var artworkUrl100: String? = null
-    var country: String? = null
-
-    var primaryGenreName: String? = null
-    var primaryGenreId = 0
-
-    var collectionId = 0
-    var collectionName: String? = null
-    var collectionCensoredName: String? = null
-    var collectionViewUrl: String? = null
-    var collectionPrice = 0.0
-    var currency: String? = null
-
-    var trackCount = 0
-    var collectionExplicitness: String? = null
-    var releaseDate: String? = null  //Date
-    var contentAdvisoryRating: String? = null
-}
-
-
-{"wrapperType":"collection", "collectionType":"Album", "artistId":909253, "collectionId":906900960, "amgArtistId":468749, "artistName":"Jack Johnson", "collectionName":"Brushfire Fairytales (Remastered) [Bonus Version]", "collectionCensoredName":"Brushfire Fairytales (Remastered) [Bonus Version]",
-"artistViewUrl":"https://music.apple.com/us/artist/jack-johnson/909253?uo=4",
-"collectionViewUrl":"https://music.apple.com/us/album/brushfire-fairytales-remastered-bonus-version/906900960?uo=4",
-"artworkUrl60":"https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/6c/3a/c5/6c3ac504-80fb-a60f-0f9a-09da88b6b3fc/181229100723.jpg/60x60bb.jpg",
-"artworkUrl100":"https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/6c/3a/c5/6c3ac504-80fb-a60f-0f9a-09da88b6b3fc/181229100723.jpg/100x100bb.jpg",
-"collectionPrice":9.99, "collectionExplicitness":"notExplicit", "trackCount":15, "copyright":"℗ 2011 Everloving Records", "country":"USA", "currency":"USD", "releaseDate":"2011-04-12T07:00:00Z", "primaryGenreName":"Rock"},
+/**
+ * This class is introduced as a common Album class from two different sources.
+ * TopAlbum objects  and ArtistAlbum objects do not have the same fields (the original JSON is different for them).
+ * This class contains only most relevant fields from the original classes.
+ *
+ * All these fields are optional, but in practice it seems that they are always non-null.
  */
-
 @Parcelize
 data class Album(
+    // originalPos is the position in the list in the original json.
+    //(It is useful when filtering, when many albums are missing in a filtered list)
     val originalPos: Int?,
-    val artistName: String?,
-    val artistViewUrl: String?,
-    val collectionImageUrl: String? = null,
-    val collectionViewUrl: String?,
-    val primaryGenreName: String? = null,
-    val primaryGenreId:Int? = null,
-    val collectionId:Int? = null,
-    val collectionName: String? = null,
-    val collectionPrice: Float? = null,
-    val currency: String? = null,
 
-    val trackCount:Int? = null,
-    //Date
-    val releaseDate: String? = null)  : Parcelable
+    val artistName: String?, //the singer(group)'s name
+    val artistViewUrl: String?, //link to the artist's web page
+    val collectionImageUrl: String? = null, //album's image
+    val collectionViewUrl: String?, //link to the album's web page
+    val primaryGenreName: String? = null, //pop, rock, country,...
+    val primaryGenreId:Int? = null, // a number assigned to the genre above
+    val collectionId:Int? = null,  //unique id in the Server's dbase (used for fetching songs)
+    val collectionName: String? = null, //the album name
+    val collectionPrice: Float? = null, //the album's price
+    val currency: String? = null, //$, Euro, Lira,..
+    val trackCount:Int? = null, //how many songs on the labum
+    val releaseDate: String? = null) //when the album was released
+    : Parcelable
 {
+    /**
+     * Used when the source is ArtistAlbum
+     * @param originalPos the position in the list in the original json
+     */
     constructor(originalPos:Int?, artistAlbum: ArtistAlbum) : this(
 
         originalPos = originalPos,
@@ -83,44 +59,62 @@ data class Album(
         releaseDate = artistAlbum.releaseDate  //Date
     )
 
-    constructor(originalPos:Int?, entry: Entry) : this(
+    /**
+     * Used when the source is TopAlbum
+     * @param originalPos the position in the list in the original json
+     */
+    constructor(originalPos:Int?, topAlbum: TopAlbum) : this(
         originalPos = originalPos,
-        artistName = entry.im_artist?.label,
-        artistViewUrl = entry.im_artist?.attributes?.href,
-        collectionImageUrl = entry.im_image?.get(2)?.label,
-        collectionViewUrl = entry.id?.label,
+        artistName = topAlbum.im_artist?.label,
+        artistViewUrl = topAlbum.im_artist?.attributes?.href,
+        collectionImageUrl = topAlbum.im_image?.get(2)?.label,
+        collectionViewUrl = topAlbum.id?.label,
 
-        primaryGenreName = entry.category?.attributes?.term,
-        primaryGenreId = entry.category?.attributes?.im_id?.toInt(),
+        primaryGenreName = topAlbum.category?.attributes?.term,
+        primaryGenreId = topAlbum.category?.attributes?.im_id?.toInt(),
 
-        collectionId = entry.id?.attributes?.im_id?.toInt(),
-        collectionName = entry.title?.label,
-        collectionPrice = entry.im_price?.attributes?.amount?.toFloat(),
-        currency = entry.im_price?.attributes?.currency,
+        collectionId = topAlbum.id?.attributes?.im_id?.toInt(),
+        collectionName = topAlbum.title?.label,
+        collectionPrice = topAlbum.im_price?.attributes?.amount?.toFloat(),
+        currency = topAlbum.im_price?.attributes?.currency,
 
-        trackCount = entry.im_itemCount?.label?.toInt(),
-        releaseDate = entry.im_releaseDate?.label,  //Date
+        trackCount = topAlbum.im_itemCount?.label?.toInt(),
+        releaseDate = topAlbum.im_releaseDate?.label,  //Date
     )
 
     override fun toString(): String
     {
+        //e.g. "2011-04-12T07:00:00Z" --> "2011-04-12"
         val releaseDateShortened = releaseDate?.split("T")?.get(0)
+
+        //.g. '[23] Ghost Stories - Coldplay(Alternative)' by 'Coldplay', 2014-05-19 ( 14.99 BGN )'
         return "'[$originalPos] $collectionName($primaryGenreName)' by '$artistName', $releaseDateShortened ( $collectionPrice $currency )"
     }
 
 }
 
-
+/**
+ * Justa a list of albums
+ * @param list
+ */
 class AlbumCollection  (val list: List<Album>)
 {
+    /**
+     * Used when the source is TopAlbums list
+     * The source is a model object generated from the original JSON.
+     */
     constructor(topAlbumsCollection: TopAlbumsCollection): this(mutableListOf<Album>())
     {
-       topAlbumsCollection.feed?.entry?.forEachIndexed() { i: Int, entry: Entry ->
-           (list as MutableList).add(Album(i, entry))
+       topAlbumsCollection.feed?.topAlbums?.forEachIndexed() { i: Int, topAlbum: TopAlbum ->
+           (list as MutableList).add(Album(i, topAlbum))
         }
     }
 
 
+    /**
+     * Used when the source is Artist's Albums list.
+     * The source is a model object generated from the original JSON.
+     */
     constructor(artistAlbumsCollection: ArtistAlbumsCollection): this(mutableListOf<Album>())
     {
         artistAlbumsCollection.results?.forEachIndexed { i: Int, artistAlbum: ArtistAlbum ->

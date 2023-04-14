@@ -1,33 +1,32 @@
-package com.music.topalbums.ui.songs
+package com.music.topalbums.utilities
 
 import android.view.View
 import androidx.core.view.allViews
-import com.music.topalbums.data.songs.Song
-import com.music.topalbums.databinding.SongItemBinding
 import com.pedromassango.doubleclick.DoubleClick
 import com.pedromassango.doubleclick.DoubleClickListener
 
-class ClickListenerHandler(val binding: SongItemBinding, val onSelectedItem:(song: Song) -> Unit)
+/**
+ * Reacts to a double click (and/or a long click) on the provided root view or on
+ * any of its children. Then it fires an 'onSelectedItem' event informing that the item was clicked.
+ */
+class ClickListenerHandler<T>(val root: View, val onSelectedItem:(item: T) -> Unit)
 {
-    fun setListeners(song: Song)
-    {
-        setLongClickListener(song)
-        setDoubleClickListener(song)
-    }
-
-    private fun setDoubleClickListener(song: Song)
+    /**
+     * The event will be fired if double clicked on the provided item's GUI controls
+     */
+    fun setDoubleClickListener(item: T)
     {
         val doubleClick = DoubleClick(object : DoubleClickListener {
             override fun onSingleClick(view: View) {
-                // DO STUFF SINGLE CLICK
+                //ignored
             }
 
             override fun onDoubleClick(view: View) {
-                onSelectedItem(song)
+                onSelectedItem(item)
             }
         })
 
-        with(binding.root)
+        with(root)
         {
             setOnClickListener(doubleClick)
             allViews.forEach {
@@ -36,17 +35,20 @@ class ClickListenerHandler(val binding: SongItemBinding, val onSelectedItem:(son
         }
     }
 
-    private fun setLongClickListener(song: Song)
+    /**
+     * The event will be fired if long clicked on the provided item's GUI controls
+     */
+    fun setLongClickListener(item: T)
     {
-        with(binding.root)
+        with(root)
         {
             setOnLongClickListener {
-                onSelectedItem(song)
+                onSelectedItem(item)
                 true
             }
             allViews.forEach {
                 it.setOnLongClickListener {
-                    onSelectedItem(song)
+                    onSelectedItem(item)
                     true
                 }
             }

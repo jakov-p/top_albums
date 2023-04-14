@@ -6,6 +6,11 @@ import com.music.topalbums.data.songs.Song
 import com.music.topalbums.data.songs.SongsDataManager
 import kotlin.math.min
 
+/**
+ * A naive approach where it is assumed that all the pages are of the same size (except
+ * for the last one). I did not want to complicate to implement a more complex approach
+ * to cover the case where the initial load  size is different from the load size.
+ */
 class SongsPagingSource(val songsDataManager: SongsDataManager) : PagingSource<Int, Song>()
 {
     override val jumpingSupported: Boolean = true
@@ -43,7 +48,8 @@ class SongsPagingSource(val songsDataManager: SongsDataManager) : PagingSource<I
     {
         return state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.prevKey
-        } ?: run {
+        } ?:
+            run {
             println("state.anchorPosition == null")
             0
         }

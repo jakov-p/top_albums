@@ -2,14 +2,26 @@ package com.music.topalbums.data.songs
 
 import com.music.topalbums.clientapi.ClientApi
 import com.music.topalbums.logger.Logger.loggable
-
+/**
+ * Fetches songs from the internet.
+ *
+ * Note that it is not possible to read only a part of the list from the internet
+ * (e.g from 12th to 15th song in the list). So it is not possible to have 'paging' directly at the data source - to
+ * download from the internet the exact page that is about to be shown in GUI.
+ * In other words, it is possible only to download the full song list.
+ *
+ * But it is not a performance problem, because the download finishes quickly.
+ */
 open class SongsRepository(val collectionId: Int)
 {
     val TAG = SongsRepository::class.java.simpleName
 
     protected val clientApi: ClientApi = ClientApi
+
+    //non null value means that download has finished successfully
     protected var songCollection: SongCollection? = null
 
+    /** The concrete implementation of the download request from internet */
     private suspend fun loadSongs(): SongCollection
     {
         loggable.i(TAG, "Fetching songs for an album, collectionId = $collectionId ...")
@@ -21,11 +33,27 @@ open class SongsRepository(val collectionId: Int)
             }
     }
 
+    /** The total number of songs fetched from the internet
+     *
+     *  It will initiate the download if it has not started yet.
+     *  If already started, it will suspend until finished.
+     *  If already loaded, it will immediately  return.
+     */
     suspend fun getSongsCount(): Int
     {
         return fetchSongCollection().list.size
     }
 
+    /** Get a range of songs
+     *
+     *  It will initiate the download if it has not started yet.
+     *  If already started, it will suspend until finished.
+     *  If already loaded, it will immediately  return.
+     *
+     * @param fromIndex the starting index of the range
+     * @param toIndex the ending index of the range (not included)
+     * @return songs in the requested range
+     */
     suspend fun getSongs(fromIndex:Int, toIndex: Int): List<Song>
     {
         loggable.i(TAG, "Fetching songs from $fromIndex to $toIndex ...")
@@ -38,6 +66,7 @@ open class SongsRepository(val collectionId: Int)
         }
     }
 
+    /** Lazily fetches songs from internet */
     protected suspend fun fetchSongCollection():SongCollection
     {
         if (songCollection == null)

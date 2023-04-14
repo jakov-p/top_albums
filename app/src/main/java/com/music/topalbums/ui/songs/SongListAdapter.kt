@@ -8,7 +8,13 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.music.topalbums.utilities.Utilities.formatTimeMinSec
 import com.music.topalbums.data.songs.Song
 import com.music.topalbums.databinding.SongItemBinding
+import com.music.topalbums.utilities.ClickListenerHandler
 
+/**
+ * Defines the look of the song recycle view item.
+ *
+ * @param onSelectedItem = called when the user double clicks or long clicks on an song item
+ */
 class SongListAdapter(val onSelectedItem:(song: Song) -> Unit):PagingDataAdapter<Song, SongListAdapter.SongListViewHolder>(DiffCallback)
 {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongListViewHolder
@@ -32,25 +38,31 @@ class SongListAdapter(val onSelectedItem:(song: Song) -> Unit):PagingDataAdapter
             val restText = "price =  ${song.collectionPrice} ${song.currency} \n pos = $position "
             binding.posTextView.text = "${position+1}"
             binding.nameTextView.text = "${song.trackName}"
-            binding.durationTextView.text = composeDuration(song.trackTimeMillis!!)
+            binding.durationTextView.text = composeDurationText(song.trackTimeMillis!!)
 
-            ClickListenerHandler(binding, onSelectedItem).setListeners(song)
+            //make this item double and long clickable
+            ClickListenerHandler(binding.root, onSelectedItem).apply()
+            {
+               setDoubleClickListener(song)
+               setLongClickListener(song)
+            }
         }
 
         fun bindPlaceHolder()
         {
-
+            //nothing here to be done
         }
 
-        private fun composeDuration(durationMs: Int?):String
+        private fun composeDurationText(durationMs: Int?):String
         {
             return if(durationMs!=null)
             {
+                // e.g. 309 000 --> "05:09"
                 formatTimeMinSec(durationMs/ 1000)
             }
             else
             {
-                "-:-"
+                "-:-" //unknow duration
             }
         }
 
@@ -71,7 +83,5 @@ class SongListAdapter(val onSelectedItem:(song: Song) -> Unit):PagingDataAdapter
         {
             return oldItem == newItem
         }
-
     }
-
 }

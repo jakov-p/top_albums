@@ -3,8 +3,11 @@
     <string name="action_settings">Settings</string>
 
     <string name="no_results">No Results</string>
-    <string name="retry">retry</string>
+    <string name="retry">Retry</string>
 
+    <string name="set_filter">Set Filter</string>
+    <string name="release_time_group">Release time</string>
+    <string name="genre_group">Genre</string>
 
     <string name="pop_genre">Pop</string>
     <string name="alternative_genre">Alternative</string>
@@ -22,5 +25,18 @@
     <string name="newer_than_one_year_time">Newer Than 1 Year</string>
     <string name="older_over_one_year_time">Older Than 1 Year</string>
     <string name="older_over_five_years_time">Older Than 5 Years</string>
+
+    <string name="search">Search</string>
+
+    <string name="play">Play</string>
+    <string name="pause">Pause</string>
+    <string name="stop">Stop</string>
+
+    <string name="go_to_album_web_page">Go To Album Web Page</string>
+    <string name="go_to_artist_web_page">Go To Artist Web Page</string>
+
+    <string name="check_internet_connection">An error occurred.\nCheck internet connection</string>
+    <string name="player_can_not_play">An error occurred.\nPlayer can not play the song</string>
+
 
 </resources>

@@ -4,29 +4,28 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.SeekBar
-import android.widget.TextView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.music.topalbums.R
 import com.music.topalbums.utilities.Utilities
 import com.music.topalbums.data.songs.Song
 import com.music.topalbums.databinding.BottomSheetPlayerBinding
-import com.music.topalbums.utilities.Utilities.showToastMessage
+import com.music.topalbums.utilities.Utilities.showLongToastMessage
+import com.music.topalbums.logger.Logger.loggable
+import com.music.topalbums.utilities.Utilities.showShortToastMessage
 
-
+/**
+ * GUI offering the user buttons for play, stop and pause functionalities.
+ * It also contains a seekbar informing about the song playing progress.
+ *
+ * @param song song to be played
+ */
 class PlayerBottomSheet(val song:Song) : BottomSheetDialogFragment()
 {
-    private lateinit var playButton: Button
-    private lateinit var pauseButton: Button
-    private lateinit var stopButton: Button
-    private lateinit var seekBar: SeekBar
-    private lateinit var leftSideTextView: TextView
-    private lateinit var rightSideTextView: TextView
+    val TAG = PlayerBottomSheet::class.java.simpleName
 
     private lateinit var binding: BottomSheetPlayerBinding
-
     private val playerWrapper: PlayerWrapper = PlayerWrapper(song.previewUrl!!, ::onPlayerError)
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {
@@ -42,21 +41,27 @@ class PlayerBottomSheet(val song:Song) : BottomSheetDialogFragment()
 
     fun init()
     {
-        playButton = binding.playButton
-        pauseButton = binding.pauseButton
-        stopButton = binding.stopButton
-        seekBar = binding.seekBar
-        leftSideTextView = binding.leftSideTextView
-        rightSideTextView = binding.rightSideTextView
+        with(binding)
+        {
+            setPlayerEventListener()
+            initializeButtons()
+            initializeSeekBar()
 
-        playerWrapper.eventListener = object: PlayerWrapper.IPlayerListener
+            //start playing the song immediately when the GUI appears on the screen
+            playButton.callOnClick()
+        }
+    }
+
+    private fun BottomSheetPlayerBinding.setPlayerEventListener()
+    {
+        playerWrapper.eventListener = object : PlayerWrapper.IPlayerListener
         {
             override fun onPlay()
             {
                 playButton.isEnabled = false
                 pauseButton.isEnabled = true
                 stopButton.isEnabled = true
-                showToastMessage("media playing")
+                showShortToastMessage("Media playing.")
             }
 
             override fun onPause()
@@ -64,7 +69,7 @@ class PlayerBottomSheet(val song:Song) : BottomSheetDialogFragment()
                 playButton.isEnabled = true
                 pauseButton.isEnabled = false
                 stopButton.isEnabled = true
-                showToastMessage("media pause")
+                showShortToastMessage("Media paused.")
             }
 
             override fun onStop()
@@ -74,7 +79,7 @@ class PlayerBottomSheet(val song:Song) : BottomSheetDialogFragment()
                 stopButton.isEnabled = false
                 leftSideTextView.text = ""
                 rightSideTextView.text = ""
-                showToastMessage( "media stop")
+                showShortToastMessage("Media stopped.")
             }
 
             override fun onProgress(currentPos: Int)
@@ -82,59 +87,63 @@ class PlayerBottomSheet(val song:Song) : BottomSheetDialogFragment()
                 val durationInSec = playerWrapper.duration / 1000
                 val currentPosInSec = currentPos / 1000
 
+                //adapt the seekbar and text over the seekbar to show the current playing position
                 seekBar.progress = currentPosInSec
                 leftSideTextView.text = song.trackName
-                rightSideTextView.text = Utilities.formatTimeMinSec(currentPosInSec) + " / " + Utilities.formatTimeMinSec(durationInSec)
+                rightSideTextView.text = "${Utilities.formatTimeMinSec(currentPosInSec)} / ${Utilities.formatTimeMinSec(durationInSec)}"
             }
         }
+    }
 
-        // Start the media player
-        playButton.setOnClickListener {
-            playerWrapper.play()
-            seekBar.max = playerWrapper.duration / 1000
-        }
-
-        // Pause the media player
-        pauseButton.setOnClickListener {
-            playerWrapper.pause()
-
-        }
-        // Stop the media player
-        stopButton.setOnClickListener {
-            playerWrapper.stop()
-            seekBar.setProgress(0)
-        }
-
-        // Seek bar change listener
+    /**
+     * Handles actions performed by the user on the seekbar
+     * (when the user jumps to a certain second of the song)
+     */
+    private fun BottomSheetPlayerBinding.initializeSeekBar()
+    {
         seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener
         {
             override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean)
             {
                 if (b)
                 {
-                    playerWrapper.seekTo(i*1000)
+                    playerWrapper.seekTo(i * 1000)
                 }
             }
 
-            override fun onStartTrackingTouch(seekBar: SeekBar)
-            {
-            }
-
-            override fun onStopTrackingTouch(seekBar: SeekBar)
-            {
-            }
+            override fun onStartTrackingTouch(seekBar: SeekBar){} //no need
+            override fun onStopTrackingTouch(seekBar: SeekBar){} //no need
         })
-
-        playButton.callOnClick()
     }
 
+
+    /** Connects the buttons to the corresponding commands of media player wrapper */
+    private fun BottomSheetPlayerBinding.initializeButtons()
+    {
+        playButton.setOnClickListener {
+            playerWrapper.play()
+            seekBar.max = playerWrapper.duration / 1000
+        }
+
+        pauseButton.setOnClickListener {
+            playerWrapper.pause()
+        }
+
+        stopButton.setOnClickListener {
+            playerWrapper.stop()
+            seekBar.setProgress(0)
+        }
+    }
+
+
+    /** Called on any unrecoverable error fired from the media player wrapper */
     private fun onPlayerError()
     {
         try
         {
-            println("An error occurred. Player can not play the song.")
-            showToastMessage(requireContext(), "An error occurred. Player can not play the song.") //TODO resource
-            dismiss();
+            loggable.e(TAG, "An error occurred. Player can not play the song.")
+            showLongToastMessage(requireContext(), requireContext().getString(R.string.player_can_not_play))
+            dismiss() //close the GUI
         }
         catch (ex:Exception)
         {
@@ -153,5 +162,4 @@ class PlayerBottomSheet(val song:Song) : BottomSheetDialogFragment()
         super.onDestroy()
         playerWrapper.destroy()
     }
-
 }

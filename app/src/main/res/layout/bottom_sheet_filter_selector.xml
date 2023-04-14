@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="18sp"
-        android:text="Release time" />
+        android:text="@string/release_time_group" />
 
 
     <include android:id="@+id/release_time_chip_group_include" layout="@layout/view_release_time_chip_group"/>
@@ -30,7 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="18sp"
-        android:text="Genre" />
+        android:text="@string/genre_group" />
 
     <include android:id="@+id/genre_chip_group_include" layout="@layout/view_genre_chip_group"/>
 

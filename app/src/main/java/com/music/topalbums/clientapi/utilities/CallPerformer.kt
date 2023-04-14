@@ -3,14 +3,20 @@ package com.music.topalbums.clientapi.utilities
 import androidx.lifecycle.MutableLiveData
 import com.music.topalbums.logger.Logger
 import com.music.topalbums.logger.Logger.loggable
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import retrofit2.Response
-import kotlin.concurrent.timer
 import kotlin.system.measureTimeMillis
-import kotlin.time.measureTime
 
-class CallPerformer<T>(val commandName :String, val methodCall: suspend ()-> Response<T>)
+/**
+ * Call performer is a wrapper that performs a http request and logs
+ * the result (it also measures the time).
+ *
+ * It also provides 'isRunning' object to inform about the running status.
+ *
+ * @param T the payload data of the response
+ * @param commandDescription the describing text, just for logging
+ * @param methodCall the actual HTTP request to be performed
+ */
+class CallPerformer<T>(val commandDescription :String, val methodCall: suspend ()-> Response<T>)
 {
     val TAG = CallPerformer::class.java.simpleName
     val isRunning = MutableLiveData<Boolean>(false)
@@ -20,9 +26,9 @@ class CallPerformer<T>(val commandName :String, val methodCall: suspend ()-> Res
         return try
         {
             isRunning.postValue(true)
-            //delay(500) //for easier testing TODO remove later
+            //delay(500) //for easier testing
 
-            Logger.printTitle(TAG, commandName)
+            Logger.printTitle(TAG, commandDescription)
 
             val response:Response<T>
             measureTimeMillis  {
@@ -47,7 +53,7 @@ class CallPerformer<T>(val commandName :String, val methodCall: suspend ()-> Res
             }
             else
             {
-                loggable.e(TAG, "$commandName failed")
+                loggable.e(TAG, "$commandDescription failed")
                 loggable.e(TAG, "response = $response")
                 loggable.e(TAG, "code = " + response.code().toString())
 

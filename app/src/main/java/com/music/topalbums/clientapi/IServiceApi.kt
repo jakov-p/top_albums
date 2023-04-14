@@ -15,11 +15,9 @@ interface  IServiceApi
     @GET("{country}/rss/topalbums/limit={limit}/json")
     suspend fun getTopAlbums(@Path("country") country: String, @Path("limit") limit: Int): Response<TopAlbumsCollection>
 
-
     //https://itunes.apple.com/lookup?id=1665320666&entity=song
     @GET("lookup?entity=song")
     suspend fun getAlbumSongs(@Query("id") albumId: Int): Response<AlbumSongsCollection>
-
 
 
     //https://itunes.apple.com/lookup?id=909253&entity=album

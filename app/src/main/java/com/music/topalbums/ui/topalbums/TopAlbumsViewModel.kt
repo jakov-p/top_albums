@@ -6,20 +6,29 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.music.topalbums.ui.topalbums.filter.AlbumFilter
-import com.music.topalbums.data.albums.topalbums.ComplexTopAlbumsDataManager
-import com.music.topalbums.data.albums.topalbums.ITopAlbumsDataManager
+import com.music.topalbums.data.albums.topalbums.datamanager.ComplexTopAlbumsDataManager
+import com.music.topalbums.data.albums.topalbums.datamanager.ITopAlbumsDataManager
 import com.music.topalbums.ui.topalbums.filter.FilterTranslator
 
+/**
+ * Top albums view model
+ *
+ * Feeds the GUI with top albums list for a particular country respecting filter and search text criteria
+ */
 class TopAlbumsViewModel: ViewModel()
 {
+    //the current country for which top albums are shown
     var country: String  = "bg"
         private set
 
+    //the current filter applied to the albums list
     var albumFilter: AlbumFilter = AlbumFilter(null, null)
         private set
 
+    //the current search text applied to the albums list
     private var searchText: String? = null
 
+    //provides the filtered list of albums
     private var topAlbumsDataManager: ITopAlbumsDataManager =  ComplexTopAlbumsDataManager(country)
     private lateinit var currentPagingSource: AlbumsPagingSource
 
@@ -36,25 +45,40 @@ class TopAlbumsViewModel: ViewModel()
         })
         .flow.cachedIn(viewModelScope)
 
+    /**
+     * The user has created another filter  --> a new album list has to be shown
+     * @param albumFilter
+     */
     fun applyFilter(albumFilter: AlbumFilter)
     {
         this@TopAlbumsViewModel.albumFilter = albumFilter
-        currentPagingSource.invalidate()
+        //this is without going to internet to read album list again
+        currentPagingSource.invalidate() //forces 'pagingSourceFactory' to create a new stream od albums
     }
 
+    /**
+     * The user has changed the search text --> a new album list has to be shown
+     * @param searchText
+     */
     fun applySearch(searchText: String? )
     {
         this@TopAlbumsViewModel.searchText = searchText
-        currentPagingSource.invalidate()
+        //this is without going to internet to read album list again
+        currentPagingSource.invalidate() //forces 'pagingSourceFactory' to create a new stream od albums
     }
 
+    /**
+     * The user has selected a new country --> a new album list has to be shown
+     * @param country
+     */
     fun startNewLoad(country: String)
     {
         if(country!= this@TopAlbumsViewModel.country)
         {
             this@TopAlbumsViewModel.country = country
+            // going to internet to read album list again
             topAlbumsDataManager =  ComplexTopAlbumsDataManager(country)
-            currentPagingSource.invalidate()
+            currentPagingSource.invalidate() //forces 'pagingSourceFactory' to create a new stream od albums
         }
     }
 

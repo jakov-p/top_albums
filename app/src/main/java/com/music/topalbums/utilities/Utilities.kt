@@ -9,20 +9,28 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 
+
 object Utilities
 {
+    /** load an image into an image view using Glide */
     fun ImageView.loadImage(url: String) {
         Glide.with(this)
             .load(url)
             .into(this)
     }
 
+    /**
+     * Format time given in seconds into 'min:seconds' format
+     * @return e.g. 309 --> "05:09"
+     */
     fun formatTimeMinSec(timeInSec:Int):String
     {
         return "${timeInSec/60}".padStart(2, '0') + ":"  + "${timeInSec%60}".padStart(2, '0')
     }
 
-
+    /**
+     * Call a default browser to open a web page
+     */
     fun openWebPage( context: Context, url: String)
     {
         try
@@ -33,7 +41,7 @@ object Utilities
                 url
             }
 
-            //TODO checking for browser is missing
+            //TODO checking for a default browser's presence is missing
             val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(adjustedUrl))
             context.startActivity(browserIntent)
         }
@@ -43,13 +51,23 @@ object Utilities
         }
     }
 
-
-    fun showToastMessage(context:Context, message: String?)
+    //long toast message
+    fun showLongToastMessage(context:Context, message: String?)
     {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 
-    fun Fragment.showToastMessage( message: String?) = Utilities.showToastMessage(this.requireContext(), message)
+    fun Fragment.showLongToastMessage(message: String?) = Utilities.showLongToastMessage(this.requireContext(), message)
 
+    //short toast message
+    fun showShortToastMessage(context:Context, message: String?)
+    {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+
+    fun Fragment.showShortToastMessage(message: String?) = Utilities.showShortToastMessage(this.requireContext(), message)
+
+
+    //is the current thread the Main android thread?
     val Thread.isMain get() = Looper.getMainLooper().thread == Thread.currentThread()
 }

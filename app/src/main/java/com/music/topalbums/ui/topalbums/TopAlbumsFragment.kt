@@ -10,16 +10,43 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.music.topalbums.R
+import com.music.topalbums.data.albums.Album
 import com.music.topalbums.databinding.FragmentTopAlbumsBinding
 import com.music.topalbums.ui.topalbums.filter.FilterBottomSheet
 import com.music.topalbums.ui.topalbums.filter.FilterDisplayer
 import com.music.topalbums.ui.topalbums.search.SearchHandler
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import com.music.topalbums.logger.Logger.loggable
+import com.music.topalbums.ui.songs.SongsFragment
+import com.music.topalbums.ui.topalbums.filter.AlbumFilter
 
-
+/**
+ * Shows the list of top albums of a country
+ * It offers country selection, filtering and search functionality.
+ */
 class TopAlbumsFragment : Fragment()
 {
+    private val TAG = TopAlbumsFragment::class.java.simpleName
+
+    private lateinit var binding : FragmentTopAlbumsBinding
+
+    private val viewModel: TopAlbumsViewModel by lazy{
+        ViewModelProvider(this )[TopAlbumsViewModel::class.java]
+    }
+
+    //shows the current active filter
+    private lateinit var filterDisplayer : FilterDisplayer
+
+    //shows and offers editing of the current  search
+    private lateinit var searchHandler: SearchHandler
+
+    //shows an item in the album list recycle view
+    private val albumsListAdapter: AlbumsListAdapter = AlbumsListAdapter(onSelectedItem =::goToSongsFragment)
+
+    //shows or hides GUI control displaying 'loading in progress' and error
+    private lateinit var albumsLoadStateListener: AlbumsLoadStateListener
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {
         binding = FragmentTopAlbumsBinding.inflate(inflater, container, false)
@@ -31,22 +58,6 @@ class TopAlbumsFragment : Fragment()
         super.onViewCreated(view, savedInstanceState)
         init()
     }
-
-    private lateinit var binding : FragmentTopAlbumsBinding
-
-    private val viewModel: TopAlbumsViewModel by lazy{
-        ViewModelProvider(this )[TopAlbumsViewModel::class.java]
-    }
-
-    private lateinit var filterDisplayer : FilterDisplayer
-    private lateinit var searchHandler: SearchHandler
-
-    private val albumsListAdapter: AlbumsListAdapter = AlbumsListAdapter{
-        val bundle = Bundle()
-        bundle.putParcelable("album", it)
-        findNavController().navigate(R.id.action_topAlbumsFragment_to_songsFragment, bundle)
-    }
-    private lateinit var albumsLoadStateListener: AlbumsLoadStateListener
 
     fun init()
     {
@@ -63,8 +74,10 @@ class TopAlbumsFragment : Fragment()
         setHasOptionsMenu(true)
 
         // initialize recyclerView
+        binding.albumsList.setHasFixedSize(true)
         binding.albumsList.adapter = albumsListAdapter
 
+        //start collecting album list data to fill the adapter with it
         lifecycleScope.launch {
             viewModel.topAlbums.collectLatest {
                 albumsListAdapter.submitData(it)
@@ -78,48 +91,53 @@ class TopAlbumsFragment : Fragment()
     private fun bindEvents() {
         with(binding) {
 
-            albumsList.setHasFixedSize(true)
-
+            //'retryButton' is shown in case when album list loading fails
             retryButton.setOnClickListener {
                 albumsListAdapter.retry()
             }
 
+            //when the user selects a new country
             with(selectorInclude.countryCodePicker)
             {
                 setOnCountryChangeListener {
 
-                    //albumsListAdapter.submitData(lifecycle, PagingData.empty())
-                    //binding.albumsList.swapAdapter(albumsListAdapter, true)
+                    loggable.i(TAG, "The user selected a new country, country  = $selectedCountryName ($selectedCountryNameCode)")
                     binding.albumsList.scrollToPosition(0)
 
                     handler.postDelayed({
-                        //to clear the recycleView control of the old stuff
-
-                        binding.albumsList.adapter = null
-                        binding.albumsList.adapter = albumsListAdapter
-
-                        val countryName = selectedCountryName
-                        val countryCodeName = selectedCountryNameCode
-                        viewModel.startNewLoad(countryCodeName)
-                    }, 500)
+                        clearAdapter()
+                        viewModel.startNewLoad(selectedCountryNameCode)
+                    }, 200)
+                    /*
+                    This is delayed to give enough time for the recycle view control to scroll down to 0.
+                    Without it, the scroll would not be performed at all, and the newly filled recycle view
+                    (with the new country entries) would start at the position where the previous country was,
+                    which creates small performance issues in work of 'AlbumsPagingSource'.
+                    */
                 }
             }
 
-
+            //show the current active filter
             filterDisplayer = FilterDisplayer(filterInclude, ::showFilterBottomSheet)
             filterDisplayer.applyFilter(viewModel.albumFilter)
 
+            //show and offer editing of the current  search
+            searchHandler = SearchHandler(searchInclude, onSearchChanged = { searchText ->
 
-            searchHandler = SearchHandler(searchInclude, {searchText ->
-
-                albumsListAdapter.applySearch(searchText)
-                //to clear the recycleView control of the old stuff
-                binding.albumsList.adapter = null
-                binding.albumsList.adapter = albumsListAdapter
-
-                viewModel.applySearch(searchText)
+                loggable.i(TAG, "The user entered a new search text, search text = '$searchText'")
+                albumsListAdapter.applySearch(searchText)  //to highlight any found search text
+                clearAdapter()
+                viewModel.applySearch(searchText) //to filter album list
             })
         }
+    }
+
+    //it seems it works better with this command
+    private fun clearAdapter()
+    {
+        //to clear the recycleView control of the old stuff
+        binding.albumsList.adapter = null
+        binding.albumsList.adapter = albumsListAdapter
     }
 
 
@@ -127,20 +145,21 @@ class TopAlbumsFragment : Fragment()
     {
         if(!FilterBottomSheet.isShownOnScreen)
         {
-            val filterBottomSheetFragment = FilterBottomSheet(viewModel.albumFilter) {
+            val filterBottomSheetFragment = FilterBottomSheet(viewModel.albumFilter, onClosed = {
                 viewModel.applyFilter(it)
                 filterDisplayer.applyFilter(it)
-
-            }
+            })
             filterBottomSheetFragment.show(requireActivity().supportFragmentManager, "FilterDialogFragment")
         }
         else
         {
-            println("'FilterBottomSheet' is already on the screen --> the click will be ignored")
+            loggable.w(TAG, "'FilterBottomSheet' is already on the screen --> the click will be ignored")
         }
     }
 
-
-
-
+    private fun goToSongsFragment(it: Album)
+    {
+        val bundle = SongsFragment.ParamsHandler.createBundle(it)
+        findNavController().navigate(R.id.action_topAlbumsFragment_to_songsFragment, bundle)
+    }
 }

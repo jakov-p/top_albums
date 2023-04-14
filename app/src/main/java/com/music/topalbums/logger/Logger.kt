@@ -25,15 +25,4 @@ object Logger
         loggable.i(tag, "****************************************************************************** ")
     }
 
-    fun printNotification(tag: String, message: String)
-    {
-        loggable.i(tag, "-------------------------------------------------------------")
-        loggable.i(tag, "                       $message ...")
-        loggable.i(tag, "-------------------------------------------------------------")
-    }
-
-    fun ByteArray.toHex(): String
-    {
-        return joinToString(separator = "") { eachByte -> "%02x".format(eachByte) }
-    }
 }

@@ -10,7 +10,9 @@ import org.json.JSONObject
 import org.json.JSONTokener
 import java.io.IOException
 
-
+/**
+ * Just logs the JSON content (with indentations)
+ */
 class LogJsonInterceptor : Interceptor
 {
     @Throws(IOException::class)

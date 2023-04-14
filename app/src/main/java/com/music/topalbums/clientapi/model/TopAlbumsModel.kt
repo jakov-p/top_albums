@@ -30,7 +30,8 @@ class TopAlbumsCollection
 class Feed
 {
     var author: Author? = null
-    var entry: ArrayList<Entry>? = null
+    @SerializedName("entry")
+    var topAlbums: ArrayList<TopAlbum>? = null
     var updated: Updated? = null
     var rights: Rights? = null
     var title: Title? = null
@@ -39,7 +40,7 @@ class Feed
     var id: Id? = null
 }
 
-class Entry
+class TopAlbum
 {
     @SerializedName("im:name")
     var im_name: ImName? = null

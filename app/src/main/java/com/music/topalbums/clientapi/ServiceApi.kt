@@ -29,6 +29,4 @@ object ServiceApi
     {
         return  retrofitClient.service.getArtistSongs(artistId)
     }
-
-
 }

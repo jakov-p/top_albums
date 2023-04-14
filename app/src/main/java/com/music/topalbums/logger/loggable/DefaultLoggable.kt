@@ -3,6 +3,9 @@ package com.music.topalbums.logger.loggable
 import android.util.Log
 
 
+/**
+ * Logs by using the standard Android logger.
+ */
 class SimpleNameDefaultLoggable( ): Loggable
 {
     override fun i(tag: String, message: String)

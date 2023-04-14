@@ -2,21 +2,29 @@ package com.music.topalbums.ui.topalbums
 
 import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.text.bold
 import androidx.core.text.italic
-import androidx.core.view.allViews
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.music.topalbums.utilities.Utilities.loadImage
 import com.music.topalbums.data.albums.Album
 import com.music.topalbums.databinding.AlbumItemBinding
-import com.pedromassango.doubleclick.DoubleClick
-import com.pedromassango.doubleclick.DoubleClickListener
+import com.music.topalbums.utilities.ClickListenerHandler
 
-class AlbumsListAdapter(val onSelectedItem:(album: Album) -> Unit):PagingDataAdapter<Album, AlbumsListAdapter.AlbumListViewHolder>(DiffCallback)
+/**
+ * Defines the look of the album recycle view item.
+ *
+ * The look changes as a new search text is entered by the user. Any item that contains the
+ * search text will have its content highlighted.
+ * Only two album fields are searched for the search text, they are 'artist name' and 'album name'.
+ * Only the part of the text matching the search string will be highlighted, the rest stays in the
+ * same font.
+ *
+ * @param onSelectedItem = called when the user clicks on an album item
+ */
+class AlbumsListAdapter(val onSelectedItem:(album: Album) -> Unit): PagingDataAdapter<Album, AlbumsListAdapter.AlbumListViewHolder>(DiffCallback)
 {
     private var searchText:String? = null
 
@@ -34,6 +42,10 @@ class AlbumsListAdapter(val onSelectedItem:(album: Album) -> Unit):PagingDataAda
             holder.bindPlaceHolder()
     }
 
+    /**
+     * The user has entered a new search text, adapt the look to this change
+     * @param searchText
+     */
     fun applySearch(searchText:String?)
     {
         this@AlbumsListAdapter.searchText = searchText
@@ -61,10 +73,19 @@ class AlbumsListAdapter(val onSelectedItem:(album: Album) -> Unit):PagingDataAda
                 nameTextView.text = composeFieldInColor("${album.collectionName}").first
                 albumCoverImageView.loadImage(album.collectionImageUrl!!)
 
-                setDoubleClickListener(album)
+                //make this item double clickable
+                ClickListenerHandler(binding.root, onSelectedItem).setDoubleClickListener(album)
             }
         }
 
+        /**
+         * Looks for the search text in the given field. If found, that part of the
+         * field text will be highlighted, and the rest will stay as it was.
+         *
+         * @param field text to be searched for a search text
+         * @return  SpannableStringBuilder - text with parts in different style
+         *          Boolean - true if the search text was found, false if not
+         */
         fun composeFieldInColor(field:String? ): Pair<SpannableStringBuilder, Boolean>
         {
             searchText?.lowercase()?.let {searchText->
@@ -76,37 +97,19 @@ class AlbumsListAdapter(val onSelectedItem:(album: Album) -> Unit):PagingDataAda
                         .append(field.subSequence(0, startIndex))
                         .bold { append(field.subSequence(startIndex, startIndex + searchText.length)) }
                         .append(field.substring(startIndex + searchText.length))
+
+                    //the search text is found --> return the colored text
                     return Pair(textInColor, true)
                 }
             }
 
+            //the search text was not found --> return the text as is
             return Pair(SpannableStringBuilder(field), false)
-        }
-
-        fun setDoubleClickListener(album: Album)
-        {
-            val doubleClick = DoubleClick(object : DoubleClickListener {
-                override fun onSingleClick(view: View) {
-                    // DO STUFF SINGLE CLICK
-                }
-
-                override fun onDoubleClick(view: View) {
-                    onSelectedItem(album)
-                }
-            })
-
-            with(binding)
-            {
-                root.setOnClickListener(doubleClick)
-                root.allViews.forEach {
-                    it.setOnClickListener(doubleClick)
-                }
-            }
         }
 
         fun bindPlaceHolder()
         {
-
+            //nothing here to be done
         }
 
     }
@@ -125,7 +128,5 @@ class AlbumsListAdapter(val onSelectedItem:(album: Album) -> Unit):PagingDataAda
         {
             return oldItem == newItem
         }
-
     }
-
 }

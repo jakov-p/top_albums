@@ -16,7 +16,7 @@ import com.music.topalbums.utilities.Utilities.openWebPage
 import com.music.topalbums.data.albums.Album
 import com.music.topalbums.databinding.FragmentSongsBinding
 import com.music.topalbums.ui.songs.player.PlayerBottomSheet
-import com.music.topalbums.utilities.Utilities.showToastMessage
+import com.music.topalbums.utilities.Utilities.showLongToastMessage
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -37,7 +37,7 @@ class SongsFragment : Fragment()
 
     private lateinit var binding : FragmentSongsBinding
     private val viewModel: SongsViewModel by lazy{
-        val album = arguments?.getParcelable("album") as Album?
+        val album = ParamsHandler.getAlbum(arguments)
         val factory = SongsViewModel.Factory(album!!)
         ViewModelProvider(this, factory )[SongsViewModel::class.java]
     }
@@ -93,7 +93,7 @@ class SongsFragment : Fragment()
 
             // If any error, show a toast
             getIfAnyError(loadState)?.let {
-                showToastMessage(it.error.message.toString())
+                showLongToastMessage(it.error.message.toString())
             }
         }
     }
@@ -132,5 +132,20 @@ class SongsFragment : Fragment()
         }
     }
 
+
+    /**
+     * Puts album object into and extracts from a bundle.
+     * Helps with the transfer of the album parameter from one fragment to another.
+     */
+    object ParamsHandler
+    {
+        const val PARAM_NAME = "album"
+
+        fun getAlbum(bundle:Bundle?) : Album? = bundle?.getParcelable(PARAM_NAME) as Album?
+
+        fun createBundle(album: Album): Bundle = Bundle().apply {
+            putParcelable(PARAM_NAME, album)
+        }
+    }
 
 }

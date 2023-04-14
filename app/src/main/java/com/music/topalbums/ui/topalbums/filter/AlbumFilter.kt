@@ -1,31 +1,25 @@
 package com.music.topalbums.ui.topalbums.filter
 
-
-/*
-    <string name="pop_genre">Pop</string>
-    <string name="alternative_genre">Alternative</string>
-    <string name="rock_genre">Rock</string>
-    <string name="country_genre">Country</string>
-    <string name="christian_genre">Christian &amp; Gospel</string>
-    <string name="classical_genre">Classical</string>
-    <string name="singer_genre">Singer/Songwriter</string>
-    <string name="hard_rock_genre">Hard Rock</string>
-    <string name="musicals_genre">Musicals</string>
-    <string name="soundtrack_genre">Soundtrack</string>
-
-    <string name="one_day_time">Older Than 1 Day</string>
-    <string name="one_month_time">Older Than 1 Month</string>
-    <string name="one_year_time">Older Than 1 Year</string>
+/**
+ * filter defining the criteria for an album to be shown in  GUI
+ *
+ * @constructor Create an empty Album filter (any album would 'pass' this filter)
+ * @param genre pop, rock, alternative,... (not all possible music genres are here - they
+ *                would take too much space when shown in GUI), if null then ignored
+ * @param releaseTimeCriteria - the period in which the album was released ("how old the album is?"),
+ *               if null then ignored
  */
-data class AlbumFilter(val genre: Genre?, val releaseTime: ReleaseTime?)
+data class AlbumFilter(val genre: Genre?, val releaseTimeCriteria: ReleaseTimeCriteria?)
 {
-    enum class ReleaseTime
+    fun isEmpty() = (genre == null && releaseTimeCriteria == null)
+
+    enum class ReleaseTimeCriteria
     {
-        NEWER_THAN_ONE_WEEK,
-        NEWER_THAN_ONE_MONTH,
-        NEWER_THAN_ONE_YEAR,
-        OLDER_OVER_ONE_YEAR,
-        OLDER_OVER_FIVE_YEARS,
+        NEWER_THAN_ONE_WEEK, //album is released within the last week
+        NEWER_THAN_ONE_MONTH, //album is released within the last month
+        NEWER_THAN_ONE_YEAR, //album is released within the last year
+        OLDER_OVER_ONE_YEAR, //album is released more than a year ago
+        OLDER_OVER_FIVE_YEARS, //album is released more than 5 years ago
     }
 
     enum class  Genre(val value: Int)
@@ -40,6 +34,12 @@ data class AlbumFilter(val genre: Genre?, val releaseTime: ReleaseTime?)
         HARD_ROCK(1152),
         MUSICALS(1166),
         SOUNDTRACK(16),
+    }
+
+    companion object
+    {
+        //any album will pass this filter (as if there is no filter)
+        val EMPTY =  AlbumFilter(null, null)
     }
 
 }

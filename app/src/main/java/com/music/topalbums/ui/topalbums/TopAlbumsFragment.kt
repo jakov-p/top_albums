@@ -1,10 +1,12 @@
 package com.music.topalbums.ui.topalbums
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -84,7 +86,6 @@ class TopAlbumsFragment : Fragment()
                 albumsListAdapter.submitData(it)
             }
         }
-
         albumsListAdapter.addLoadStateListener(listLoadStateListener::process)
     }
 
@@ -103,11 +104,14 @@ class TopAlbumsFragment : Fragment()
 
                     loggable.i(TAG, "The user selected a new country, country  = $selectedCountryName ($selectedCountryNameCode)")
                     albumsList.scrollToPosition(0)
+                    albumsList.visibility = View.INVISIBLE //so that this scroll is not visible to the user
 
                     handler.postDelayed({
+                        albumsList.visibility = View.VISIBLE
                         clearAdapter()
                         viewModel.startNewLoad(selectedCountryNameCode)
-                    }, 200)
+                    }, 500) //long enough for scroll to happen
+
                     /*
                     This is delayed to give enough time for the recycle view control to scroll down to 0.
                     Without it, the scroll would not be performed at all, and the newly filled recycle view
@@ -123,13 +127,28 @@ class TopAlbumsFragment : Fragment()
 
             //show and offer editing of the current  search
             searchHandler = SearchHandler(searchInclude, onSearchChanged = { searchText ->
-
-                loggable.i(TAG, "The user entered a new search text, search text = '$searchText'")
-                albumsListAdapter.applySearch(searchText)  //to highlight any found search text
-                clearAdapter()
-                viewModel.applySearch(searchText) //to filter album list
+                withBlinkPrevention {
+                    loggable.i(TAG, "The user entered a new search text, search text = '$searchText'")
+                    albumsListAdapter.applySearch(searchText)  //to highlight any found search text
+                    //clearAdapter()
+                    viewModel.applySearch(searchText) //to filter album list
+                }
             })
         }
+    }
+
+    private fun withBlinkPrevention(block:()->Unit)
+    {
+        //it does not help consistently
+        /*
+        albumsListAdapter.removeLoadStateListener(listLoadStateListener::process)
+
+        block.invoke()
+
+        Handler(requireContext().mainLooper).postDelayed({
+            albumsListAdapter.addLoadStateListener(listLoadStateListener::process)
+        }, 300)
+        */
     }
 
     //it seems it works better with this command
@@ -146,8 +165,10 @@ class TopAlbumsFragment : Fragment()
         if(!FilterBottomSheet.isShownOnScreen)
         {
             val filterBottomSheetFragment = FilterBottomSheet(viewModel.albumFilter, onClosed = {
-                viewModel.applyFilter(it)
-                filterDisplayer.applyFilter(it)
+                withBlinkPrevention {
+                    filterDisplayer.applyFilter(it)
+                    viewModel.applyFilter(it)
+                }
             })
             filterBottomSheetFragment.show(requireActivity().supportFragmentManager, "FilterDialogFragment")
         }

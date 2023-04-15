@@ -27,7 +27,7 @@ class CallPerformer<T>(val commandDescription :String, val methodCall: suspend (
         return try
         {
             isRunning.postValue(true)
-            delay(2500) //for easier testing
+            //delay(500) //for easier testing
 
             Logger.printTitle(TAG, commandDescription)
 

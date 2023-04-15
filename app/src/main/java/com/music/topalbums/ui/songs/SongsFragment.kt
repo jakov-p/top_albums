@@ -11,11 +11,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
+import androidx.recyclerview.widget.RecyclerView
 import com.music.topalbums.utilities.Utilities.loadImage
 import com.music.topalbums.utilities.Utilities.openWebPage
 import com.music.topalbums.data.albums.Album
 import com.music.topalbums.databinding.FragmentSongsBinding
 import com.music.topalbums.ui.songs.player.PlayerBottomSheet
+import com.music.topalbums.ui.topalbums.ListLoadStateListener
 import com.music.topalbums.utilities.Utilities.showLongToastMessage
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -23,6 +25,24 @@ import kotlinx.coroutines.launch
 
 class SongsFragment : Fragment()
 {
+    private lateinit var binding : FragmentSongsBinding
+
+    private val viewModel: SongsViewModel by lazy{
+        val album = ParamsHandler.getAlbum(arguments)
+        val factory = SongsViewModel.Factory(album!!)
+        ViewModelProvider(this, factory )[SongsViewModel::class.java]
+    }
+
+    private val songsList: RecyclerView by lazy { binding.listInclude.list }
+
+    private val songListAdapter: SongListAdapter = SongListAdapter({
+        val bottomSheetFragment = PlayerBottomSheet(it)
+        bottomSheetFragment.show(requireActivity().supportFragmentManager, "PlayerDialogFragment")
+    })
+
+    //shows or hides GUI control displaying 'loading in progress' and error
+    private lateinit var listLoadStateListener: ListLoadStateListener
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {
         binding = FragmentSongsBinding.inflate(inflater, container, false)
@@ -35,21 +55,10 @@ class SongsFragment : Fragment()
         init()
     }
 
-    private lateinit var binding : FragmentSongsBinding
-    private val viewModel: SongsViewModel by lazy{
-        val album = ParamsHandler.getAlbum(arguments)
-        val factory = SongsViewModel.Factory(album!!)
-        ViewModelProvider(this, factory )[SongsViewModel::class.java]
-    }
-
-
-    private val songListAdapter: SongListAdapter = SongListAdapter({
-        val bottomSheetFragment = PlayerBottomSheet(it)
-        bottomSheetFragment.show(requireActivity().supportFragmentManager, "PlayerDialogFragment")
-    })
-
     fun init()
     {
+        listLoadStateListener = ListLoadStateListener(requireContext(), binding.listInclude, songListAdapter)
+
         initalizeView()
         initalizeAdapter()
         bindEvents()
@@ -59,11 +68,10 @@ class SongsFragment : Fragment()
 
         // initialize toolbar
         (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(true)
-        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
         setHasOptionsMenu(true)
 
         // initialize recyclerView
-        binding.songsList.adapter = songListAdapter
+        songsList.adapter = songListAdapter
 
         lifecycleScope.launch {
             viewModel.songs.collectLatest {
@@ -77,25 +85,7 @@ class SongsFragment : Fragment()
 
     private fun initalizeAdapter() {
 
-        songListAdapter.addLoadStateListener { loadState ->
-            // show an empty list
-            val isListEmpty = (loadState.refresh is LoadState.NotLoading) && songListAdapter.isEmpty()
-            binding.noResultsTextView.isVisible = isListEmpty
-
-            // Only show the albums list if refresh is successful.
-            binding.songsList.isVisible = loadState.source.refresh is LoadState.NotLoading
-
-            // Show the retry state in case of initial load or refresh failure
-            binding.retryButton.isVisible = loadState.source.refresh is LoadState.Error
-
-            // Show the progress bar while loading
-            binding.progressbar.isVisible = loadState.source.refresh is LoadState.Loading
-
-            // If any error, show a toast
-            getIfAnyError(loadState)?.let {
-                showLongToastMessage(it.error.message.toString())
-            }
-        }
+        songListAdapter.addLoadStateListener(listLoadStateListener::process)
     }
 
 
@@ -104,7 +94,7 @@ class SongsFragment : Fragment()
 
             songsList.setHasFixedSize(true)
 
-            retryButton.setOnClickListener {
+            listInclude.retryButton.setOnClickListener {
                 songListAdapter.retry()
             }
 
@@ -119,19 +109,6 @@ class SongsFragment : Fragment()
             }
         }
     }
-
-    private fun getIfAnyError(loadState: CombinedLoadStates): LoadState.Error?
-    {
-        return when
-        {
-            loadState.refresh is LoadState.Error -> loadState.refresh as LoadState.Error
-            loadState.append  is LoadState.Error -> loadState.append  as LoadState.Error
-            loadState.prepend is LoadState.Error -> loadState.prepend as LoadState.Error
-            else -> null
-
-        }
-    }
-
 
     /**
      * Puts album object into and extracts from a bundle.

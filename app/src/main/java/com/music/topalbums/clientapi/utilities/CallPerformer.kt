@@ -3,6 +3,7 @@ package com.music.topalbums.clientapi.utilities
 import androidx.lifecycle.MutableLiveData
 import com.music.topalbums.logger.Logger
 import com.music.topalbums.logger.Logger.loggable
+import kotlinx.coroutines.delay
 import retrofit2.Response
 import kotlin.system.measureTimeMillis
 
@@ -26,7 +27,7 @@ class CallPerformer<T>(val commandDescription :String, val methodCall: suspend (
         return try
         {
             isRunning.postValue(true)
-            //delay(500) //for easier testing
+            delay(2500) //for easier testing
 
             Logger.printTitle(TAG, commandDescription)
 

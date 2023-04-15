@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.music.topalbums.R
 import com.music.topalbums.data.albums.Album
 import com.music.topalbums.databinding.FragmentTopAlbumsBinding
@@ -19,7 +20,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import com.music.topalbums.logger.Logger.loggable
 import com.music.topalbums.ui.songs.SongsFragment
-import com.music.topalbums.ui.topalbums.filter.AlbumFilter
 
 /**
  * Shows the list of top albums of a country
@@ -45,7 +45,9 @@ class TopAlbumsFragment : Fragment()
     private val albumsListAdapter: AlbumsListAdapter = AlbumsListAdapter(onSelectedItem =::goToSongsFragment)
 
     //shows or hides GUI control displaying 'loading in progress' and error
-    private lateinit var albumsLoadStateListener: AlbumsLoadStateListener
+    private lateinit var listLoadStateListener: ListLoadStateListener
+
+    private val albumsList:RecyclerView by lazy { binding.listInclude.list }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {
@@ -61,7 +63,7 @@ class TopAlbumsFragment : Fragment()
 
     fun init()
     {
-        albumsLoadStateListener = AlbumsLoadStateListener(requireContext(), binding, albumsListAdapter)
+        listLoadStateListener = ListLoadStateListener(requireContext(), binding.listInclude, albumsListAdapter)
 
         initalizeView()
         bindEvents()
@@ -74,8 +76,8 @@ class TopAlbumsFragment : Fragment()
         setHasOptionsMenu(true)
 
         // initialize recyclerView
-        binding.albumsList.setHasFixedSize(true)
-        binding.albumsList.adapter = albumsListAdapter
+        albumsList.setHasFixedSize(true)
+        albumsList.adapter = albumsListAdapter
 
         //start collecting album list data to fill the adapter with it
         lifecycleScope.launch {
@@ -84,7 +86,7 @@ class TopAlbumsFragment : Fragment()
             }
         }
 
-        albumsListAdapter.addLoadStateListener(albumsLoadStateListener::process)
+        albumsListAdapter.addLoadStateListener(listLoadStateListener::process)
     }
 
 
@@ -92,7 +94,7 @@ class TopAlbumsFragment : Fragment()
         with(binding) {
 
             //'retryButton' is shown in case when album list loading fails
-            retryButton.setOnClickListener {
+            listInclude.retryButton.setOnClickListener {
                 albumsListAdapter.retry()
             }
 
@@ -102,7 +104,7 @@ class TopAlbumsFragment : Fragment()
                 setOnCountryChangeListener {
 
                     loggable.i(TAG, "The user selected a new country, country  = $selectedCountryName ($selectedCountryNameCode)")
-                    binding.albumsList.scrollToPosition(0)
+                    albumsList.scrollToPosition(0)
 
                     handler.postDelayed({
                         clearAdapter()
@@ -136,8 +138,8 @@ class TopAlbumsFragment : Fragment()
     private fun clearAdapter()
     {
         //to clear the recycleView control of the old stuff
-        binding.albumsList.adapter = null
-        binding.albumsList.adapter = albumsListAdapter
+        albumsList.adapter = null
+        albumsList.adapter = albumsListAdapter
     }
 
 

@@ -4,8 +4,9 @@ import android.content.Context
 import androidx.core.view.isVisible
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
+import androidx.paging.PagingDataAdapter
 import com.music.topalbums.R
-import com.music.topalbums.databinding.FragmentTopAlbumsBinding
+import com.music.topalbums.databinding.ViewAndProgressBinding
 import com.music.topalbums.utilities.InternetConnectionChecker
 import com.music.topalbums.utilities.Utilities
 import com.music.topalbums.logger.Logger.loggable
@@ -13,9 +14,9 @@ import com.music.topalbums.logger.Logger.loggable
 /**
  * Shows or hides GUI control displaying 'loading in progress' and error.
  */
-class AlbumsLoadStateListener(private val context:Context, private val binding : FragmentTopAlbumsBinding, private val albumsListAdapter: AlbumsListAdapter )
+class ListLoadStateListener(private val context:Context, private val binding: ViewAndProgressBinding, private val listAdapter: PagingDataAdapter<*,*>)
 {
-    val TAG = AlbumsLoadStateListener::class.java.simpleName
+    val TAG = ListLoadStateListener::class.java.simpleName
 
     fun process(loadStates:CombinedLoadStates)
     {
@@ -24,11 +25,11 @@ class AlbumsLoadStateListener(private val context:Context, private val binding :
             loggable.i(TAG, "A new CombinedLoadStates , loadStates =  " + loadStates.toString())
 
             // show an empty list
-            val isListEmpty = (loadStates.refresh is LoadState.NotLoading) && albumsListAdapter.isEmpty()
+            val isListEmpty = (loadStates.refresh is LoadState.NotLoading) && listAdapter.itemCount==0
             noResultsTextView.isVisible = isListEmpty
 
             // Only show the albums list if refresh is successful.
-            albumsList.isVisible = loadStates.source.refresh is LoadState.NotLoading
+            list.isVisible = loadStates.source.refresh is LoadState.NotLoading
 
             // Show the retry state in case of initial load or refresh failure
             (loadStates.source.refresh is LoadState.Error).let{ isError: Boolean ->

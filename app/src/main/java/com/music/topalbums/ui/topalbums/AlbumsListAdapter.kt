@@ -8,10 +8,10 @@ import androidx.core.text.italic
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.music.topalbums.utilities.Utilities.loadImage
 import com.music.topalbums.data.albums.Album
-import com.music.topalbums.databinding.AlbumItemBinding
+import com.music.topalbums.databinding.ItemBinding
 import com.music.topalbums.utilities.ClickListenerHandler
+import com.music.topalbums.utilities.Utilities.loadImage
 
 /**
  * Defines the look of the album recycle view item.
@@ -30,7 +30,7 @@ class AlbumsListAdapter(val onSelectedItem:(album: Album) -> Unit): PagingDataAd
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlbumListViewHolder
     {
-        val binding = AlbumItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return AlbumListViewHolder(binding)
     }
 
@@ -51,7 +51,7 @@ class AlbumsListAdapter(val onSelectedItem:(album: Album) -> Unit): PagingDataAd
         this@AlbumsListAdapter.searchText = searchText
     }
 
-    inner class AlbumListViewHolder(val binding: AlbumItemBinding) : ViewHolder(binding.root)
+    inner class AlbumListViewHolder(val binding: ItemBinding) : ViewHolder(binding.root)
     {
         fun bind(album: Album, position: Int)
         {

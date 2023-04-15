@@ -19,7 +19,11 @@ import com.music.topalbums.ui.ListLoadStateListener
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-
+/**
+ * Shows the list of songs on an album. The album is passed as a parameter to the fragment.
+ *
+ * It offers playing a particular song, going to the  album's and going to the artist's web page.
+ */
 class SongsFragment : Fragment()
 {
     private lateinit var binding : FragmentSongsBinding
@@ -59,29 +63,23 @@ class SongsFragment : Fragment()
         listLoadStateListener = ListLoadStateListener(requireContext(), binding.listInclude, songListAdapter)
 
         initalizeView()
-        initalizeAdapter()
         bindEvents()
     }
 
-    private fun initalizeView() {
-
-
-
-        // initialize recyclerView
-        songsList.adapter = songListAdapter
-
+    private fun initalizeView()
+    {
+        //start collecting song list data to fill the adapter with it
         lifecycleScope.launch {
             viewModel.songs.collectLatest {
                 songListAdapter.submitData(it)
             }
         }
 
+        //album's cover image loading
         binding.albumCoverImageView.loadImage( viewModel.album.collectionImageUrl!!)
-        initalizeAdapter()
-    }
 
-    private fun initalizeAdapter() {
-
+        // initialize recyclerView
+        songsList.adapter = songListAdapter
         songListAdapter.addLoadStateListener(listLoadStateListener::process)
     }
 
@@ -91,14 +89,17 @@ class SongsFragment : Fragment()
 
             songsList.setHasFixedSize(true)
 
+            //'retryButton' is shown in case when songs list loading fails
             listInclude.retryButton.setOnClickListener {
                 songListAdapter.retry()
             }
 
+            //go to the album's web page
             albumWebButton.setOnClickListener{
                 openWebPage(requireActivity(), viewModel.album.collectionViewUrl!!)
             }
 
+            //go to the artist's web page
             artistWebButton.setOnClickListener{
                 viewModel.album.artistViewUrl?.let {
                     openWebPage(requireActivity(), it)

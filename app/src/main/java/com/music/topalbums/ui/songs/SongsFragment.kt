@@ -5,20 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.paging.CombinedLoadStates
-import androidx.paging.LoadState
 import androidx.recyclerview.widget.RecyclerView
 import com.music.topalbums.utilities.Utilities.loadImage
 import com.music.topalbums.utilities.Utilities.openWebPage
 import com.music.topalbums.data.albums.Album
 import com.music.topalbums.databinding.FragmentSongsBinding
 import com.music.topalbums.ui.songs.player.PlayerBottomSheet
-import com.music.topalbums.ui.topalbums.ListLoadStateListener
-import com.music.topalbums.utilities.Utilities.showLongToastMessage
+import com.music.topalbums.ui.ListLoadStateListener
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -33,7 +29,8 @@ class SongsFragment : Fragment()
         ViewModelProvider(this, factory )[SongsViewModel::class.java]
     }
 
-    private val songsList: RecyclerView by lazy { binding.listInclude.list }
+    private val songsList: RecyclerView
+        get(){ return binding.listInclude.list }
 
     private val songListAdapter: SongListAdapter = SongListAdapter({
         val bottomSheetFragment = PlayerBottomSheet(it)

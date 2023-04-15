@@ -19,6 +19,7 @@ import com.music.topalbums.ui.topalbums.search.SearchHandler
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import com.music.topalbums.logger.Logger.loggable
+import com.music.topalbums.ui.ListLoadStateListener
 import com.music.topalbums.ui.songs.SongsFragment
 
 /**
@@ -47,7 +48,8 @@ class TopAlbumsFragment : Fragment()
     //shows or hides GUI control displaying 'loading in progress' and error
     private lateinit var listLoadStateListener: ListLoadStateListener
 
-    private val albumsList:RecyclerView by lazy { binding.listInclude.list }
+    private val albumsList:RecyclerView
+        get(){ return binding.listInclude.list }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {

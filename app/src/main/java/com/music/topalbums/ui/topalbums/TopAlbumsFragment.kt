@@ -13,14 +13,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.music.topalbums.R
 import com.music.topalbums.data.albums.Album
 import com.music.topalbums.databinding.FragmentTopAlbumsBinding
+import com.music.topalbums.logger.Logger.loggable
+import com.music.topalbums.ui.ListLoadStateListener
+import com.music.topalbums.ui.songs.SongsFragment
 import com.music.topalbums.ui.topalbums.filter.FilterBottomSheet
 import com.music.topalbums.ui.topalbums.filter.FilterDisplayer
 import com.music.topalbums.ui.topalbums.search.SearchHandler
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import com.music.topalbums.logger.Logger.loggable
-import com.music.topalbums.ui.ListLoadStateListener
-import com.music.topalbums.ui.songs.SongsFragment
 
 /**
  * Shows the list of top albums of a country
@@ -60,6 +60,7 @@ class TopAlbumsFragment : Fragment()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?)
     {
         super.onViewCreated(view, savedInstanceState)
+        initToolbar(requireContext().getString(R.string.top_albums_fragment_title))
         init()
     }
 
@@ -72,10 +73,6 @@ class TopAlbumsFragment : Fragment()
     }
 
     private fun initalizeView() {
-
-        // initialize toolbar
-        (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(true)
-        setHasOptionsMenu(true)
 
         // initialize recyclerView
         albumsList.setHasFixedSize(true)
@@ -90,7 +87,6 @@ class TopAlbumsFragment : Fragment()
 
         albumsListAdapter.addLoadStateListener(listLoadStateListener::process)
     }
-
 
     private fun bindEvents() {
         with(binding) {
@@ -165,5 +161,13 @@ class TopAlbumsFragment : Fragment()
     {
         val bundle = SongsFragment.ParamsHandler.createBundle(it)
         findNavController().navigate(R.id.action_topAlbumsFragment_to_songsFragment, bundle)
+    }
+
+    private fun initToolbar(title: String)
+    {
+        // initialize toolbar
+        (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(true)
+        (activity as AppCompatActivity).supportActionBar?.setTitle(title)
+        setHasOptionsMenu(false)
     }
 }

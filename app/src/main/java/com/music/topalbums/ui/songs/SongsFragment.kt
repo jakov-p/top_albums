@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
+import com.music.topalbums.R
 import com.music.topalbums.utilities.Utilities.loadImage
 import com.music.topalbums.utilities.Utilities.openWebPage
 import com.music.topalbums.data.albums.Album
@@ -49,6 +50,7 @@ class SongsFragment : Fragment()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?)
     {
         super.onViewCreated(view, savedInstanceState)
+        initToolbar(requireContext().getString(R.string.songs_fragment_title))
         init()
     }
 
@@ -63,9 +65,7 @@ class SongsFragment : Fragment()
 
     private fun initalizeView() {
 
-        // initialize toolbar
-        (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(true)
-        setHasOptionsMenu(true)
+
 
         // initialize recyclerView
         songsList.adapter = songListAdapter
@@ -105,6 +105,14 @@ class SongsFragment : Fragment()
                 }
             }
         }
+    }
+
+    private fun initToolbar(title: String)
+    {
+        // initialize toolbar
+        (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(true)
+        (activity as AppCompatActivity).supportActionBar?.setTitle(title)
+        setHasOptionsMenu(false)
     }
 
     /**

@@ -3,12 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
+    android:label="@string/top_albums_fragment_title"
     app:startDestination="@id/topAlbumsFragment">
 
     <fragment
         android:id="@+id/topAlbumsFragment"
         android:name="com.music.topalbums.ui.topalbums.TopAlbumsFragment"
-        android:label="TopAlbumsFragment" >
+        android:label="@string/top_albums_fragment_title">
         <action
             android:id="@+id/action_topAlbumsFragment_to_songsFragment"
             app:destination="@id/songsFragment" />
@@ -16,7 +17,7 @@
     <fragment
         android:id="@+id/songsFragment"
         android:name="com.music.topalbums.ui.songs.SongsFragment"
-        android:label="SongsFragment" >
+        android:label="@string/songs_fragment_title">
         <argument
             android:name="album"
             app:argType="com.music.topalbums.data.albums.Album" />

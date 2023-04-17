@@ -6,9 +6,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingBottom="70dp"
+        android:background="@drawable/rounded_corner_big"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:orientation="vertical"
         >
 
@@ -17,42 +21,66 @@
             android:layout_height="wrap_content" >
 
             <TextView
-                android:id="@+id/pos_text_view"
+                android:id="@+id/start_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:text="10"
+                android:textSize="14sp"
+                app:layout_constraintHorizontal_bias='0.0'
+                android:textAlignment="viewStart"
+                android:textColor="@color/text"
 
-                android:text="123"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/name_text_view"
+                app:layout_constraintEnd_toEndOf="@+id/song_item_guideline1"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 />
 
             <TextView
-                android:id="@+id/name_text_view"
-                android:layout_width="wrap_content"
+                android:id="@+id/mid_text_view"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:text=""
-                app:layout_constraintStart_toEndOf="@+id/pos_text_view"
-                app:layout_constraintEnd_toStartOf ="@+id/duration_text_view"
+                android:text="Name of the song Name of the song N a m e of the song"
+                android:textSize="18sp"
+                app:layout_constraintHorizontal_bias='0.0'
+                android:textColor="@color/text"
+                android:paddingEnd="10dp"
+                app:layout_constraintStart_toStartOf="@+id/song_item_guideline1"
+                app:layout_constraintEnd_toStartOf="@+id/song_item_guideline2"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 />
 
             <TextView
-                android:id="@+id/duration_text_view"
+                android:id="@+id/end_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=""
-                android:textColor="@color/gray_800"
+                android:text="10:10"
+                android:textSize="14sp"
+                app:layout_constraintHorizontal_bias='1.0'
+                android:textAlignment="viewEnd"
 
-                app:layout_constraintStart_toEndOf="@+id/name_text_view"
-                app:layout_constraintEnd_toEndOf ="parent"
+                android:textColor="@color/text"
+
+                app:layout_constraintStart_toStartOf="@+id/song_item_guideline2"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/song_item_guideline1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.10" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/song_item_guideline2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.89" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>

@@ -53,7 +53,7 @@ class TopAlbumsViewModel: ViewModel()
     {
         this@TopAlbumsViewModel.albumFilter = albumFilter
         //this is without going to internet to read album list again
-        currentPagingSource.invalidate() //forces 'pagingSourceFactory' to create a new stream od albums
+        currentPagingSource.invalidate() //forces 'pagingSourceFactory' to create a new stream of albums
     }
 
     /**
@@ -64,7 +64,7 @@ class TopAlbumsViewModel: ViewModel()
     {
         this@TopAlbumsViewModel.searchText = searchText
         //this is without going to internet to read album list again
-        currentPagingSource.invalidate() //forces 'pagingSourceFactory' to create a new stream od albums
+        currentPagingSource.invalidate() //forces 'pagingSourceFactory' to create a new stream of albums
     }
 
     /**
@@ -78,7 +78,7 @@ class TopAlbumsViewModel: ViewModel()
             this@TopAlbumsViewModel.country = country
             // going to internet to read album list again
             topAlbumsDataManager =  ComplexTopAlbumsDataManager(country)
-            currentPagingSource.invalidate() //forces 'pagingSourceFactory' to create a new stream od albums
+            currentPagingSource.invalidate() //forces 'pagingSourceFactory' to create a new stream of albums
         }
     }
 

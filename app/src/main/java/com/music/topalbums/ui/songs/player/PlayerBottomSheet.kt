@@ -61,7 +61,7 @@ class PlayerBottomSheet(val song:Song) : BottomSheetDialogFragment()
                 playButton.isEnabled = false
                 pauseButton.isEnabled = true
                 stopButton.isEnabled = true
-                showShortToastMessage("Media playing.")
+                //showShortToastMessage("Media playing.")
             }
 
             override fun onPause()
@@ -69,7 +69,7 @@ class PlayerBottomSheet(val song:Song) : BottomSheetDialogFragment()
                 playButton.isEnabled = true
                 pauseButton.isEnabled = false
                 stopButton.isEnabled = true
-                showShortToastMessage("Media paused.")
+                //showShortToastMessage("Media paused.")
             }
 
             override fun onStop()
@@ -79,7 +79,7 @@ class PlayerBottomSheet(val song:Song) : BottomSheetDialogFragment()
                 stopButton.isEnabled = false
                 leftSideTextView.text = ""
                 rightSideTextView.text = ""
-                showShortToastMessage("Media stopped.")
+                //showShortToastMessage("Media stopped.")
             }
 
             override fun onProgress(currentPos: Int)

@@ -1,16 +1,22 @@
 package com.music.topalbums.ui.topalbums
 
+import android.content.Context
+import android.graphics.Color
 import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.text.bold
 import androidx.core.text.italic
+import androidx.core.text.scale
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.music.topalbums.R
 import com.music.topalbums.data.albums.Album
 import com.music.topalbums.databinding.ItemBinding
 import com.music.topalbums.utilities.ClickListenerHandler
+import com.music.topalbums.utilities.Utilities.extractCleanAlbumName
 import com.music.topalbums.utilities.Utilities.loadImage
 
 /**
@@ -24,7 +30,7 @@ import com.music.topalbums.utilities.Utilities.loadImage
  *
  * @param onSelectedItem = called when the user clicks on an album item
  */
-class AlbumsListAdapter(val onSelectedItem:(album: Album) -> Unit): PagingDataAdapter<Album, AlbumsListAdapter.AlbumListViewHolder>(DiffCallback)
+class AlbumsListAdapter(val context: Context, val onSelectedItem:(album: Album) -> Unit): PagingDataAdapter<Album, AlbumsListAdapter.AlbumListViewHolder>(DiffCallback)
 {
     private var searchText:String? = null
 
@@ -69,12 +75,30 @@ class AlbumsListAdapter(val onSelectedItem:(album: Album) -> Unit): PagingDataAd
             //val restText = "price =  ${album.collectionPrice} ${album.currency} \n pos = $position "
             with(binding)
             {
-                restTextView.text = restText
-                nameTextView.text = composeFieldInColor("${album.collectionName}").first
+
                 albumCoverImageView.loadImage(album.collectionImageUrl!!)
 
+                val (albumNameInColor, isSearchFound) = composeFieldInColor(SpannableStringBuilder().append(extractCleanAlbumName(album)))
+                val artistNameInColor  = if(isSearchFound) {
+                                            album.artistName
+                                        }
+                                        else {
+                                            composeFieldInColor(SpannableStringBuilder().append("${album.artistName}")).first
+                                        }
+
+                topTextView.text = SpannableStringBuilder().
+                                   append(albumNameInColor).append("\n").
+                                   scale(0.80f) {append(artistNameInColor).append("\n")}.
+                                   scale(0.6f) {append(album.primaryGenreName)}
+
+                middleTextView.visibility = View.GONE
+                bottomTextView.visibility = View.GONE
+
                 //make this item double clickable
-                ClickListenerHandler(binding.root, onSelectedItem).setDoubleClickListener(album)
+                ClickListenerHandler(binding.root, {album: Album ->
+                    binding.root.setBackgroundColor(context.getColor(R.color.secondary_dark))
+                    onSelectedItem(album)
+                }).setDoubleClickListener(album)
             }
         }
 
@@ -86,16 +110,16 @@ class AlbumsListAdapter(val onSelectedItem:(album: Album) -> Unit): PagingDataAd
          * @return  SpannableStringBuilder - text with parts in different style
          *          Boolean - true if the search text was found, false if not
          */
-        fun composeFieldInColor(field:String? ): Pair<SpannableStringBuilder, Boolean>
+        fun composeFieldInColor(field:SpannableStringBuilder?): Pair<SpannableStringBuilder, Boolean>
         {
             searchText?.lowercase()?.let {searchText->
 
-                val startIndex: Int? = field?.lowercase()?.indexOf(searchText)
+                val startIndex: Int? = field?.toString()?.lowercase()?.indexOf(searchText)
                 if(startIndex!= null && startIndex!=-1)
                 {
                     val textInColor: SpannableStringBuilder = SpannableStringBuilder()
                         .append(field.subSequence(0, startIndex))
-                        .bold { append(field.subSequence(startIndex, startIndex + searchText.length)) }
+                        .bold { scale(1.3f) {append(field.subSequence(startIndex, startIndex + searchText.length))} }
                         .append(field.substring(startIndex + searchText.length))
 
                     //the search text is found --> return the colored text

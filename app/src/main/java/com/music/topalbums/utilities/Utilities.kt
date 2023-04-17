@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.music.topalbums.data.albums.Album
 
 
 object Utilities
@@ -70,4 +71,18 @@ object Utilities
 
     //is the current thread the Main android thread?
     val Thread.isMain get() = Looper.getMainLooper().thread == Thread.currentThread()
+
+
+    fun extractCleanAlbumName(album: Album): String?
+    {
+        val extra = " - ${album.artistName}"
+        if(album.collectionName?.endsWith(extra)?:false)
+        {
+            return album.collectionName?.removeSuffix(extra)
+        }
+        else
+        {
+            return album.collectionName
+        }
+    }
 }

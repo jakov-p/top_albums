@@ -6,40 +6,102 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/gray_100"
             android:orientation="vertical"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="10dp"
+
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <ImageView
-                android:id="@+id/album_cover_image_view"
-                android:layout_width="150sp"
-                android:layout_height="150sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:paddingBottom="30dp"
-                android:layout_gravity="center_horizontal" />
-
-            <Button
-                android:id="@+id/album_web_button"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/go_to_album_web_page" />
+                android:orientation="vertical"
+                android:background="@color/secondary_light"
+                android:paddingTop="20dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                >
 
-            <Button
-                android:id="@+id/artist_web_button"
+                <ImageView
+                    android:id="@+id/album_cover_image_view"
+                    android:layout_width="200sp"
+                    android:layout_height="200sp"
+                    app:layout_constraintHorizontal_bias='0.0'
+                    android:background="@drawable/rounded_corner_big_color"
+                    android:layout_gravity="center_horizontal" />
+
+                <TextView
+                    android:id="@+id/all_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Album Name Album Name Album Name Album Name Album N a m e"
+                    android:textSize="22sp"
+                    app:layout_constraintHorizontal_bias='0.5'
+                    android:textAlignment="center"
+                    android:textColor="@color/text"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/song_item_guideline1"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    >
+
+                    <Button
+                        android:id="@+id/album_web_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        app:layout_constraintHorizontal_bias='0.00'
+                        android:text="@string/go_to_album_web_page"
+                        android:theme="@style/Button.Rounded"
+                        android:padding="10dp"
+
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        />
+
+                    <Button
+                        android:id="@+id/artist_web_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        app:layout_constraintHorizontal_bias='1.0'
+                        android:text="@string/go_to_artist_web_page"
+                        android:theme="@style/Button.Rounded"
+                        android:padding="10dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/go_to_artist_web_page" />
-
-            <include android:id="@+id/list_include" layout="@layout/view_and_progress"/>
-
+                android:layout_gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                >
+                <include android:id="@+id/list_include" layout="@layout/view_and_progress"/>
+            </LinearLayout>
         </LinearLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

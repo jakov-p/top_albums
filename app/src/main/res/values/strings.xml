@@ -35,11 +35,13 @@
     <string name="pause">Pause</string>
     <string name="stop">Stop</string>
 
-    <string name="go_to_album_web_page">Go To Album Web Page</string>
-    <string name="go_to_artist_web_page">Go To Artist Web Page</string>
+    <string name="go_to_album_web_page">Album Web Page</string>
+    <string name="go_to_artist_web_page">Artist Web Page</string>
 
     <string name="check_internet_connection">An error occurred.\nCheck internet connection</string>
     <string name="player_can_not_play">An error occurred.\nPlayer can not play the song</string>
 
+    <string name="no_album_web_page">No web page for this album</string>
+    <string name="no_artist_web_page">No web page for this artist</string>
 
 </resources>

@@ -45,7 +45,7 @@ class TopAlbumsFragment : Fragment()
     private lateinit var searchHandler: SearchHandler
 
     //shows an item in the album list recycle view
-    private val albumsListAdapter: AlbumsListAdapter = AlbumsListAdapter(onSelectedItem =::goToSongsFragment)
+    private lateinit var albumsListAdapter: AlbumsListAdapter
 
     //shows or hides GUI control displaying 'loading in progress' and error
     private lateinit var listLoadStateListener: ListLoadStateListener
@@ -68,6 +68,7 @@ class TopAlbumsFragment : Fragment()
 
     fun init()
     {
+        albumsListAdapter = AlbumsListAdapter(requireContext(), onSelectedItem =::goToSongsFragment)
         listLoadStateListener = ListLoadStateListener(requireContext(), binding.listInclude, albumsListAdapter)
 
         initalizeView()
@@ -130,7 +131,7 @@ class TopAlbumsFragment : Fragment()
                 withBlinkPrevention {
                     loggable.i(TAG, "The user entered a new search text, search text = '$searchText'")
                     albumsListAdapter.applySearch(searchText)  //to highlight any found search text
-                    //clearAdapter()
+                    clearAdapter()
                     viewModel.applySearch(searchText) //to filter album list
                 }
             })
@@ -139,7 +140,9 @@ class TopAlbumsFragment : Fragment()
 
     private fun withBlinkPrevention(block:()->Unit)
     {
-        //it does not help consistently
+        block.invoke()
+        //this below does not help consistently
+
         /*
         albumsListAdapter.removeLoadStateListener(listLoadStateListener::process)
 
@@ -151,10 +154,9 @@ class TopAlbumsFragment : Fragment()
         */
     }
 
-    //it seems it works better with this command
+    //to clear the recycleView control of the old stuff
     private fun clearAdapter()
     {
-        //to clear the recycleView control of the old stuff
         albumsList.adapter = null
         albumsList.adapter = albumsListAdapter
     }

@@ -47,7 +47,7 @@
                     android:textAlignment="center"
                     android:textColor="@color/text"
                     android:layout_marginTop="5dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="2dp"
 
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/song_item_guideline1"
@@ -59,17 +59,17 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
+                    android:layout_marginTop="-10dp"
                     >
 
                     <Button
                         android:id="@+id/album_web_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_width="160dp"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         app:layout_constraintHorizontal_bias='0.00'
                         android:text="@string/go_to_album_web_page"
                         android:theme="@style/Button.Rounded"
-                        android:padding="10dp"
 
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -79,20 +79,34 @@
 
                     <Button
                         android:id="@+id/artist_web_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_width="160dp"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         app:layout_constraintHorizontal_bias='1.0'
                         android:text="@string/go_to_artist_web_page"
                         android:theme="@style/Button.Rounded"
-                        android:padding="10dp"
+
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/primary_super_light" />
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                tools:visibility="visible" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -100,6 +114,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 >
+
                 <include android:id="@+id/list_include" layout="@layout/view_and_progress"/>
             </LinearLayout>
         </LinearLayout>

@@ -75,10 +75,11 @@ object Utilities
 
     fun extractCleanAlbumName(album: Album): String?
     {
-        val extra = " - ${album.artistName}"
-        if(album.collectionName?.endsWith(extra)?:false)
+        //for some reason, the field 'collectionName' contains also the artist name at the end
+        val extraStuff = " - ${album.artistName}"
+        if(album.collectionName?.endsWith(extraStuff)?:false)
         {
-            return album.collectionName?.removeSuffix(extra)
+            return album.collectionName?.removeSuffix(extraStuff)
         }
         else
         {

@@ -27,24 +27,12 @@ class FilterDisplayer(val binding: ViewFilterDisplayerBinding, val onClicked: ()
         {
             //show one or zero genre chips
             releaseTimeChipGroupInclude.releaseTimeChipGroup.children.forEach { view ->
-                val chip = view as Chip
-                chip.visibility = if (chip.tagAsReleaseTimeCriteria() == albumFilter.releaseTimeCriteria) View.VISIBLE else View.GONE
-
-                chip.setOnClickListener {
-                    chip.isChecked = false //we do not want it to look checked
-                    onClicked()
-                }
+                (view as Chip).handleIt(view.tagAsReleaseTimeCriteria() == albumFilter.releaseTimeCriteria)
             }
 
             //show one or zero release time criteria chips
             genreChipGroupInclude.genreChipGroup.children.forEach { view ->
-                val chip = view as Chip
-                chip.visibility = if (chip.tagAsGenre() == albumFilter.genre) View.VISIBLE else View.GONE
-
-                chip.setOnClickListener {
-                    chip.isChecked = false //we do not want it to look checked
-                    onClicked()
-                }
+                (view as Chip).handleIt(view.tagAsGenre() == albumFilter.genre)
             }
 
             //shown the button only if an empty filter (so that the user is offered some clickable control )
@@ -53,6 +41,23 @@ class FilterDisplayer(val binding: ViewFilterDisplayerBinding, val onClicked: ()
                 visibility = if (albumFilter.isEmpty()) View.VISIBLE else View.GONE
                 setOnClickListener{onClicked() }
             }
+        }
+    }
+
+    private fun Chip.handleIt(isChosen:Boolean)
+    {
+        if(isChosen)
+        {
+            visibility = View.VISIBLE
+            isChecked = true
+            setOnClickListener {
+                isChecked = true //we do not want it to look unchecked
+                onClicked()
+            }
+        }
+        else
+        {
+            visibility = View.GONE
         }
     }
 }

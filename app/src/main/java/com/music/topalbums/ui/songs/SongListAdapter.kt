@@ -54,8 +54,9 @@ class SongListAdapter(val context: Context, val onSelectedItem:(song: Song) -> U
 
         fun onSelectedSong(song: Song)
         {
+            //flash for a moment with a different color
             val oldBackground = binding.root.background
-            binding.root.setBackgroundColor(context.getColor(R.color.secondary_dark))
+            binding.root.setBackgroundColor(context.getColor(R.color.item_selection))
             Handler(context.mainLooper).postDelayed( {
                 binding.root.background = oldBackground
             }, 200)

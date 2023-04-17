@@ -56,5 +56,5 @@
     <color name="secondary_super_dark">#665d43</color>
 
     <color name="text">#FF000060</color>
-
+    <color name="item_selection">#FFDDDDFF</color>
 </resources>

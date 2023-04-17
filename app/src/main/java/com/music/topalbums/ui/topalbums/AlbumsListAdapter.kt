@@ -63,24 +63,14 @@ class AlbumsListAdapter(val context: Context, val onSelectedItem:(album: Album) 
         {
             val releaseDateShortened = album.releaseDate?.split("T")?.get(0)
 
-            val restText = SpannableStringBuilder()
-                .append("price =  ${album.collectionPrice} ${album.currency}")
-                .append("\n")
-                .append("date =  ${releaseDateShortened}")
-                .append("\n")
-                .append("genre =  ${album.primaryGenreName}")
-                .append("\n")
-                .italic { append("pos = $position") }
-
-            //val restText = "price =  ${album.collectionPrice} ${album.currency} \n pos = $position "
             with(binding)
             {
-
                 albumCoverImageView.loadImage(album.collectionImageUrl!!)
 
-                val (albumNameInColor, isSearchFound) = composeFieldInColor(SpannableStringBuilder().append(extractCleanAlbumName(album)))
-                val artistNameInColor  = if(isSearchFound) {
-                                            album.artistName
+                //the logic here is to prevent search in the artistName if it is already found in the album name
+                val (albumNameInColor, isFoundInAlbumName) = composeFieldInColor(SpannableStringBuilder().append(extractCleanAlbumName(album)))
+                val artistNameInColor  = if(isFoundInAlbumName) {
+                                            album.artistName //do not search here if already found
                                         }
                                         else {
                                             composeFieldInColor(SpannableStringBuilder().append("${album.artistName}")).first
@@ -88,17 +78,22 @@ class AlbumsListAdapter(val context: Context, val onSelectedItem:(album: Album) 
 
                 topTextView.text = SpannableStringBuilder().
                                    append(albumNameInColor).append("\n").
-                                   scale(0.80f) {append(artistNameInColor).append("\n")}.
+                                   scale(0.8f) {append(artistNameInColor).append("\n")}.
                                    scale(0.6f) {append(album.primaryGenreName)}
 
+                //TODO these two fields are not used, to remove later if no purpose for them is found
                 middleTextView.visibility = View.GONE
                 bottomTextView.visibility = View.GONE
 
-                //make this item double clickable
-                ClickListenerHandler(binding.root, {album: Album ->
-                    binding.root.setBackgroundColor(context.getColor(R.color.secondary_dark))
+                //make this item double and long clickable
+                ClickListenerHandler(binding.root, onSelectedItem = { album: Album ->
+                    binding.root.setBackgroundColor(context.getColor(R.color.item_selection))
                     onSelectedItem(album)
-                }).setDoubleClickListener(album)
+                }).
+                apply {
+                    setDoubleClickListener(album)
+                    setLongClickListener(album)
+                }
             }
         }
 

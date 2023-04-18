@@ -1,12 +1,10 @@
 package com.music.topalbums.ui.topalbums
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -68,6 +66,7 @@ class TopAlbumsFragment : Fragment()
 
     fun init()
     {
+        viewModel.start(binding.selectorInclude.countryCodePicker.selectedCountryNameCode)
         albumsListAdapter = AlbumsListAdapter(requireContext(), onSelectedItem =::goToSongsFragment)
         listLoadStateListener = ListLoadStateListener(requireContext(), binding.listInclude, albumsListAdapter)
 
@@ -180,9 +179,9 @@ class TopAlbumsFragment : Fragment()
         }
     }
 
-    private fun goToSongsFragment(it: Album)
+    private fun goToSongsFragment(album: Album, position: Int)
     {
-        val bundle = SongsFragment.ParamsHandler.createBundle(it)
+        val bundle = SongsFragment.ParamsHandler.createBundle(album)
         findNavController().navigate(R.id.action_topAlbumsFragment_to_songsFragment, bundle)
     }
 

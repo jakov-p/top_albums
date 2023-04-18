@@ -16,6 +16,7 @@
 
         android:padding="16dp"
 
+        app:ccp_rememberLastSelection="true"
         app:ccp_defaultNameCode="bg"
         app:ccpDialog_textColor="#1C2020"
         app:ccp_countryPreference="us,gb,de,fr,it,jp,br,in,ca,au,cz,bg,pl"

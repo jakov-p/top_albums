@@ -8,7 +8,6 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.music.topalbums.R
-import com.music.topalbums.data.albums.Album
 import com.music.topalbums.utilities.Utilities.formatTimeMinSec
 import com.music.topalbums.data.songs.Song
 import com.music.topalbums.databinding.SongItemBinding
@@ -39,29 +38,40 @@ class SongListAdapter(val context: Context, val onSelectedItem:(song: Song) -> U
     {
         fun bind(song: Song, position: Int)
         {
-            val restText = "price =  ${song.collectionPrice} ${song.currency} \n pos = $position "
-            binding.startTextView.text = "${position+1}.".padStart(3, '0') //e.g. '05.', '15.'
-            binding.midTextView.text = "${song.trackName}"
-            binding.endTextView.text = composeDurationText(song.trackTimeMillis!!)
+            with(binding)
+            {
+                val restText = "price =  ${song.collectionPrice} ${song.currency} \n pos = $position "
+                startTextView.text = "${position + 1}.".padStart(3, '0') //e.g. '05.', '15.'
+                midTextView.text = "${song.trackName}"
+                endTextView.text = composeDurationText(song.trackTimeMillis!!)
 
-            //make this item double and long clickable
-            ClickListenerHandler(binding.root,::onSelectedSong).
-                apply {
-                   setDoubleClickListener(song)
-                   setLongClickListener(song)
+                //make this item double and long clickable
+                ClickListenerHandler(root, ::onSelectedSong).apply {
+                    setDoubleClickListener(song, position)
+                    setLongClickListener(song, position)
                 }
+
+                setAlternateColor(position)
+            }
         }
 
-        fun onSelectedSong(song: Song)
+        fun onSelectedSong(song: Song, position: Int)
         {
             //flash for a moment with a different color
-            val oldBackground = binding.root.background
             binding.root.setBackgroundColor(context.getColor(R.color.item_selection))
-            Handler(context.mainLooper).postDelayed( {
-                binding.root.background = oldBackground
+            Handler(context.mainLooper).postDelayed({
+                setAlternateColor(position)
             }, 200)
 
             onSelectedItem(song)
+        }
+
+
+        private fun setAlternateColor(position: Int)
+        {
+            // Update the background color according to the odd/even positions in the list.
+            val color = if (position % 2 == 0) context.getColor(R.color.item_normal)else context.getColor(R.color.item_normal_alternate)
+            binding.root.setBackgroundColor( color)
         }
 
         fun bindPlaceHolder()

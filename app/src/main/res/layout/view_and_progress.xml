@@ -25,8 +25,9 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:gravity="center"
+        android:textColor="@color/text"
+        android:textSize="18sp"
         android:text="@string/no_results"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,6 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,18 +49,20 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text=""
-            android:visibility="gone"
+            android:textColor="@color/text"
+            android:textSize="18sp"
+
             />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/retry_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingTop="10dp"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@string/retry"
-            android:visibility="gone"/>
+            />
     </LinearLayout>
 
     <ProgressBar
@@ -66,6 +70,8 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:indeterminateDrawable="@drawable/circular_progress"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

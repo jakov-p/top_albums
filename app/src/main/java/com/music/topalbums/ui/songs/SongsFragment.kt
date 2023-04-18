@@ -86,7 +86,7 @@ class SongsFragment : Fragment()
         //album's cover image loading
         binding.albumCoverImageView.loadImage( viewModel.album.collectionImageUrl!!)
 
-
+        //compose a formatted text with a few album fields written one under another
         binding.allTextView.text = SpannableStringBuilder().
                                    bold {append(Utilities.extractCleanAlbumName(album)).append("\n")}.
                                    scale(0.80f) {append(album.artistName).append("\n")}

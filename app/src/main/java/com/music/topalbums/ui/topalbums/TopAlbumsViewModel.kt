@@ -18,7 +18,7 @@ import com.music.topalbums.ui.topalbums.filter.FilterTranslator
 class TopAlbumsViewModel: ViewModel()
 {
     //the current country for which top albums are shown
-    var country: String  = "bg"
+    lateinit var country: String
         private set
 
     //the current filter applied to the albums list
@@ -29,7 +29,7 @@ class TopAlbumsViewModel: ViewModel()
     private var searchText: String? = null
 
     //provides the filtered list of albums
-    private var topAlbumsDataManager: ITopAlbumsDataManager =  ComplexTopAlbumsDataManager(country)
+    private lateinit var topAlbumsDataManager: ITopAlbumsDataManager
     private lateinit var currentPagingSource: AlbumsPagingSource
 
     companion object const val PAGE_SIZE = 6
@@ -44,6 +44,12 @@ class TopAlbumsViewModel: ViewModel()
             currentPagingSource
         })
         .flow.cachedIn(viewModelScope)
+
+    fun start( country: String )
+    {
+        this.country = country
+        topAlbumsDataManager =  ComplexTopAlbumsDataManager(country)
+    }
 
     /**
      * The user has created another filter  --> a new album list has to be shown

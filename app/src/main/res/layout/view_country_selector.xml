@@ -16,6 +16,8 @@
 
         android:padding="16dp"
 
+        app:ccp_textSize="23sp"
+
         app:ccp_rememberLastSelection="true"
         app:ccp_defaultNameCode="bg"
         app:ccpDialog_textColor="#1C2020"

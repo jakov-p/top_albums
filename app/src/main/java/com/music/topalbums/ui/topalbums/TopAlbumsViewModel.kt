@@ -45,6 +45,7 @@ class TopAlbumsViewModel: ViewModel()
         })
         .flow.cachedIn(viewModelScope)
 
+    /** Init the view model */
     fun start( country: String )
     {
         this.country = country

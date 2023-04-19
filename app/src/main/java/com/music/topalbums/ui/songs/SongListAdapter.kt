@@ -40,7 +40,7 @@ class SongListAdapter(val context: Context, val onSelectedItem:(song: Song) -> U
         {
             with(binding)
             {
-                val restText = "price =  ${song.collectionPrice} ${song.currency} \n pos = $position "
+                //e.g.  '01.   SongName    03:18'
                 startTextView.text = "${position + 1}.".padStart(3, '0') //e.g. '05.', '15.'
                 midTextView.text = "${song.trackName}"
                 endTextView.text = composeDurationText(song.trackTimeMillis!!)
@@ -55,6 +55,7 @@ class SongListAdapter(val context: Context, val onSelectedItem:(song: Song) -> U
             }
         }
 
+
         fun onSelectedSong(song: Song, position: Int)
         {
             //flash for a moment with a different color
@@ -63,13 +64,17 @@ class SongListAdapter(val context: Context, val onSelectedItem:(song: Song) -> U
                 setAlternateColor(position)
             }, 200)
 
+            //send the event
             onSelectedItem(song)
         }
 
 
+        /**
+         *  Update the background color according to the odd/even positions in the list.
+         *  @param position position in the list
+         */
         private fun setAlternateColor(position: Int)
         {
-            // Update the background color according to the odd/even positions in the list.
             val color = if (position % 2 == 0) context.getColor(R.color.item_normal)else context.getColor(R.color.item_normal_alternate)
             binding.root.setBackgroundColor( color)
         }

@@ -65,22 +65,22 @@ class AlbumsListAdapter(val context: Context, val onSelectedItem:(album: Album, 
             alternateColor(position)
         }
 
+        /**
+         * Compose and show the text describing the given album
+         * @param album
+         */
         private fun fillText(album: Album)
         {
             with(binding)
             {
                 val releaseDateShortened = album.releaseDate?.split("T")?.get(0)
+                val (albumNameInColor, artistNameInColor) = highlightTextIfSearchFound(album)
 
-                //the logic here is to prevent search in the artistName if it is already found in the album name
-                val (albumNameInColor, isFoundInAlbumName) = composeFieldInColor(SpannableStringBuilder().append(extractCleanAlbumName(album)))
-                val artistNameInColor = if (isFoundInAlbumName)
-                {
-                    album.artistName //do not search here if already found
-                } else
-                {
-                    composeFieldInColor(SpannableStringBuilder().append("${album.artistName}")).first
-                }
-
+                /* One under another:
+                 *  Album Name
+                 *  Artist Name
+                 *  Genre
+                 */
                 topTextView.text = SpannableStringBuilder().
                                    append(albumNameInColor).append("\n").
                                    scale(0.8f) { append(artistNameInColor).append("\n") }.
@@ -90,8 +90,30 @@ class AlbumsListAdapter(val context: Context, val onSelectedItem:(album: Album, 
                 middleTextView.visibility = View.GONE
                 bottomTextView.visibility = View.GONE
 
+                //position in the list
                 lastTextView.text = "${album.originalPos?.plus( 1)}".padStart(2, ' ') //e.g. ' 5.', '15.'
             }
+        }
+
+
+        /***
+         * Prepare the text for showing in GUI.
+         * AlbumName and ArtistName are searched for existence of the search phrase and if found that
+         * part of the text is highlighted in one of these two fields.
+         * @return decorated AlbumName and ArtistName fields
+         */
+        private fun highlightTextIfSearchFound(album: Album): Pair<CharSequence, CharSequence?>
+        {
+            //the logic here is to prevent search in the artistName if it is already found in the album name
+            val (albumNameInColor, isFoundInAlbumName) = composeFieldInColor(SpannableStringBuilder().append(extractCleanAlbumName(album)))
+            val artistNameInColor = if (isFoundInAlbumName)
+            {
+                album.artistName //do not search here if already found
+            } else
+            {
+                composeFieldInColor(SpannableStringBuilder().append("${album.artistName}")).first
+            }
+            return  Pair(albumNameInColor, artistNameInColor)
         }
 
 
@@ -125,9 +147,9 @@ class AlbumsListAdapter(val context: Context, val onSelectedItem:(album: Album, 
         }
 
 
+        /** make this item double and long clickable */
         private fun addClickListeners(album: Album, position: Int)
         {
-            //make this item double and long clickable
             ClickListenerHandler(binding.root, ::onSelectedAlbum).apply {
                 setDoubleClickListener(album, position)
                 setLongClickListener(album, position)
@@ -136,13 +158,17 @@ class AlbumsListAdapter(val context: Context, val onSelectedItem:(album: Album, 
 
         private fun onSelectedAlbum(album: Album, position: Int)
         {
+            //change color and send the event
             binding.root.setBackgroundColor(context.getColor(R.color.item_selection))
             onSelectedItem(album, position)
         }
 
+        /**
+         *  Update the background color according to the odd/even positions in the list.
+         *  @param position position in the list
+         */
         private fun alternateColor(position: Int)
         {
-            // Update the background color according to the odd/even positions in the list.
             val color = if (position % 2 == 0) context.getColor(R.color.item_normal)else context.getColor(R.color.item_normal_alternate)
             binding.root.setBackgroundColor(color)
         }

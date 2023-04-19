@@ -52,7 +52,7 @@ object Utilities
         }
     }
 
-    //long toast message
+    //show a toast message of long duration
     fun showLongToastMessage(context:Context, message: String?)
     {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
@@ -60,7 +60,7 @@ object Utilities
 
     fun Fragment.showLongToastMessage(message: String?) = Utilities.showLongToastMessage(this.requireContext(), message)
 
-    //short toast message
+    //show a toast message of short duration
     fun showShortToastMessage(context:Context, message: String?)
     {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
@@ -76,6 +76,7 @@ object Utilities
     fun extractCleanAlbumName(album: Album): String?
     {
         //for some reason, the field 'collectionName' contains also the artist name at the end
+        //it will be removed
         val extraStuff = " - ${album.artistName}"
         if(album.collectionName?.endsWith(extraStuff)?:false)
         {

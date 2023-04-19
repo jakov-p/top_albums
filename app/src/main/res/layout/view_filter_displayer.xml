@@ -23,7 +23,7 @@
 
     <Button
         android:id="@+id/set_filter_button"
-        android:layout_width="103dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="@string/set_filter"

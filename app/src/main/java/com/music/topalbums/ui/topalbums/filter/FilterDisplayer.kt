@@ -10,7 +10,7 @@ import com.music.topalbums.databinding.ViewFilterDisplayerBinding
  *
  * If the active filter contains the genre criteria then a corresponding genre chip will be shown.
  * If the active filter contains the release time criteria then a corresponding release time chip will be shown.
- * If the active filter contains neither  genre nor release time criteria then a button will be shown.
+ * If the active filter contains neither genre nor release time criteria then a button  will be shown.
  *
  * The event 'onClicked' is called on click on any of the controls mentioned above.
  */
@@ -44,6 +44,10 @@ class FilterDisplayer(val binding: ViewFilterDisplayerBinding, val onClicked: ()
         }
     }
 
+    /**
+     * Either hide it or show it as checked and make it clickable
+     * @param isChosen
+     */
     private fun Chip.handleIt(isChosen:Boolean)
     {
         if(isChosen)
@@ -51,7 +55,7 @@ class FilterDisplayer(val binding: ViewFilterDisplayerBinding, val onClicked: ()
             visibility = View.VISIBLE
             isChecked = true
             setOnClickListener {
-                isChecked = true //we do not want it to look unchecked
+                isChecked = true //we do not want it to look unchecked (to have gray color)
                 onClicked()
             }
         }

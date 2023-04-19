@@ -29,7 +29,7 @@
     <string name="older_over_one_year_time">Older Than 1 Year</string>
     <string name="older_over_five_years_time">Older Than 5 Years</string>
 
-    <string name="search">Search</string>
+    <string name="search">Search phrase: </string>
 
     <string name="play">Play</string>
     <string name="pause">Pause</string>

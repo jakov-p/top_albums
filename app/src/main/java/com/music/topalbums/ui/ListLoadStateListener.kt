@@ -50,7 +50,7 @@ class ListLoadStateListener(private val context:Context, private val binding: Vi
         getIfAnyError(loadState)?.let {
 
             val errorMessage = it.error.message.toString()
-            loggable.w(TAG, "An error has occurred, error = $errorMessage")
+            loggable.e(TAG, "An error has occurred, error = $errorMessage")
 
             if(!InternetConnectionChecker(context).isConnected)
             {
@@ -61,7 +61,7 @@ class ListLoadStateListener(private val context:Context, private val binding: Vi
             else
             {
                 binding.errorMessageTextView.isVisible = false
-                Utilities.showLongToastMessage(context, errorMessage)
+                Utilities.showLongToastMessage(context, "An error has occurred, " + errorMessage)
             }
         }
     }

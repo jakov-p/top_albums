@@ -20,7 +20,7 @@ class SearchHandler(val binding: ViewTextSearchBinding, onSearchChanged: (String
     private var oldTextFired: String? = null
     init
     {
-        binding.searchEditText.doOnTextChanged { text, start, before, count ->
+        binding.searchEditText.doOnTextChanged { text, _, _, _ ->
             val enteredText = binding.searchEditText.text.toString()
 
             if (enteredText.length >= MIN_LENGTH ) //long enough

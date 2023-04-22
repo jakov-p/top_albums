@@ -9,12 +9,14 @@ import com.music.topalbums.ui.topalbums.filter.AlbumFilter
 import com.music.topalbums.data.albums.topalbums.datamanager.ComplexTopAlbumsDataManager
 import com.music.topalbums.data.albums.topalbums.datamanager.ITopAlbumsDataManager
 import com.music.topalbums.ui.topalbums.filter.FilterTranslator
+import dagger.hilt.android.lifecycle.HiltViewModel
 
 /**
  * Top albums view model
  *
  * Feeds the GUI with top albums list for a particular country respecting filter and search text criteria
  */
+//@HiltViewModel
 class TopAlbumsViewModel: ViewModel()
 {
     //the current country for which top albums are shown

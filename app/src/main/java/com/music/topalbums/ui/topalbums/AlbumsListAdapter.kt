@@ -11,7 +11,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.music.topalbums.R
-import com.music.topalbums.data.albums.Album
+import com.music.topalbums.clientapi.collection.Album
 import com.music.topalbums.databinding.ItemBinding
 import com.music.topalbums.utilities.ClickListenerHandler
 import com.music.topalbums.utilities.Utilities.extractCleanAlbumName

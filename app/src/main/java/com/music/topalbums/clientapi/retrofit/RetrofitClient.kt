@@ -1,13 +1,12 @@
-package com.music.topalbums.clientapi
+package com.music.topalbums.clientapi.retrofit
 
-import com.music.topalbums.clientapi.utilities.LogJsonInterceptor
-import com.music.topalbums.clientapi.utilities.NetworkConnectionInterceptor
+import com.music.topalbums.clientapi.retrofit.utilities.LogJsonInterceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-class RetrofitClient
+object RetrofitClient
 {
     val serverUrl: String = "https://itunes.apple.com"
     val service: IServiceApi

@@ -1,6 +1,6 @@
 package com.music.topalbums.data.albums.topalbums.repository
 
-import com.music.topalbums.data.albums.AlbumCollection
+import com.music.topalbums.clientapi.collection.AlbumCollection
 import com.music.topalbums.data.albums.BasicAlbumsRepository
 import com.music.topalbums.logger.Logger.loggable
 /**
@@ -20,8 +20,8 @@ open class TopAlbumsRepository( val country: String, val limit :Int) : BasicAlbu
         val topAlbums = clientApi.getTopAlbums(country, limit)
         if(topAlbums!=null)
         {
-            loggable.i(TAG, "Fetched top albums list ($country, $limit), in total =  ${topAlbums.feed?.topAlbums?.size}")
-            return AlbumCollection(topAlbums)
+            loggable.i(TAG, "Fetched top albums list ($country, $limit), in total =  ${topAlbums.list.size}")
+            return topAlbums
         }
         else
         {

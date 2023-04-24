@@ -1,4 +1,4 @@
-package com.music.topalbums.clientapi.model
+package com.music.topalbums.clientapi.retrofit.model
 
 
 class ArtistSongsCollection

@@ -1,7 +1,15 @@
 package com.music.topalbums.data.songs
 
-import com.music.topalbums.clientapi.ClientApi
+import com.music.topalbums.TopAlbumsApp
+import com.music.topalbums.clientapi.IClientApi
+import com.music.topalbums.clientapi.collection.Song
+import com.music.topalbums.clientapi.collection.SongCollection
 import com.music.topalbums.logger.Logger.loggable
+import dagger.hilt.EntryPoint
+import dagger.hilt.EntryPoints
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+
 /**
  * Fetches songs from the internet.
  *
@@ -16,7 +24,7 @@ open class SongsRepository(val collectionId: Int)
 {
     val TAG = SongsRepository::class.java.simpleName
 
-    protected val clientApi: ClientApi = ClientApi
+    protected val  clientApi: IClientApi = EntryPoints.get(TopAlbumsApp.appContext, ISongsRepositoryEntryPoint::class.java).getClientApi()
 
     //non null value means that download has finished successfully
     protected var songCollection: SongCollection? = null
@@ -26,8 +34,8 @@ open class SongsRepository(val collectionId: Int)
     {
         loggable.i(TAG, "Fetching songs for an album, collectionId = $collectionId ...")
 
-        val albumSongsCollection = clientApi.getAlbumSongs(collectionId)
-        return SongCollection(albumSongsCollection!!)
+        val songsCollection = clientApi.getAlbumSongs(collectionId)
+        return songsCollection!!
             .also {
                 loggable.i(TAG, "Fetched songs for an album, total track number = ${it.list.size}")
             }
@@ -67,12 +75,19 @@ open class SongsRepository(val collectionId: Int)
     }
 
     /** Lazily fetches songs from internet */
-    protected suspend fun fetchSongCollection():SongCollection
+    protected suspend fun fetchSongCollection(): SongCollection
     {
         if (songCollection == null)
         {
             songCollection = loadSongs()
         }
         return songCollection!!
+    }
+
+    @EntryPoint
+    @InstallIn(SingletonComponent::class)
+    interface ISongsRepositoryEntryPoint
+    {
+        fun getClientApi(): IClientApi
     }
 }

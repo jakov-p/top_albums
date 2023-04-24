@@ -20,6 +20,6 @@
         android:label="@string/songs_fragment_title">
         <argument
             android:name="album"
-            app:argType="com.music.topalbums.data.albums.Album" />
+            app:argType="com.music.topalbums.clientapi.collection.Album" />
     </fragment>
 </navigation>

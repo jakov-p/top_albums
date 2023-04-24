@@ -1,9 +1,9 @@
-package com.music.topalbums.data.songs
+package com.music.topalbums.clientapi.collection
 
-import com.music.topalbums.clientapi.model.AlbumSong
-import com.music.topalbums.clientapi.model.AlbumSongsCollection
-import com.music.topalbums.clientapi.model.ArtistSong
-import com.music.topalbums.clientapi.model.ArtistSongsCollection
+import com.music.topalbums.clientapi.retrofit.model.AlbumSong
+import com.music.topalbums.clientapi.retrofit.model.AlbumSongsCollection
+import com.music.topalbums.clientapi.retrofit.model.ArtistSong
+import com.music.topalbums.clientapi.retrofit.model.ArtistSongsCollection
 
 /**
  * This class is introduced as a common Song class from two different sources.

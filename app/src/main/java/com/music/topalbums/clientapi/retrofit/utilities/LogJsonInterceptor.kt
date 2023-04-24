@@ -1,4 +1,4 @@
-package com.music.topalbums.clientapi.utilities
+package com.music.topalbums.clientapi.retrofit.utilities
 
 import okhttp3.Interceptor
 import okhttp3.Request

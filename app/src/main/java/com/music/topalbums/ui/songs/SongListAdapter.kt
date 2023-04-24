@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.music.topalbums.R
 import com.music.topalbums.utilities.Utilities.formatTimeMinSec
-import com.music.topalbums.data.songs.Song
+import com.music.topalbums.clientapi.collection.Song
 import com.music.topalbums.databinding.SongItemBinding
 import com.music.topalbums.utilities.ClickListenerHandler
 

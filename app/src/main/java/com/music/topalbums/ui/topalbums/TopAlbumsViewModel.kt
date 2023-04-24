@@ -8,16 +8,18 @@ import androidx.paging.cachedIn
 import com.music.topalbums.ui.topalbums.filter.AlbumFilter
 import com.music.topalbums.data.albums.topalbums.datamanager.ComplexTopAlbumsDataManager
 import com.music.topalbums.data.albums.topalbums.datamanager.ITopAlbumsDataManager
+import com.music.topalbums.data.albums.topalbums.datamanager.ITopAlbumsDataManagerFactory
 import com.music.topalbums.ui.topalbums.filter.FilterTranslator
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
 /**
  * Top albums view model
  *
  * Feeds the GUI with top albums list for a particular country respecting filter and search text criteria
  */
-//@HiltViewModel
-class TopAlbumsViewModel: ViewModel()
+@HiltViewModel
+class TopAlbumsViewModel @Inject constructor(): ViewModel()
 {
     //the current country for which top albums are shown
     lateinit var country: String
@@ -29,6 +31,9 @@ class TopAlbumsViewModel: ViewModel()
 
     //the current search text applied to the albums list
     private var searchText: String? = null
+
+    @Inject
+    lateinit var topAlbumsDataManagerFactory: ITopAlbumsDataManagerFactory
 
     //provides the filtered list of albums
     private lateinit var topAlbumsDataManager: ITopAlbumsDataManager
@@ -51,7 +56,7 @@ class TopAlbumsViewModel: ViewModel()
     fun start( country: String )
     {
         this.country = country
-        topAlbumsDataManager =  ComplexTopAlbumsDataManager(country)
+        topAlbumsDataManager =  topAlbumsDataManagerFactory.create(country)
     }
 
     /**
@@ -86,9 +91,8 @@ class TopAlbumsViewModel: ViewModel()
         {
             this@TopAlbumsViewModel.country = country
             // going to internet to read album list again
-            topAlbumsDataManager =  ComplexTopAlbumsDataManager(country)
+            topAlbumsDataManager =  topAlbumsDataManagerFactory.create(country)
             currentPagingSource.invalidate() //forces 'pagingSourceFactory' to create a new stream of albums
         }
     }
-
 }

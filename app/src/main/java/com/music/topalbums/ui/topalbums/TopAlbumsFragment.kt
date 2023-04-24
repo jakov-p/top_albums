@@ -6,13 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.music.topalbums.R
-import com.music.topalbums.data.albums.Album
+import com.music.topalbums.clientapi.collection.Album
 import com.music.topalbums.databinding.FragmentTopAlbumsBinding
 import com.music.topalbums.logger.Logger.loggable
 import com.music.topalbums.ui.ListLoadStateListener
@@ -20,6 +19,7 @@ import com.music.topalbums.ui.songs.SongsFragment
 import com.music.topalbums.ui.topalbums.filter.FilterBottomSheet
 import com.music.topalbums.ui.topalbums.filter.FilterDisplayer
 import com.music.topalbums.ui.topalbums.search.SearchHandler
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -27,6 +27,7 @@ import kotlinx.coroutines.launch
  * Shows the list of top albums of a country
  * It offers country selection, filtering and search functionality.
  */
+@AndroidEntryPoint
 class TopAlbumsFragment : Fragment()
 {
     private val TAG = TopAlbumsFragment::class.java.simpleName
@@ -36,10 +37,6 @@ class TopAlbumsFragment : Fragment()
     private val viewModel: TopAlbumsViewModel by lazy{
         ViewModelProvider(this )[TopAlbumsViewModel::class.java]
     }
-
-
-
-    //private val viewModel: TopAlbumsViewModel by viewModels()
 
     //shows the current active filter
     private lateinit var filterDisplayer : FilterDisplayer

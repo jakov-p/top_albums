@@ -1,6 +1,6 @@
 package com.music.topalbums.data.albums.topalbums.datamanager.debug
 
-import com.music.topalbums.data.albums.AlbumCollection
+import com.music.topalbums.clientapi.collection.AlbumCollection
 
 /**
  * Simple top albums data manager for debugging.

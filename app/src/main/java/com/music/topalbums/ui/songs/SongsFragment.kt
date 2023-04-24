@@ -15,29 +15,35 @@ import androidx.recyclerview.widget.RecyclerView
 import com.music.topalbums.R
 import com.music.topalbums.utilities.Utilities.loadImage
 import com.music.topalbums.utilities.Utilities.openWebPage
-import com.music.topalbums.data.albums.Album
+import com.music.topalbums.clientapi.collection.Album
 import com.music.topalbums.databinding.FragmentSongsBinding
 import com.music.topalbums.ui.songs.player.PlayerBottomSheet
 import com.music.topalbums.ui.ListLoadStateListener
 import com.music.topalbums.utilities.Utilities
 import com.music.topalbums.utilities.Utilities.showShortToastMessage
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * Shows the list of songs on an album. The album is passed as a parameter to the fragment.
  *
  * It offers playing a particular song, going to the  album's and going to the artist's web page.
  */
+@AndroidEntryPoint
 class SongsFragment : Fragment()
 {
     private lateinit var binding : FragmentSongsBinding
 
     private val album by lazy { ParamsHandler.getAlbum(arguments)!!}
 
+    @Inject
+    lateinit var songsViewModelFactory: SongsViewModel.ISongsViewModelFactory
+
     private val viewModel: SongsViewModel by lazy{
-        val factory = SongsViewModel.Factory(album)
-        ViewModelProvider(this, factory )[SongsViewModel::class.java]
+        val providerFactory = SongsViewModel.ProviderFactory(songsViewModelFactory, album)
+        ViewModelProvider(this, providerFactory )[SongsViewModel::class.java]
     }
 
     private val songsList: RecyclerView

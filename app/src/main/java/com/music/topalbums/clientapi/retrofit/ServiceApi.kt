@@ -1,14 +1,14 @@
-package com.music.topalbums.clientapi
+package com.music.topalbums.clientapi.retrofit
 
 import com.music.topalbums.clientapi.albums.TopAlbumsCollection
-import com.music.topalbums.clientapi.model.AlbumSongsCollection
-import com.music.topalbums.clientapi.model.ArtistAlbumsCollection
-import com.music.topalbums.clientapi.model.ArtistSongsCollection
+import com.music.topalbums.clientapi.retrofit.model.AlbumSongsCollection
+import com.music.topalbums.clientapi.retrofit.model.ArtistAlbumsCollection
+import com.music.topalbums.clientapi.retrofit.model.ArtistSongsCollection
 import retrofit2.Response
 
 object ServiceApi
 {
-    val retrofitClient: RetrofitClient = RetrofitClient()
+    val retrofitClient: RetrofitClient = RetrofitClient
 
     /**
      * Get the top albums list currently in a particular country
@@ -20,7 +20,7 @@ object ServiceApi
      */
     suspend fun getTopAlbums(country: String, limit: Int): Response<TopAlbumsCollection>
     {
-        return  retrofitClient.service.getTopAlbums(country, limit)
+        return  RetrofitClient.service.getTopAlbums(country, limit)
     }
 
     /**
@@ -30,7 +30,7 @@ object ServiceApi
      */
     suspend fun getAlbumSongs(albumId: Int): Response<AlbumSongsCollection>
     {
-        return  retrofitClient.service.getAlbumSongs(albumId)
+        return  RetrofitClient.service.getAlbumSongs(albumId)
     }
 
     /**
@@ -40,7 +40,7 @@ object ServiceApi
      */
     suspend fun getArtistAlbums(artistId: Int): Response<ArtistAlbumsCollection>
     {
-        return  retrofitClient.service.getArtistAlbums(artistId)
+        return  RetrofitClient.service.getArtistAlbums(artistId)
     }
 
     /**
@@ -50,6 +50,6 @@ object ServiceApi
      */
     suspend fun getArtistSongs(artistId: Int): Response<ArtistSongsCollection>
     {
-        return  retrofitClient.service.getArtistSongs(artistId)
+        return  RetrofitClient.service.getArtistSongs(artistId)
     }
 }

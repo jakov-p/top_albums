@@ -1,10 +1,10 @@
-package com.music.topalbums.data.albums
+package com.music.topalbums.clientapi.collection
 
 import android.os.Parcelable
 import com.music.topalbums.clientapi.albums.TopAlbum
 import com.music.topalbums.clientapi.albums.TopAlbumsCollection
-import com.music.topalbums.clientapi.model.ArtistAlbum
-import com.music.topalbums.clientapi.model.ArtistAlbumsCollection
+import com.music.topalbums.clientapi.retrofit.model.ArtistAlbum
+import com.music.topalbums.clientapi.retrofit.model.ArtistAlbumsCollection
 import kotlinx.android.parcel.Parcelize
 
 /**

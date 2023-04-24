@@ -1,6 +1,6 @@
 package com.music.topalbums.data.albums.topalbums.repository
 
-import com.music.topalbums.data.albums.Album
+import com.music.topalbums.clientapi.collection.Album
 import com.music.topalbums.logger.Logger.loggable
 
 /**

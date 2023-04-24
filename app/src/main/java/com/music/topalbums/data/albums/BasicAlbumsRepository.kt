@@ -1,7 +1,14 @@
 package com.music.topalbums.data.albums
 
-import com.music.topalbums.clientapi.ClientApi
+import com.music.topalbums.TopAlbumsApp
+import com.music.topalbums.clientapi.IClientApi
+import com.music.topalbums.clientapi.collection.Album
+import com.music.topalbums.clientapi.collection.AlbumCollection
 import com.music.topalbums.logger.Logger.loggable
+import dagger.hilt.EntryPoint
+import dagger.hilt.EntryPoints
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 
 /**
  * Basic albums providing class applicable to both TopAlbum download
@@ -11,13 +18,13 @@ abstract class BasicAlbumsRepository
 {
     val TAG = BasicAlbumsRepository::class.java.simpleName
 
-    protected val clientApi: ClientApi = ClientApi
+    protected val  clientApi: IClientApi = EntryPoints.get(TopAlbumsApp.appContext, IBasicAlbumsRepositoryEntryPoint::class.java).getClientApi()
 
     //non null value means that download has finished successfully
     protected var albumCollection: AlbumCollection? = null
 
     /** The concrete implementation of the download request from internet */
-    protected suspend abstract fun loadAlbums():AlbumCollection
+    protected suspend abstract fun loadAlbums(): AlbumCollection
 
     /** The total number of albums fetched from the internet
      *
@@ -54,7 +61,7 @@ abstract class BasicAlbumsRepository
     }
 
     /** Lazily fetches albums from internet */
-    protected open suspend fun fetchAlbumCollection():AlbumCollection
+    protected open suspend fun fetchAlbumCollection(): AlbumCollection
     {
         if (albumCollection == null)
         {
@@ -63,4 +70,10 @@ abstract class BasicAlbumsRepository
         return albumCollection!!
     }
 
+    @EntryPoint
+    @InstallIn(SingletonComponent::class)
+    interface IBasicAlbumsRepositoryEntryPoint
+    {
+        fun getClientApi(): IClientApi
+    }
 }

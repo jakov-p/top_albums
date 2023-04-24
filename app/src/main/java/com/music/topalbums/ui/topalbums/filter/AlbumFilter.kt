@@ -1,5 +1,7 @@
 package com.music.topalbums.ui.topalbums.filter
 
+import javax.inject.Inject
+
 /**
  * filter defining the criteria for an album to be shown in  GUI
  *
@@ -9,7 +11,7 @@ package com.music.topalbums.ui.topalbums.filter
  * @param releaseTimeCriteria - the period in which the album was released ("how old the album is?"),
  *               if null then ignored
  */
-data class AlbumFilter(val genre: Genre?, val releaseTimeCriteria: ReleaseTimeCriteria?)
+data class AlbumFilter @Inject constructor (val genre: Genre?, val releaseTimeCriteria: ReleaseTimeCriteria?)
 {
     fun isEmpty() = (genre == null && releaseTimeCriteria == null)
 

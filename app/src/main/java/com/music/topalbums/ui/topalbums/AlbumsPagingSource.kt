@@ -2,11 +2,10 @@ package com.music.topalbums.ui.topalbums
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.music.topalbums.data.albums.Album
+import com.music.topalbums.clientapi.collection.Album
 import com.music.topalbums.data.albums.topalbums.datamanager.ITopAlbumsDataManager
 import kotlin.math.min
 import com.music.topalbums.logger.Logger.loggable
-import javax.inject.Inject
 
 /**
  * The algorithm here is complicated. It uses two lists. One ('small') list contains only a limited number
@@ -49,6 +48,8 @@ class AlbumsPagingSource constructor(val topAlbumsDataManager: ITopAlbumsDataMan
         try
         {
             loggable.d(TAG, "------------------------------------------------------------------------ START ---")
+            loggable.d(TAG, params.toString())
+
             val pageNumber = params.key ?: 0
 
             var isFullyLoaded = topAlbumsDataManager.isFullyLoaded

@@ -1,6 +1,6 @@
 package com.music.topalbums.data.albums.topalbums.datamanager
 
-import com.music.topalbums.data.albums.Album
+import com.music.topalbums.clientapi.collection.Album
 
 /**
  * Provides data for GUI control showing albums
@@ -31,3 +31,4 @@ interface ITopAlbumsDataManager
     /** filter to be applied to the read list of albums */
     var filter: ((album: Album) -> Boolean)?
 }
+

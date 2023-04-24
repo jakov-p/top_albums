@@ -1,6 +1,6 @@
 package com.music.topalbums.data.albums.topalbums.datamanager.debug
 
-import com.music.topalbums.data.albums.Album
+import com.music.topalbums.clientapi.collection.Album
 import com.music.topalbums.data.albums.topalbums.datamanager.ITopAlbumsDataManager
 import com.music.topalbums.data.albums.topalbums.repository.FilteredTopAlbumsRepository
 

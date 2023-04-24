@@ -1,6 +1,6 @@
 package com.music.topalbums.data.albums.topalbums.datamanager
 
-import com.music.topalbums.data.albums.Album
+import com.music.topalbums.clientapi.collection.Album
 import com.music.topalbums.data.albums.topalbums.repository.FilteredTopAlbumsRepository
 import kotlinx.coroutines.*
 
@@ -24,7 +24,7 @@ import kotlinx.coroutines.*
  * the small list's albums. This way the user will not notice that the full list is not loaded from the beginning,
  * and will have better experience.
  */
-class ComplexTopAlbumsDataManager(country: String): ITopAlbumsDataManager
+class ComplexTopAlbumsDataManager constructor(country: String): ITopAlbumsDataManager
 {
     companion object
     {
@@ -45,6 +45,7 @@ class ComplexTopAlbumsDataManager(country: String): ITopAlbumsDataManager
     init
     {
         startFullLoad()  //start as soon as possible
+
     }
 
     /** The total number of albums fetched from the internet

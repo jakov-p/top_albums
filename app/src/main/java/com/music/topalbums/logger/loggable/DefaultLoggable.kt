@@ -1,12 +1,13 @@
 package com.music.topalbums.logger.loggable
 
 import android.util.Log
+import javax.inject.Inject
 
 
 /**
  * Logs by using the standard Android logger.
  */
-class SimpleNameDefaultLoggable( ): Loggable
+class SimpleNameDefaultLoggable @Inject constructor( ): Loggable
 {
     override fun i(tag: String, message: String)
     {

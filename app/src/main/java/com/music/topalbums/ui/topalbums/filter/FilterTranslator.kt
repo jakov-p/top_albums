@@ -1,6 +1,6 @@
 package com.music.topalbums.ui.topalbums.filter
 
-import com.music.topalbums.data.albums.Album
+import com.music.topalbums.clientapi.collection.Album
 import com.music.topalbums.logger.Logger.loggable
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -25,7 +25,7 @@ class FilterTranslator(val albumFilter : AlbumFilter, val searchText: String?)
      */
     fun check(album: Album): Boolean
     {
-        //it fails if genre must be checked and the album is not of that particular genre
+        //it fails if genre must be checked and the album is not of that particular genre or album has no genre
         if(albumFilter.genre!=null)
         {
             if (album.primaryGenreId != albumFilter.genre.value)
@@ -35,15 +35,22 @@ class FilterTranslator(val albumFilter : AlbumFilter, val searchText: String?)
         }
 
         //it fails if release date must be checked and the album's release date is not in the expected date range
-        if(album.releaseDate!=null && albumFilter.releaseTimeCriteria!=null)
+        // or album has no release data
+        if(albumFilter.releaseTimeCriteria!=null)
         {
-            val albumReleaseDate = fromStrToDate(album.releaseDate)
-            val (compareLocalTime, isAfter) = calculateCompareDate(albumFilter.releaseTimeCriteria)
-            if(!isAfter && !albumReleaseDate.isAfter(compareLocalTime))
+            if(album.releaseDate!=null)
             {
-                return false
+                val albumReleaseDate = fromStrToDate(album.releaseDate)
+                val (compareLocalTime, isAfter) = calculateCompareDate(albumFilter.releaseTimeCriteria)
+                if (!isAfter && !albumReleaseDate.isAfter(compareLocalTime))
+                {
+                    return false
+                } else if (isAfter && !albumReleaseDate.isBefore(compareLocalTime))
+                {
+                    return false
+                }
             }
-            else if(isAfter && !albumReleaseDate.isBefore(compareLocalTime))
+            else
             {
                 return false
             }

@@ -2,8 +2,8 @@ package com.music.topalbums.ui.songs
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.music.topalbums.data.songs.Song
-import com.music.topalbums.data.songs.SongsDataManager
+import com.music.topalbums.data.songs.ISongsDataManager
+import com.music.topalbums.clientapi.collection.Song
 import kotlin.math.min
 
 /**
@@ -11,7 +11,7 @@ import kotlin.math.min
  * for the last one). I did not want to complicate to implement a more complex approach
  * to cover the case where the initial load  size is different from the load size.
  */
-class SongsPagingSource(val songsDataManager: SongsDataManager) : PagingSource<Int, Song>()
+class SongsPagingSource(val songsDataManager: ISongsDataManager) : PagingSource<Int, Song>()
 {
     override val jumpingSupported: Boolean = true
 

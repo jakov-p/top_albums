@@ -8,11 +8,10 @@ import android.widget.SeekBar
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.music.topalbums.R
 import com.music.topalbums.utilities.Utilities
-import com.music.topalbums.data.songs.Song
+import com.music.topalbums.clientapi.collection.Song
 import com.music.topalbums.databinding.BottomSheetPlayerBinding
 import com.music.topalbums.utilities.Utilities.showLongToastMessage
 import com.music.topalbums.logger.Logger.loggable
-import com.music.topalbums.utilities.Utilities.showShortToastMessage
 
 /**
  * GUI offering the user buttons for play, stop and pause functionalities.
@@ -20,7 +19,7 @@ import com.music.topalbums.utilities.Utilities.showShortToastMessage
  *
  * @param song song to be played
  */
-class PlayerBottomSheet(val song:Song) : BottomSheetDialogFragment()
+class PlayerBottomSheet(val song: Song) : BottomSheetDialogFragment()
 {
     val TAG = PlayerBottomSheet::class.java.simpleName
 

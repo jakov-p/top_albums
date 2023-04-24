@@ -1,9 +1,9 @@
-package com.music.topalbums.clientapi
+package com.music.topalbums.clientapi.retrofit
 
 import com.music.topalbums.clientapi.albums.TopAlbumsCollection
-import com.music.topalbums.clientapi.model.AlbumSongsCollection
-import com.music.topalbums.clientapi.model.ArtistAlbumsCollection
-import com.music.topalbums.clientapi.model.ArtistSongsCollection
+import com.music.topalbums.clientapi.retrofit.model.AlbumSongsCollection
+import com.music.topalbums.clientapi.retrofit.model.ArtistAlbumsCollection
+import com.music.topalbums.clientapi.retrofit.model.ArtistSongsCollection
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path

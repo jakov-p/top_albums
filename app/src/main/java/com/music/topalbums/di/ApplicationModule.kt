@@ -1,5 +1,7 @@
 package com.music.topalbums.di
 
+import com.music.topalbums.clientapi.retrofit.RetrofitClient
+import com.music.topalbums.clientapi.retrofit.ServerUrl
 import com.music.topalbums.data.albums.topalbums.datamanager.ComplexTopAlbumsDataManager
 import com.music.topalbums.data.albums.topalbums.datamanager.ITopAlbumsDataManagerFactory
 import com.music.topalbums.data.songs.ISongsDataManagerFactory
@@ -28,5 +30,11 @@ object ApplicationModule
     {
         return ISongsDataManagerFactory { SongsDataManager(it) }
     }
+
+
+    @ServerUrl
+    @Provides
+    @Singleton
+    fun getServerUrl():String = RetrofitClient.SERVER_URL
 
 }

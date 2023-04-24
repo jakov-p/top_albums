@@ -1,62 +1,78 @@
 package com.music.topalbums.clientapi
 
-import com.music.topalbums.clientapi.albums.TopAlbumsCollection
-import com.music.topalbums.clientapi.collection.AlbumCollection
-import com.music.topalbums.clientapi.retrofit.model.AlbumSongsCollection
-import com.music.topalbums.clientapi.retrofit.utilities.CallPerformer
-import com.music.topalbums.clientapi.retrofit.utilities.LogJsonInterceptor
 import com.music.topalbums.clientapi.collection.SongCollection
-import com.music.topalbums.clientapi.retrofit.IServiceApi
+import com.music.topalbums.clientapi.retrofit.ClientApi
+import com.music.topalbums.clientapi.retrofit.RetrofitClient
 import com.music.topalbums.clientapi.retrofit.ServiceApi
+import com.music.topalbums.logger.Logger
+import com.music.topalbums.logger.loggable.TestLoggable
 import kotlinx.coroutines.runBlocking
-import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
-
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.junit.MockitoJUnitRunner
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.net.HttpURLConnection
-import java.util.concurrent.TimeUnit
 
 //TODO UNFINISHED
 @RunWith(MockitoJUnitRunner::class)
 class RetrofitServiceTest
 {
+    init{
+        Logger.loggable = TestLoggable()
+    }
+
     private var mockWebServer = MockWebServer()
-    private lateinit var serviceApi: IServiceApi
+    private lateinit var clientApi: IClientApi
 
     @Before
     fun setup() {
+
         mockWebServer.start()
-
-        val okHttpClient = OkHttpClient().newBuilder()
-            .connectTimeout(15, TimeUnit.SECONDS)
-            .readTimeout(15, TimeUnit.SECONDS)
-            .writeTimeout(15, TimeUnit.SECONDS)
-            .addInterceptor(LogJsonInterceptor())
-            //.addInterceptor(NetworkConnectionInterceptor())
-            .build()
-
-        val retrofit = Retrofit.Builder()
-            .baseUrl(mockWebServer.url("/"))
-            .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        serviceApi = retrofit.create(IServiceApi::class.java)
+        val serverUrl = mockWebServer.url("/").toString()
+        clientApi = ClientApi(ServiceApi(RetrofitClient(serverUrl)))
     }
 
     @After
     fun teardown()
     {
         mockWebServer.shutdown()
+    }
+
+
+    @Test
+    fun testTopAlbumsFetching()
+    {
+        runBlocking {
+            // Assign
+            val response = MockResponse()
+                .setResponseCode(HttpURLConnection.HTTP_OK)
+                .setBody(readFromFile("topalbums.json"))
+
+            mockWebServer.enqueue(response)// Act
+
+            val albumCollection = clientApi.getTopAlbums("us", 8)
+
+            println(albumCollection)
+            assertEquals(8, albumCollection?.list?.size)
+            albumCollection?.list?.let {
+                with(it.get(0))
+                {
+                    assertEquals( "Metallica", artistName)
+                    assertEquals( 1655432387, collectionId)
+                    assertEquals( "72 Seasons - Metallica", collectionName)
+                    assertEquals( 11.99f, collectionPrice)
+                    assertEquals( "USD", currency)
+                    assertEquals( "Heavy Metal", primaryGenreName)
+                    assertEquals( 1153, primaryGenreId)
+                    assertEquals( "2023-04-14T00:00:00-07:00", releaseDate)
+                }
+            }
+        }
     }
 
     @Test
@@ -69,35 +85,30 @@ class RetrofitServiceTest
                 .setBody(readFromFile("songs.json"))
 
             mockWebServer.enqueue(response)// Act
-            val albumSongs: Response<AlbumSongsCollection> = serviceApi.getAlbumSongs(101)
 
-            val runner = CallPerformer("Get Songs On Album Request"){ albumSongs }
-            val albumSongsCollection: AlbumSongsCollection? = runner.perform()
-            val songCollection: SongCollection = SongCollection(albumSongsCollection!!)
+            val songCollection: SongCollection? =  clientApi.getAlbumSongs(101)
 
             println(songCollection)
+            assertEquals(10, songCollection?.list?.size)
+
+            songCollection?.list?.let {
+                with(it.get(0))
+                {
+                    assertEquals( "Everything But the Girl", artistName)
+                    assertEquals( 1659426282, collectionId)
+                    assertEquals( "Fuse", collectionName)
+                    assertEquals( 9.99f, collectionPrice)
+                    assertEquals( "USD", currency)
+                    assertEquals( "Pop", primaryGenreName)
+                    assertEquals( "2023-02-22T12:00:00Z", releaseDate)
+                    assertEquals( null, amgArtistId)
+                    assertEquals( 164449, artistId)
+                    assertEquals( 10, trackCount)
+                }
+            }
         }
     }
 
-    @Test
-    fun testTopAlbumsFetching()
-    {
-        runBlocking {
-            // Assign
-            val response = MockResponse()
-                .setResponseCode(HttpURLConnection.HTTP_OK)
-                .setBody(readFromFile("topalbums.json"))
-
-            mockWebServer.enqueue(response)// Act
-            val topAlbums: Response<TopAlbumsCollection> = serviceApi.getTopAlbums("us", 8)
-
-            val runner = CallPerformer("Get Top Albums Request"){ topAlbums }
-            val topAlbumsCollection: TopAlbumsCollection? = runner.perform()
-            val albumCollection = topAlbumsCollection?.let { AlbumCollection(it) }
-
-            println(albumCollection)
-        }
-    }
 
     private fun readFromFile(name:String ) =  File(javaClass.getResource(name).path).readText()
 }

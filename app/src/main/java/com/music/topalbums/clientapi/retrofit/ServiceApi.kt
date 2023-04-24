@@ -5,11 +5,10 @@ import com.music.topalbums.clientapi.retrofit.model.AlbumSongsCollection
 import com.music.topalbums.clientapi.retrofit.model.ArtistAlbumsCollection
 import com.music.topalbums.clientapi.retrofit.model.ArtistSongsCollection
 import retrofit2.Response
+import javax.inject.Inject
 
-object ServiceApi
+class ServiceApi @Inject constructor (val retrofitClient: RetrofitClient): IServiceApi
 {
-    val retrofitClient: RetrofitClient = RetrofitClient
-
     /**
      * Get the top albums list currently in a particular country
      *
@@ -18,9 +17,9 @@ object ServiceApi
      * @param limit  The maximum number of albums to download (it seems that always less than 100
      *           albums are in a country's Top album List on the internet, often below 50 )
      */
-    suspend fun getTopAlbums(country: String, limit: Int): Response<TopAlbumsCollection>
+    override suspend fun getTopAlbums(country: String, limit: Int): Response<TopAlbumsCollection>
     {
-        return  RetrofitClient.service.getTopAlbums(country, limit)
+        return  retrofitClient.service.getTopAlbums(country, limit)
     }
 
     /**
@@ -28,9 +27,9 @@ object ServiceApi
      * @param albumId unique album's id on the Server
      * @return the whole collection of songs
      */
-    suspend fun getAlbumSongs(albumId: Int): Response<AlbumSongsCollection>
+    override suspend fun getAlbumSongs(albumId: Int): Response<AlbumSongsCollection>
     {
-        return  RetrofitClient.service.getAlbumSongs(albumId)
+        return  retrofitClient.service.getAlbumSongs(albumId)
     }
 
     /**
@@ -38,9 +37,9 @@ object ServiceApi
      * @param artistId unique artist's id on the Server
      * @return the whole collection of albums
      */
-    suspend fun getArtistAlbums(artistId: Int): Response<ArtistAlbumsCollection>
+    override suspend fun getArtistAlbums(artistId: Int): Response<ArtistAlbumsCollection>
     {
-        return  RetrofitClient.service.getArtistAlbums(artistId)
+        return  retrofitClient.service.getArtistAlbums(artistId)
     }
 
     /**
@@ -48,8 +47,8 @@ object ServiceApi
      * @param artistId unique artist's id on the Server
      * @return the whole collection of songs
      */
-    suspend fun getArtistSongs(artistId: Int): Response<ArtistSongsCollection>
+    override suspend fun getArtistSongs(artistId: Int): Response<ArtistSongsCollection>
     {
-        return  RetrofitClient.service.getArtistSongs(artistId)
+        return  retrofitClient.service.getArtistSongs(artistId)
     }
 }

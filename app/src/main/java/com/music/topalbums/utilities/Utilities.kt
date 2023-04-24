@@ -58,7 +58,7 @@ object Utilities
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 
-    fun Fragment.showLongToastMessage(message: String?) = Utilities.showLongToastMessage(this.requireContext(), message)
+    fun Fragment.showLongToastMessage(message: String?) = showLongToastMessage(this.requireContext(), message)
 
     //show a toast message of short duration
     fun showShortToastMessage(context:Context, message: String?)
@@ -66,7 +66,7 @@ object Utilities
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
-    fun Fragment.showShortToastMessage(message: String?) = Utilities.showShortToastMessage(this.requireContext(), message)
+    fun Fragment.showShortToastMessage(message: String?) = showShortToastMessage(this.requireContext(), message)
 
 
     //is the current thread the Main android thread?

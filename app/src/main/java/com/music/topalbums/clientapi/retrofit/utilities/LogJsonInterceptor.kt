@@ -31,7 +31,7 @@ class LogJsonInterceptor : Interceptor
             }
             else
             {
-                (obj as JSONArray).toString(4)
+                (obj as JSONArray?)?.toString(4)
             }
             println(jsonLog)
         }

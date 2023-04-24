@@ -1,14 +1,20 @@
 package com.music.topalbums.clientapi.retrofit
 
 import com.music.topalbums.clientapi.retrofit.utilities.LogJsonInterceptor
+import com.music.topalbums.di.BindApplicationModule
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
+import javax.inject.Qualifier
 
-object RetrofitClient
+class RetrofitClient @Inject constructor(@ServerUrl serverUrl: String)
 {
-    val serverUrl: String = "https://itunes.apple.com"
+    companion object {
+        val SERVER_URL: String = "https://itunes.apple.com"
+    }
+
     val service: IServiceApi
 
     init
@@ -30,4 +36,10 @@ object RetrofitClient
         service = retrofit.create(IServiceApi::class.java)
     }
 }
+
+
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class ServerUrl
 

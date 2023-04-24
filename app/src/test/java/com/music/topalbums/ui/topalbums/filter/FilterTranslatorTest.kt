@@ -2,17 +2,21 @@ package com.music.topalbums.ui.topalbums.filter
 
 import com.music.topalbums.AlbumCreator
 import com.music.topalbums.clientapi.collection.Album
-import dagger.hilt.android.testing.HiltAndroidTest
+import com.music.topalbums.logger.Logger
+import com.music.topalbums.logger.loggable.TestLoggable
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import java.time.LocalDateTime
 
-@HiltAndroidTest
 @RunWith(JUnit4::class)
 class FilterTranslatorTest
 {
+    init{
+        Logger.loggable = TestLoggable()
+    }
+
     @Test
     fun `when empty filter and search is null expect result ok`()
     {

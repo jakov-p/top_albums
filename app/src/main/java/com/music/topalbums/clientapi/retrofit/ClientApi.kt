@@ -11,7 +11,7 @@ import com.music.topalbums.clientapi.collection.SongCollection
 import javax.inject.Inject
 
 
-class  ClientApi @Inject constructor(): IClientApi
+class  ClientApi @Inject constructor(val serviceApi : IServiceApi): IClientApi
 {
     val TAG = ClientApi::class.java.simpleName
 
@@ -25,7 +25,7 @@ class  ClientApi @Inject constructor(): IClientApi
      */
     override suspend fun getTopAlbums(country: String, limit: Int): AlbumCollection?
     {
-        val runner = CallPerformer("Get Top Albums Request"){ ServiceApi.getTopAlbums(country, limit) }
+        val runner = CallPerformer("Get Top Albums Request"){ serviceApi.getTopAlbums(country, limit) }
         val topAlbumsCollection: TopAlbumsCollection? = runner.perform()
         return topAlbumsCollection?.let { AlbumCollection(it) }
 
@@ -38,7 +38,7 @@ class  ClientApi @Inject constructor(): IClientApi
      */
     override suspend fun getAlbumSongs(albumId : Int): SongCollection?
     {
-        val runner = CallPerformer("Get Songs On Album Request"){ ServiceApi.getAlbumSongs(albumId) }
+        val runner = CallPerformer("Get Songs On Album Request"){ serviceApi.getAlbumSongs(albumId) }
         val albumSongsCollection: AlbumSongsCollection? = runner.perform()
         return albumSongsCollection?.let { SongCollection(it) }
     }
@@ -51,7 +51,7 @@ class  ClientApi @Inject constructor(): IClientApi
      */
     override suspend fun getArtistAlbums(artistId : Int): AlbumCollection?
     {
-        val runner = CallPerformer("Get Albums Of Artist Request"){ ServiceApi.getArtistAlbums(artistId) }
+        val runner = CallPerformer("Get Albums Of Artist Request"){ serviceApi.getArtistAlbums(artistId) }
         val artistAlbumsCollection: ArtistAlbumsCollection? = runner.perform()
         return artistAlbumsCollection?.let { AlbumCollection(it) }
     }
@@ -63,7 +63,7 @@ class  ClientApi @Inject constructor(): IClientApi
      */
     override suspend fun getArtistSongs(artistId : Int): SongCollection?
     {
-        val runner = CallPerformer("Get Songs Of Artist Request"){ ServiceApi.getArtistSongs(artistId) }
+        val runner = CallPerformer("Get Songs Of Artist Request"){ serviceApi.getArtistSongs(artistId) }
         val artistSongsCollection: ArtistSongsCollection? =  runner.perform()
         return artistSongsCollection?.let { SongCollection(it) }
     }

@@ -124,7 +124,7 @@ class TopAlbumsFragment : Fragment()
             }
 
             //show the current active filter
-            filterDisplayer = FilterDisplayer(filterInclude, ::showFilterBottomSheet)
+            filterDisplayer = FilterDisplayer(filterInclude)
             filterDisplayer.applyFilter(viewModel.albumFilter)
 
             //show and offer editing of the current  search
@@ -136,6 +136,10 @@ class TopAlbumsFragment : Fragment()
                     viewModel.applySearch(searchText) //to filter album list
                 }
             })
+
+            setFilterFab.setOnClickListener {
+                showFilterBottomSheet()
+            }
         }
     }
 

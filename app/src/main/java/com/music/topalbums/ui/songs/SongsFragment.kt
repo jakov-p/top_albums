@@ -13,13 +13,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.music.topalbums.R
-import com.music.topalbums.utilities.Utilities.loadImage
-import com.music.topalbums.utilities.Utilities.openWebPage
 import com.music.topalbums.clientapi.collection.Album
 import com.music.topalbums.databinding.FragmentSongsBinding
-import com.music.topalbums.ui.songs.player.PlayerBottomSheet
 import com.music.topalbums.ui.ListLoadStateListener
+import com.music.topalbums.ui.songs.player.PlayerBottomSheet
 import com.music.topalbums.utilities.Utilities
+import com.music.topalbums.utilities.Utilities.loadImage
+import com.music.topalbums.utilities.Utilities.openWebPage
 import com.music.topalbums.utilities.Utilities.showShortToastMessage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -65,6 +65,7 @@ class SongsFragment : Fragment()
         super.onViewCreated(view, savedInstanceState)
         initToolbar(requireContext().getString(R.string.songs_fragment_title))
         init()
+        initFloatingButtonsHandler()
     }
 
     fun init()
@@ -112,24 +113,45 @@ class SongsFragment : Fragment()
             listInclude.retryButton.setOnClickListener {
                 songListAdapter.retry()
             }
+        }
+    }
 
-            //go to the album's web page
-            albumWebButton.setOnClickListener{
-                viewModel.album.collectionViewUrl?.let {
-                    openWebPage(requireActivity(), viewModel.album.collectionViewUrl!!)
-                } ?:
-                    showShortToastMessage(requireContext(), "No web page for this album")
-            }
+    private fun initFloatingButtonsHandler()
+    {
+        FloatingButtonsHandler(binding.floatingButtonsInclude, ::goToAlbumWebPage, ::goToArtistWebPage).apply {
+            eventListener = object : FloatingButtonsHandler.IEventListener
+            {
+                override fun onChildrenShown()
+                {
+                    binding.parentLayout.alpha = 0.4f
+                }
 
-            //go to the artist's web page
-            artistWebButton.setOnClickListener{
-                viewModel.album.artistViewUrl?.let {
-                    openWebPage(requireActivity(), it)
-                } ?:
-                    showShortToastMessage(requireContext(), "No web page for this artist")
+                override fun onChildrenHidden()
+                {
+                    binding.parentLayout.alpha = 1.0f
+                }
             }
         }
     }
+
+    /** open the artist's web page */
+    private fun goToArtistWebPage()
+    {
+        viewModel.album.artistViewUrl?.let {
+            openWebPage(requireActivity(), it)
+        } ?:
+           showShortToastMessage(requireContext(), "No web page for this artist")
+    }
+
+    /** open the album's web page*/
+    private fun goToAlbumWebPage()
+    {
+        viewModel.album.collectionViewUrl?.let {
+            openWebPage(requireActivity(), viewModel.album.collectionViewUrl!!)
+        } ?:
+            showShortToastMessage(requireContext(), "No web page for this album")
+    }
+
 
     private fun initToolbar(title: String)
     {

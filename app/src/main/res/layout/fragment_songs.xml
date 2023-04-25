@@ -18,6 +18,7 @@
 
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -56,43 +57,7 @@
                     />
 
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="-10dp"
-                    >
 
-                    <Button
-                        android:id="@+id/album_web_button"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        app:layout_constraintHorizontal_bias='0.00'
-                        android:text="@string/go_to_album_web_page"
-                        android:theme="@style/Button.Rounded"
-                        android:layout_marginRight="10dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/artist_web_button"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        />
-
-                    <Button
-                        android:id="@+id/artist_web_button"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        app:layout_constraintHorizontal_bias='1.0'
-                        android:text="@string/go_to_artist_web_page"
-                        android:theme="@style/Button.Rounded"
-                        android:layout_marginLeft="10dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/album_web_button"
-                        app:layout_constraintTop_toTopOf="parent"
-                        />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
 
             <View
@@ -108,6 +73,7 @@
                 tools:visibility="visible" />
 
             <LinearLayout
+                android:id="@+id/parent_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -118,5 +84,8 @@
                 <include android:id="@+id/list_include" layout="@layout/view_and_progress"/>
             </LinearLayout>
         </LinearLayout>
+
+
+        <include android:id="@+id/floating_buttons_include" layout="@layout/floating_buttons_songs"/>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

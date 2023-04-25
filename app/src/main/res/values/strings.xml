@@ -8,7 +8,7 @@
     <string name="no_results">No Results</string>
     <string name="retry">Retry</string>
 
-    <string name="set_filter">Set Filter</string>
+    <string name="set_filter">Filter</string>
     <string name="release_time_group">Release time</string>
     <string name="genre_group">Genre</string>
 
@@ -34,9 +34,6 @@
     <string name="play">Play</string>
     <string name="pause">Pause</string>
     <string name="stop">Stop</string>
-
-    <string name="go_to_album_web_page">Album Web Page</string>
-    <string name="go_to_artist_web_page">Artist Web Page</string>
 
     <string name="check_internet_connection">An error occurred.\nCheck internet connection</string>
     <string name="player_can_not_play">An error occurred.\nPlayer can not play the song</string>

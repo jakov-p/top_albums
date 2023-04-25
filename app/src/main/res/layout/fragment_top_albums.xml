@@ -17,6 +17,7 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <include android:id="@+id/selector_include" layout="@layout/view_country_selector"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -44,5 +45,23 @@
 
         </LinearLayout>
 
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/set_filter__fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+
+            android:textColor="@color/secondary_super_light"
+            android:text="@string/set_filter"
+
+            android:src="@android:drawable/ic_menu_add"
+            app:iconTint="@color/secondary_super_light"
+            app:backgroundTint="@color/primary_super_light"
+
+            app:fabSize="normal"
+            app:icon="@android:drawable/ic_menu_add"
+            app:textAllCaps="false" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

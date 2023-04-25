@@ -20,12 +20,4 @@
             android:id="@+id/genre_chip_group_include"
             layout="@layout/view_genre_chip_group" />
     </LinearLayout>
-
-    <Button
-        android:id="@+id/set_filter_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/set_filter"
-        android:theme="@style/Button.Rounded" />
 </LinearLayout>

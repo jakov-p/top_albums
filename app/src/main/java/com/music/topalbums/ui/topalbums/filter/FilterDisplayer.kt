@@ -14,7 +14,7 @@ import com.music.topalbums.databinding.ViewFilterDisplayerBinding
  *
  * The event 'onClicked' is called on click on any of the controls mentioned above.
  */
-class FilterDisplayer(val binding: ViewFilterDisplayerBinding, val onClicked: () -> Unit)
+class FilterDisplayer(val binding: ViewFilterDisplayerBinding)
 {
     init
     {
@@ -34,13 +34,6 @@ class FilterDisplayer(val binding: ViewFilterDisplayerBinding, val onClicked: ()
             genreChipGroupInclude.genreChipGroup.children.forEach { view ->
                 (view as Chip).handleIt(view.tagAsGenre() == albumFilter.genre)
             }
-
-            //shown the button only if an empty filter (so that the user is offered some clickable control )
-            with(binding.setFilterButton)
-            {
-                visibility = if (albumFilter.isEmpty()) View.VISIBLE else View.GONE
-                setOnClickListener{onClicked() }
-            }
         }
     }
 
@@ -56,7 +49,6 @@ class FilterDisplayer(val binding: ViewFilterDisplayerBinding, val onClicked: ()
             isChecked = true
             setOnClickListener {
                 isChecked = true //we do not want it to look unchecked (to have gray color)
-                onClicked()
             }
         }
         else

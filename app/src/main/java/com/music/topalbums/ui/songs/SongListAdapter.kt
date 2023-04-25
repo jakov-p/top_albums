@@ -43,7 +43,7 @@ class SongListAdapter(val context: Context, val onSelectedItem:(song: Song) -> U
                 //e.g.  '01.   SongName    03:18'
                 startTextView.text = "${position + 1}.".padStart(3, '0') //e.g. '05.', '15.'
                 midTextView.text = "${song.trackName}"
-                endTextView.text = composeDurationText(song.trackTimeMillis!!)
+                endTextView.text = composeDurationText(song.trackTimeMillis)
 
                 //make this item double and long clickable
                 ClickListenerHandler(root, ::onSelectedSong).apply {

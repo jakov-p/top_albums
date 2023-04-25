@@ -6,6 +6,7 @@ import com.music.topalbums.clientapi.collection.Album
 import com.music.topalbums.data.albums.topalbums.datamanager.ITopAlbumsDataManager
 import kotlin.math.min
 import com.music.topalbums.logger.Logger.loggable
+import kotlin.properties.Delegates
 
 /**
  * The algorithm here is complicated. It uses two lists. One ('small') list contains only a limited number
@@ -34,13 +35,13 @@ class AlbumsPagingSource constructor(val topAlbumsDataManager: ITopAlbumsDataMan
     override val jumpingSupported: Boolean = true
 
     //the size of the first page (it can be different from the size of other pages)
-    private var firstPageSize:Int? = null
+    private var firstPageSize = UNDEFINED
 
     /*The size of the last page when only small (not full) list was loaded.
     When the full list is finally fetched from internet then other pages will
     come after this page (and be bigger than this one)
     */
-    private var lastNotFullLoadPageSize:Int? = null
+    private var lastNotFullLoadPageSize:Int = UNDEFINED
 
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Album>
@@ -55,7 +56,7 @@ class AlbumsPagingSource constructor(val topAlbumsDataManager: ITopAlbumsDataMan
             var isFullyLoaded = topAlbumsDataManager.isFullyLoaded
             var albumsCount = topAlbumsDataManager.getAlbumsCount(isFullyLoaded)
 
-            if (firstPageSize == null )
+            if (firstPageSize == UNDEFINED )
             {
                 firstPageSize = min(params.loadSize, albumsCount)
                 if(pageNumber != 0)
@@ -104,7 +105,7 @@ class AlbumsPagingSource constructor(val topAlbumsDataManager: ITopAlbumsDataMan
             if (pageNumber == 0)
             {
                 fromIndex = 0
-                toIndex = firstPageSize!!
+                toIndex = firstPageSize
                 albums = topAlbumsDataManager.getAlbums(false, fromIndex, toIndex)
                 loggable.d(TAG, "Not fully loaded. The first page, firstPageSize = $firstPageSize")
             }
@@ -150,7 +151,7 @@ class AlbumsPagingSource constructor(val topAlbumsDataManager: ITopAlbumsDataMan
             if (pageNumber == 0)
             {
                 fromIndex = 0
-                toIndex = firstPageSize!!
+                toIndex = firstPageSize
             } else
             {
                 fromIndex = min(calculateIndexFull(pageNumber, loadSize), albumsCount)
@@ -207,7 +208,7 @@ class AlbumsPagingSource constructor(val topAlbumsDataManager: ITopAlbumsDataMan
     private fun calculateIndexNotFull(pageNumber:Int, pageSize:Int):Int
     {
         // firstPage + normalPage + ...+  normalPage
-        return  firstPageSize!! + (pageNumber-1) * pageSize
+        return  firstPageSize + (pageNumber-1) * pageSize
     }
 
     /**
@@ -219,15 +220,15 @@ class AlbumsPagingSource constructor(val topAlbumsDataManager: ITopAlbumsDataMan
      */
     private fun calculateIndexFull(pageNumber:Int, pageSize:Int):Int
     {
-        if(lastNotFullLoadPageSize != null)
+        if(lastNotFullLoadPageSize != UNDEFINED)
         {
             // firstPage + normalPage + ...+  normalPage + lastNotFullLoadPage + normalPage + ...+  normalPage
-            return firstPageSize!! + lastNotFullLoadPageSize!! + (pageNumber - 2) * pageSize
+            return firstPageSize + lastNotFullLoadPageSize + (pageNumber - 2) * pageSize
         }
         else
         {
             // firstPage + normalPage + ...+  normalPage + normalPage + ...+  normalPage
-            return firstPageSize!! + (pageNumber - 1) * pageSize
+            return firstPageSize + (pageNumber - 1) * pageSize
         }
     }
 
@@ -242,4 +243,8 @@ class AlbumsPagingSource constructor(val topAlbumsDataManager: ITopAlbumsDataMan
             0
         }
     }
+
 }
+
+
+private const val UNDEFINED = -1

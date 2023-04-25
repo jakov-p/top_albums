@@ -59,7 +59,7 @@ class AlbumsListAdapter(val context: Context, val onSelectedItem:(album: Album, 
     {
         fun bind(album: Album, position: Int)
         {
-            binding.albumCoverImageView.loadImage(album.collectionImageUrl!!)
+            album.collectionImageUrl?.let { binding.albumCoverImageView.loadImage(it) }
             fillText(album)
             addClickListeners(album, position)
             alternateColor(position)

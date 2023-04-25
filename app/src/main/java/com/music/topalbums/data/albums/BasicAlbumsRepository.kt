@@ -67,7 +67,7 @@ abstract class BasicAlbumsRepository
         {
             albumCollection = loadAlbums()
         }
-        return albumCollection!!
+        return albumCollection ?: throw IllegalStateException("'albumCollection' should not be  null ?!")
     }
 
     @EntryPoint

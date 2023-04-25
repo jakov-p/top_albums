@@ -24,7 +24,7 @@ class PlayerBottomSheet(val song: Song) : BottomSheetDialogFragment()
     val TAG = PlayerBottomSheet::class.java.simpleName
 
     private lateinit var binding: BottomSheetPlayerBinding
-    private val playerWrapper: PlayerWrapper = PlayerWrapper(song.previewUrl!!, ::onPlayerError)
+    private val playerWrapper: PlayerWrapper = PlayerWrapper(requireNotNull( song.previewUrl), ::onPlayerError)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {

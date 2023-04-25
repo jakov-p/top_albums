@@ -20,7 +20,7 @@ class LogJsonInterceptor : Interceptor
     {
         val request: Request = chain.request()
         val response: Response = chain.proceed(request)
-        val rawJson = response.body!!.string()
+        val rawJson = response.body?.string() ?: ""
 
         try
         {
@@ -41,7 +41,7 @@ class LogJsonInterceptor : Interceptor
         }
 
         // Recreate the response before it is returned, because the body can be read only once
-        val responseBody = ResponseBody.create(response.body!!.contentType(), rawJson)
+        val responseBody = ResponseBody.create(response.body?.contentType(), rawJson)
         return response.newBuilder().body(responseBody).build()
     }
 }

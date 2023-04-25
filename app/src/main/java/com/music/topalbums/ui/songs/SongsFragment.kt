@@ -36,7 +36,7 @@ class SongsFragment : Fragment()
 {
     private lateinit var binding : FragmentSongsBinding
 
-    private val album by lazy { ParamsHandler.getAlbum(arguments)!!}
+    private val album: Album by lazy { requireNotNull( ParamsHandler.getAlbum(arguments))}
 
     @Inject
     lateinit var songsViewModelFactory: SongsViewModel.ISongsViewModelFactory
@@ -71,8 +71,15 @@ class SongsFragment : Fragment()
     fun init()
     {
         songListAdapter = SongListAdapter(requireContext(), onSelectedItem = {
-            val bottomSheetFragment = PlayerBottomSheet(it)
-            bottomSheetFragment.show(requireActivity().supportFragmentManager, "PlayerDialogFragment")
+            if(it.previewUrl!= null)
+            {
+                val bottomSheetFragment = PlayerBottomSheet(it)
+                bottomSheetFragment.show(requireActivity().supportFragmentManager, "PlayerDialogFragment")
+            }
+            else
+            {
+                showShortToastMessage(requireContext(), "No song URL for this song.")
+            }
         })
 
         listLoadStateListener = ListLoadStateListener(requireContext(), binding.listInclude, songListAdapter)
@@ -91,7 +98,7 @@ class SongsFragment : Fragment()
         }
 
         //album's cover image loading
-        binding.albumCoverImageView.loadImage( viewModel.album.collectionImageUrl!!)
+        viewModel.album.collectionImageUrl?.let { binding.albumCoverImageView.loadImage( it) }
 
         //compose a formatted text with a few album fields written one under another
         binding.allTextView.text = SpannableStringBuilder().
@@ -147,7 +154,7 @@ class SongsFragment : Fragment()
     private fun goToAlbumWebPage()
     {
         viewModel.album.collectionViewUrl?.let {
-            openWebPage(requireActivity(), viewModel.album.collectionViewUrl!!)
+            openWebPage(requireActivity(), it)
         } ?:
             showShortToastMessage(requireContext(), "No web page for this album")
     }

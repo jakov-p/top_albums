@@ -20,7 +20,7 @@ class CacheTopAlbumsDataManager(country: String): SimpleTopAlbumsDataManager(cou
         {
             cache[country] = super.fetchAlbumCollection()
         }
-        return cache[country]!!
+        return requireNotNull(cache[country])
     }
 
     companion object

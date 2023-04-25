@@ -34,8 +34,8 @@ open class SongsRepository(val collectionId: Int)
     {
         loggable.i(TAG, "Fetching songs for an album, collectionId = $collectionId ...")
 
-        val songsCollection = clientApi.getAlbumSongs(collectionId)
-        return songsCollection!!
+        val songsCollection = requireNotNull(clientApi.getAlbumSongs(collectionId))
+        return songsCollection
             .also {
                 loggable.i(TAG, "Fetched songs for an album, total track number = ${it.list.size}")
             }
@@ -81,7 +81,7 @@ open class SongsRepository(val collectionId: Int)
         {
             songCollection = loadSongs()
         }
-        return songCollection!!
+        return requireNotNull(songCollection)
     }
 
     @EntryPoint

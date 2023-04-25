@@ -36,7 +36,7 @@ open class FilteredTopAlbumsRepository(country: String, limit :Int): TopAlbumsRe
         }
 
         //here we are sure that the 'filteredAlbumCollection' is ready for usage
-        return filteredAlbumCollection!!.size
+        return filteredAlbumCollection?.size ?:  throw IllegalStateException("'filteredAlbumCollection' should not be  null ?!")
     }
 
     override suspend fun getAlbums(fromIndex:Int, toIndex: Int): List<Album>
@@ -48,7 +48,7 @@ open class FilteredTopAlbumsRepository(country: String, limit :Int): TopAlbumsRe
 
         //here we are sure that the 'filteredAlbumCollection' is ready for usage
         return (fromIndex..toIndex - 1).map {
-            filteredAlbumCollection!![it]
+            filteredAlbumCollection?.get(it) ?: throw IllegalStateException("'filteredAlbumCollection' should not be  null ?!")
         }
     }
 
@@ -56,7 +56,7 @@ open class FilteredTopAlbumsRepository(country: String, limit :Int): TopAlbumsRe
      * Go through the albums list and check each album if they pass the filter.
      * Returns the list of albums passing the filter check.
      */
-    private suspend fun applyFilter(): List<Album>?
+    private suspend fun applyFilter(): List<Album>
     {
         //if filter = null, then each album passes the check
         return  fetchAlbumCollection().list.filter { filter?.invoke(it) ?: true }

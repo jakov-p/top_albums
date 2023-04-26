@@ -51,7 +51,7 @@ class RetrofitServiceTest
             // Assign
             val response = MockResponse()
                 .setResponseCode(HttpURLConnection.HTTP_OK)
-                .setBody(readFromFile("topalbums.json"))
+                .setBody(readFromFile("top_albums.json"))
 
             mockWebServer.enqueue(response)// Act
 
@@ -76,13 +76,13 @@ class RetrofitServiceTest
     }
 
     @Test
-    fun testSongsFetching()
+    fun testAlbumSongsFetching()
     {
         runBlocking {
             // Assign
             val response = MockResponse()
                 .setResponseCode(HttpURLConnection.HTTP_OK)
-                .setBody(readFromFile("songs.json"))
+                .setBody(readFromFile("album_songs.json"))
 
             mockWebServer.enqueue(response)// Act
 
@@ -109,6 +109,114 @@ class RetrofitServiceTest
         }
     }
 
+
+    @Test
+    fun testArtistAlbumsFetching()
+    {
+        runBlocking {
+            // Assign
+            val response = MockResponse()
+                .setResponseCode(HttpURLConnection.HTTP_OK)
+                .setBody(readFromFile("artist_albums.json"))
+
+            mockWebServer.enqueue(response)// Act
+
+            val albumCollection = clientApi.getArtistAlbums(100001)
+
+            println(albumCollection)
+            assertEquals(46, albumCollection?.list?.size)
+            albumCollection?.list?.let {
+                with(it.get(4))
+                {
+                    assertEquals( "Jack Johnson", artistName)
+                    assertEquals( 1440752312, collectionId)
+                    assertEquals( "Jack Johnson & Friends - Best of Kokua Festival (A Benefit for the Kokua Hawaii Foundation)", collectionName)
+                    assertEquals( 8.99f, collectionPrice)
+                    assertEquals( "USD", currency)
+                    assertEquals( "Rock", primaryGenreName)
+                    assertEquals( 0, primaryGenreId)
+                    assertEquals( "2012-01-01T08:00:00Z", releaseDate)
+                }
+            }
+        }
+    }
+
+    @Test
+    fun testArtistSongsFetching()
+    {
+        runBlocking {
+            // Assign
+            val response = MockResponse()
+                .setResponseCode(HttpURLConnection.HTTP_OK)
+                .setBody(readFromFile("artist_songs.json"))
+
+            mockWebServer.enqueue(response)// Act
+
+            val songCollection: SongCollection? =  clientApi.getArtistSongs(101)
+
+            println(songCollection)
+            assertEquals(51, songCollection?.list?.size)
+
+            songCollection?.list?.let {
+                with(it.get(4))
+                {
+                    assertEquals( "Jack Johnson", artistName)
+                    assertEquals( 1440857781, collectionId)
+                    assertEquals( "In Between Dreams (Bonus Track Version)", collectionName)
+                    assertEquals( 9.99f, collectionPrice)
+                    assertEquals( "USD", currency)
+                    assertEquals( "Rock", primaryGenreName)
+                    assertEquals( "2005-01-01T12:00:00Z", releaseDate)
+                    assertEquals( null, amgArtistId)
+                    assertEquals( 909253, artistId)
+                    assertEquals( 15, trackCount)
+                }
+            }
+        }
+    }
+
+
+    @Test
+    fun testTopAlbumsFetching_when_wrong_content_then_failure()
+    {
+        runBlocking {
+            // Assign
+            val response = MockResponse()
+                .setResponseCode(HttpURLConnection.HTTP_OK)
+                .setBody(readFromFile("album_songs.json"))
+
+            mockWebServer.enqueue(response)// Act
+
+            val albumCollection = clientApi.getTopAlbums("us", 8)
+
+            println(albumCollection)
+            assertEquals(0, albumCollection?.list?.size)
+        }
+    }
+
+    @Test
+    fun testTopAlbumsFetching_when_invalid_json_then_failure()
+    {
+        runBlocking {
+            // Assign
+            val response = MockResponse()
+                .setResponseCode(HttpURLConnection.HTTP_OK)
+                .setBody("{a = 567}}")
+
+            mockWebServer.enqueue(response)// Act
+
+            try
+            {
+                clientApi.getTopAlbums("us", 8)
+                fail( "This method didn't throw when it was expected to." );
+            }
+            catch(ex:java.lang.Exception)
+            {
+                println(ex)
+                //ok
+            }
+        }
+    }
 
     private fun readFromFile(name:String ) =  File(javaClass.getResource(name).path).readText()
 }

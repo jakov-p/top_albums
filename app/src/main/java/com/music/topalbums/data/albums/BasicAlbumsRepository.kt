@@ -18,7 +18,9 @@ abstract class BasicAlbumsRepository
 {
     val TAG = BasicAlbumsRepository::class.java.simpleName
 
-    protected val  clientApi: IClientApi = EntryPoints.get(TopAlbumsApp.appContext, IBasicAlbumsRepositoryEntryPoint::class.java).getClientApi()
+    open protected val  clientApi: IClientApi by lazy {
+        EntryPoints.get(TopAlbumsApp.appContext, IBasicAlbumsRepositoryEntryPoint::class.java).getClientApi()
+    }
 
     //non null value means that download has finished successfully
     protected var albumCollection: AlbumCollection? = null

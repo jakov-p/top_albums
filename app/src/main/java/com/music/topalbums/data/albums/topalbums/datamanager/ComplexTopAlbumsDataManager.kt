@@ -33,11 +33,11 @@ class ComplexTopAlbumsDataManager constructor(country: String): ITopAlbumsDataMa
     }
 
     //downloads the 'small' list
-    val reducedTopAlbumsRepository = FilteredTopAlbumsRepository(country, REDUCED_LIMIT)
+    private val reducedTopAlbumsRepository = createRepository(country, REDUCED_LIMIT)
 
     //downloads the full list (it runs in the background, started as soon as possible)
-    val fullTopAlbumsRepository = FilteredTopAlbumsRepository(country, FULL_LIMIT)
-    lateinit var fullDeferredJob: Deferred<Unit>
+    private val fullTopAlbumsRepository = createRepository(country, FULL_LIMIT)
+    private lateinit var fullDeferredJob: Deferred<Unit>
 
     //true = the full list has been downloaded
     override var isFullyLoaded: Boolean = false
@@ -45,7 +45,6 @@ class ComplexTopAlbumsDataManager constructor(country: String): ITopAlbumsDataMa
     init
     {
         startFullLoad()  //start as soon as possible
-
     }
 
     /** The total number of albums fetched from the internet
@@ -144,4 +143,5 @@ class ComplexTopAlbumsDataManager constructor(country: String): ITopAlbumsDataMa
             fullTopAlbumsRepository.filter = field
         }
 
+    protected fun createRepository(country: String, limit :Int): FilteredTopAlbumsRepository = FilteredTopAlbumsRepository(country, limit)
 }

@@ -4,6 +4,7 @@ import com.music.topalbums.TopAlbumsApp
 import com.music.topalbums.clientapi.IClientApi
 import com.music.topalbums.clientapi.collection.Song
 import com.music.topalbums.clientapi.collection.SongCollection
+import com.music.topalbums.data.albums.BasicAlbumsRepository
 import com.music.topalbums.logger.Logger.loggable
 import dagger.hilt.EntryPoint
 import dagger.hilt.EntryPoints
@@ -24,7 +25,9 @@ open class SongsRepository(val collectionId: Int)
 {
     val TAG = SongsRepository::class.java.simpleName
 
-    protected val  clientApi: IClientApi = EntryPoints.get(TopAlbumsApp.appContext, ISongsRepositoryEntryPoint::class.java).getClientApi()
+    open protected val  clientApi: IClientApi by lazy {
+        EntryPoints.get(TopAlbumsApp.appContext, ISongsRepositoryEntryPoint::class.java).getClientApi()
+    }
 
     //non null value means that download has finished successfully
     protected var songCollection: SongCollection? = null

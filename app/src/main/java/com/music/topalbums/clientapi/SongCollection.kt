@@ -125,7 +125,7 @@ data class Song(
  * Justa a list of songs
  * @param list
  */
-class SongCollection private constructor (val list: List<Song>)
+class SongCollection constructor (val list: List<Song>)
 {
     /**
      * Used when the source is ArtistSongsCollection list

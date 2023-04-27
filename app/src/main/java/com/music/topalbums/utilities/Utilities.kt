@@ -87,4 +87,5 @@ object Utilities
             return album.collectionName
         }
     }
+
 }

@@ -1,4 +1,4 @@
-package com.music.topalbums.ui
+package com.music.topalbums.ui.common
 
 import android.content.Context
 import androidx.core.view.isVisible

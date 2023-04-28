@@ -6,8 +6,11 @@ import android.net.Uri
 import android.os.Looper
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.music.topalbums.R
 import com.music.topalbums.clientapi.collection.Album
 
 
@@ -88,4 +91,19 @@ object Utilities
         }
     }
 
+
+    fun Fragment.initToolbar(title: String)
+    {
+        // initialize toolbar
+        (getActivity() as AppCompatActivity).supportActionBar?.apply()
+        {
+            //setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME or ActionBar.DISPLAY_SHOW_TITLE or ActionBar.DISPLAY_HOME_AS_UP or ActionBar.DISPLAY_USE_LOGO)
+            //setHomeAsUpIndicator(getActivity()?.getDrawable(R.drawable.main));// set drawable icon
+            //setDisplayHomeAsUpEnabled(true);
+            setDisplayShowTitleEnabled(true)
+            setTitle(title)
+            //setIcon(getActivity()?.getDrawable(R.drawable.main))
+        }
+        setHasOptionsMenu(false)
+    }
 }

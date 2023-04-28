@@ -7,6 +7,8 @@ import com.music.topalbums.ui.songs.FloatingButtonsHandler
 
 /**
  * Creates and handles floating buttons  with commands
+ * There are two main buttons that control hiding/showing of the initially hidden command button
+ * (a child button).
  *
  * @param floatingButtonsInclude binding
  * @param backgroundArea view that will be made half transparent when the hidden action button is shown
@@ -18,22 +20,23 @@ class FloatingButtonsHandler(floatingButtonsInclude: FloatingButtonsArtistAlbums
     {
         with(floatingButtonsInclude)
         {
+            //initially hide the command button
             onHideChildren()
 
+            //just a hide/show button
             mainFirstFab.setOnClickListener {
                 onShowChildren()
             }
-
+            //just a hide/show button
             mainSecondFab.setOnClickListener {
                 onHideChildren()
             }
-
+            //the real action button
             artistWebFab.setOnClickListener {
                 onGoToArtistWeb()
             }
         }
     }
-
 
     private fun FloatingButtonsArtistAlbumsBinding.onShowChildren()
     {

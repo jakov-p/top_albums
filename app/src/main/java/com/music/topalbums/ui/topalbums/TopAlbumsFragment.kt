@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -14,11 +13,12 @@ import com.music.topalbums.R
 import com.music.topalbums.clientapi.collection.Album
 import com.music.topalbums.databinding.FragmentTopAlbumsBinding
 import com.music.topalbums.logger.Logger.loggable
-import com.music.topalbums.ui.ListLoadStateListener
+import com.music.topalbums.ui.common.ListLoadStateListener
 import com.music.topalbums.ui.songs.SongsFragment
 import com.music.topalbums.ui.topalbums.filter.FilterBottomSheet
 import com.music.topalbums.ui.topalbums.filter.FilterDisplayer
 import com.music.topalbums.ui.topalbums.search.SearchHandler
+import com.music.topalbums.utilities.Utilities.initToolbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -191,11 +191,4 @@ class TopAlbumsFragment : Fragment()
         findNavController().navigate(R.id.action_topAlbumsFragment_to_songsFragment, bundle)
     }
 
-    private fun initToolbar(title: String)
-    {
-        // initialize toolbar
-        (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(true)
-        (activity as AppCompatActivity).supportActionBar?.setTitle(title)
-        setHasOptionsMenu(false)
-    }
 }

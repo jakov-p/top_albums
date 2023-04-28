@@ -5,7 +5,6 @@ import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.bold
 import androidx.core.text.scale
 import androidx.fragment.app.Fragment
@@ -17,18 +16,19 @@ import com.music.topalbums.R
 import com.music.topalbums.clientapi.collection.Album
 import com.music.topalbums.clientapi.collection.ArtistInfo
 import com.music.topalbums.databinding.FragmentArtistAlbumsBinding
-import com.music.topalbums.ui.ListLoadStateListener
+import com.music.topalbums.ui.common.ListLoadStateListener
 import com.music.topalbums.ui.common.FloatingButtonsHandler
 import com.music.topalbums.ui.songs.SongsFragment
 import com.music.topalbums.utilities.Utilities
+import com.music.topalbums.utilities.Utilities.initToolbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
- * Shows the list of top albums of a country
- * It offers country selection, filtering and search functionality.
+ * Shows the list of all the albums of a particular artist.
+ * The artist info is passed as a parameter to the fragment.
  */
 @AndroidEntryPoint
 class ArtistAlbumsFragment : Fragment()
@@ -54,6 +54,7 @@ class ArtistAlbumsFragment : Fragment()
     //shows or hides GUI control displaying 'loading in progress' and error
     private lateinit var listLoadStateListener: ListLoadStateListener
 
+    //the GUI control containing the albums of the artist
     private val albumsList:RecyclerView
         get(){ return binding.listInclude.list }
 
@@ -94,7 +95,7 @@ class ArtistAlbumsFragment : Fragment()
         }
         artistAlbumsListAdapter.addLoadStateListener(listLoadStateListener::process)
 
-        //compose a formatted text with a few album fields written one under another
+        //compose a formatted text with the artist's name
         binding.allTextView.text = SpannableStringBuilder().
                                    scale(0.8f)  {append("Albums").append("\n")}.
                                    scale(0.6f)  {append("of").append("\n")}.
@@ -103,7 +104,6 @@ class ArtistAlbumsFragment : Fragment()
 
     private fun bindEvents() {
         with(binding) {
-
             //'retryButton' is shown in case when album list loading fails
             listInclude.retryButton.setOnClickListener {
                 artistAlbumsListAdapter.retry()
@@ -126,18 +126,11 @@ class ArtistAlbumsFragment : Fragment()
     }
 
 
+
     private fun goToSongsFragment(album: Album, position: Int)
     {
         val bundle = SongsFragment.ParamsHandler.createBundle(album, false)
         findNavController().navigate(R.id.action_artistAlbumsFragment_to_songsFragment, bundle)
-    }
-
-    private fun initToolbar(title: String)
-    {
-        // initialize toolbar
-        (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(true)
-        (activity as AppCompatActivity).supportActionBar?.setTitle(title)
-        setHasOptionsMenu(false)
     }
 
     /**

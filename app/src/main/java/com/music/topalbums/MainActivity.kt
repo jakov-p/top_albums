@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity()
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)
+        actionBar?.setIcon(getDrawable(R.drawable.main));
 
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(navController.graph)

@@ -8,10 +8,8 @@ import com.music.topalbums.ui.songs.FloatingButtonsHandler
 /**
  * Creates and handles floating buttons  with commands
  *
- * There is a main button, which on its click shows or hides two additional floating buttons. These two child buttons
- * are actual command buttons.
- *
  * @param floatingButtonsInclude binding
+ * @param backgroundArea view that will be made half transparent when the hidden action button is shown
  * @param onGoToArtistWeb action when the 'Go to artist's web page' is clicked
  */
 class FloatingButtonsHandler(floatingButtonsInclude: FloatingButtonsArtistAlbumsBinding, val backgroundArea:View, onGoToArtistWeb: ()-> Unit)

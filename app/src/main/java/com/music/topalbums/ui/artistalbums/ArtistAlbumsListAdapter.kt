@@ -7,7 +7,8 @@ import androidx.core.text.scale
 import com.music.topalbums.clientapi.collection.Album
 import com.music.topalbums.databinding.AlbumItemBinding
 import com.music.topalbums.ui.common.BasicAlbumsListAdapter
-import com.music.topalbums.utilities.Utilities.extractCleanAlbumName
+import com.music.topalbums.utilities.DateConverter
+import java.time.format.DateTimeFormatter
 
 /**
  * Defines the look of the album recycle view item.
@@ -24,24 +25,27 @@ class ArtistAlbumsListAdapter(context: Context, onSelectedItem:(album: Album, po
     {
         with(binding)
         {
-            val releaseDateShortened = album.releaseDate?.split("T")?.get(0)
+            val releaseDateAsText = album.releaseDate?.let {
+                DateConverter.fromStringToDate(it).format(DateTimeFormatter.ofPattern("dd MM yyyy"))
+            } ?: "-"
+
 
             /* One under another:
              *  Album Name
-             *  ???
+             *  Release Date
              *  Genre
              */
             topTextView.text = SpannableStringBuilder().
                                append(album.collectionName).append("\n").
-                               scale(0.8f) { append(releaseDateShortened).append("\n") }.
-                               scale(0.6f) { append(album.primaryGenreName) }
+                               scale(0.8f) { append(releaseDateAsText).append("\n") }.
+                               scale(0.6f) { append(album.primaryGenreName).append("\n") }
 
             //TODO these two fields are not used, to remove later if no purpose for them is found
             middleTextView.visibility = View.GONE
             bottomTextView.visibility = View.GONE
 
             //position in the list
-            lastTextView.text = "${album.originalPos?.plus( 1)}".padStart(2, ' ') //e.g. ' 5.', '15.'
+            lastTextView.text = "${album.trackCount?:"-"}"
         }
     }
 

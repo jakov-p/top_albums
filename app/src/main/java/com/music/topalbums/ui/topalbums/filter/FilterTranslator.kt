@@ -2,6 +2,7 @@ package com.music.topalbums.ui.topalbums.filter
 
 import com.music.topalbums.clientapi.collection.Album
 import com.music.topalbums.logger.Logger.loggable
+import com.music.topalbums.utilities.DateConverter
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -40,7 +41,7 @@ class FilterTranslator(val albumFilter : AlbumFilter, val searchText: String?)
         {
             if(album.releaseDate!=null)
             {
-                val albumReleaseDate = fromStrToDate(album.releaseDate)
+                val albumReleaseDate = DateConverter.fromStringToDate(album.releaseDate)
                 val (compareLocalTime, isAfter) = calculateCompareDate(albumFilter.releaseTimeCriteria)
                 if (!isAfter && !albumReleaseDate.isAfter(compareLocalTime))
                 {
@@ -72,16 +73,6 @@ class FilterTranslator(val albumFilter : AlbumFilter, val searchText: String?)
         return true
     }
 
-
-    //e.g. "2011-04-12T07:00:00Z" --> local date time
-    private fun fromStrToDate(stringDate:String): LocalDateTime
-    {
-        val zonedDateTime = ZonedDateTime.parse(stringDate, DateTimeFormatter.ISO_ZONED_DATE_TIME)
-
-        val swissZone: ZoneId = ZoneId.of("Europe/Zurich")
-        val swissZoned: ZonedDateTime = zonedDateTime.withZoneSameInstant(swissZone)
-        return swissZoned.toLocalDateTime()
-    }
 
     /**
      * Calculate the compare date to be checked against the release date

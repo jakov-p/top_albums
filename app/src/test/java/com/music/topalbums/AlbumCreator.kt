@@ -2,6 +2,7 @@ package com.music.topalbums
 
 import com.music.topalbums.clientapi.collection.Album
 import com.music.topalbums.ui.topalbums.filter.AlbumFilter
+import com.music.topalbums.utilities.DateConverter
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
@@ -32,12 +33,7 @@ object AlbumCreator
             currency = "dollar",
 
             trackCount = 10,
-            releaseDate = releaseDate?.let { fromDateToStr(it) }
+            releaseDate = releaseDate?.let { DateConverter.fromDateToString(it) }
         )
-    }
-
-    private fun fromDateToStr(localDateTime:LocalDateTime): String
-    {
-        return localDateTime.atOffset(ZoneOffset.UTC).format(DateTimeFormatter.ISO_ZONED_DATE_TIME)
     }
 }

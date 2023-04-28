@@ -9,11 +9,10 @@ import com.music.topalbums.databinding.FloatingButtonsSongsBinding
 /**
  * Creates and handles floating buttons  with commands
  *
- * There is a main button, which on its click shows or hides two additional floating buttons. These two child buttons
- * are actual command buttons.
  * @param floatingButtonsInclude binding
+ * @param backgroundArea view that will be made half transparent when the hidden action buttons are shown
  * @param onGoToAlbumWeb  action when the 'Go to album web page' is clicked
- * @param onGoToArtistWeb action when the 'Go to artist's albums fragment' is clicked
+ * @param onGoToArtistAlbums action when the 'Go to artist's albums fragment' is clicked
  */
 class FloatingButtonsHandler(floatingButtonsInclude: FloatingButtonsSongsBinding, val backgroundArea:View,  onGoToAlbumWeb: ()-> Unit,  onGoToArtistAlbums: ()-> Unit)
 {

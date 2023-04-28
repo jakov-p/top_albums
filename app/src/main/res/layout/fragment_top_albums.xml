@@ -9,40 +9,64 @@
         android:background="@drawable/rounded_corner_small"
         android:orientation="vertical">
 
-         <LinearLayout
+        <LinearLayout
+            android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/secondary_light"
+            android:background="@color/primary_super_light"
             android:orientation="vertical"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <include android:id="@+id/selector_include" layout="@layout/view_country_selector"/>
+            <ImageView
+                android:id="@+id/album_cover_image_view"
+                android:layout_width="match_parent"
+                android:layout_height="80sp"
+
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+
+                android:scaleType="fitXY"
+                android:src="@drawable/musical_notes"
+                app:layout_constraintHorizontal_bias='0.0' />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/rounded_corner_small_color"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="2dp"
-                android:paddingTop="5dp"
-                android:orientation="vertical">
+                android:background="@drawable/rounded_corner_small_color"
+                android:orientation="vertical"
+                android:paddingTop="5dp">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="-10dp"
-                    >
-                    <include android:id="@+id/filter_include" layout="@layout/view_filter_displayer"/>
+                    android:layout_marginBottom="-10dp">
+
+                    <include
+                        android:id="@+id/filter_include"
+                        layout="@layout/view_filter_displayer" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-                    <include android:id="@+id/search_include" layout="@layout/view_text_search"/>
+
+                    <include
+                        android:id="@+id/search_include"
+                        layout="@layout/view_text_search" />
                 </LinearLayout>
             </LinearLayout>
 
-            <include android:id="@+id/list_include" layout="@layout/view_and_progress"/>
+            <include
+                android:id="@+id/selector_include"
+                layout="@layout/view_country_selector" />
 
+            <include
+                android:id="@+id/list_include"
+                layout="@layout/view_and_progress" />
         </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton

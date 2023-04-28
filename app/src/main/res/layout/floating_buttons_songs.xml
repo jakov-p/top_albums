@@ -32,7 +32,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
 
-        android:src="@android:drawable/ic_menu_revert"
+        android:src="@android:drawable/ic_menu_close_clear_cancel"
         app:backgroundTint="@color/primary_super_light"
         app:fabSize="normal"
 
@@ -48,14 +48,14 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="2dp"
 
-        app:tint="@color/secondary_super_light"
         app:backgroundTint="@color/primary_super_dark"
+        app:fabSize="normal"
 
-        app:fabSize="mini"
         app:layout_constraintBottom_toTopOf="@+id/main_second_fab"
         app:layout_constraintEnd_toEndOf="@+id/main_second_fab"
         app:layout_constraintStart_toStartOf="@+id/main_second_fab"
-        app:srcCompat="@android:drawable/ic_menu_send" />
+        app:srcCompat="@android:drawable/ic_menu_view"
+        app:tint="@color/secondary_super_light" />
 
     <TextView
         android:id="@+id/album_web_text_view"
@@ -87,14 +87,14 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="2dp"
 
-        app:tint="@color/secondary_super_light"
         app:backgroundTint="@color/primary_super_dark"
+        app:fabSize="normal"
 
-        app:fabSize="mini"
         app:layout_constraintBottom_toTopOf="@+id/album_web_fab"
         app:layout_constraintEnd_toEndOf="@+id/album_web_fab"
         app:layout_constraintStart_toStartOf="@+id/album_web_fab"
-        app:srcCompat="@android:drawable/ic_menu_send" />
+        app:srcCompat="@android:drawable/ic_menu_send"
+        app:tint="@color/secondary_super_light" />
 
     <TextView
         android:id="@+id/artist_albums_text_view"

@@ -117,10 +117,12 @@ class AlbumCollection  (val list: List<Album>)
      */
     constructor(artistAlbumsCollection: ArtistAlbumsCollection): this(mutableListOf<Album>())
     {
-        artistAlbumsCollection.results?.forEachIndexed { i: Int, artistAlbum: ArtistAlbum ->
+        artistAlbumsCollection.results?.
+        filter { it.wrapperType == "collection" }?.
+
+        forEachIndexed { i: Int, artistAlbum: ArtistAlbum ->
             (list as MutableList).add(Album(i, artistAlbum))
         }
     }
-
 }
 

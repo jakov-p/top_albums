@@ -7,6 +7,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.music.topalbums.clientapi.collection.Album
+import com.music.topalbums.data.songs.ISongsDataManager
 import com.music.topalbums.data.songs.ISongsDataManagerFactory
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -23,11 +24,14 @@ class SongsViewModel @AssistedInject   constructor(@Assisted val album: Album): 
     @Inject
     lateinit var songsDataManagerFactory: ISongsDataManagerFactory
 
+    lateinit var songsDataManager: ISongsDataManager
+
     companion object const val PAGE_SIZE = 10
     val songs = Pager(config = PagingConfig(pageSize = PAGE_SIZE,initialLoadSize = PAGE_SIZE ,prefetchDistance = PAGE_SIZE,
                                     jumpThreshold = PAGE_SIZE * 3, enablePlaceholders = true),
         pagingSourceFactory = {
-            SongsPagingSource(songsDataManagerFactory.create(album))
+            songsDataManager = songsDataManagerFactory.create(album)
+            SongsPagingSource(songsDataManager)
 
         })
         .flow.cachedIn(viewModelScope)

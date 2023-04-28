@@ -1,9 +1,11 @@
 package com.music.topalbums.clientapi.collection
 
+import android.os.Parcelable
 import com.music.topalbums.clientapi.retrofit.model.AlbumSong
 import com.music.topalbums.clientapi.retrofit.model.AlbumSongsCollection
 import com.music.topalbums.clientapi.retrofit.model.ArtistSong
 import com.music.topalbums.clientapi.retrofit.model.ArtistSongsCollection
+import kotlinx.android.parcel.Parcelize
 
 /**
  * This class is introduced as a common Song class from two different sources.
@@ -127,6 +129,10 @@ data class Song(
  */
 class SongCollection constructor (val list: List<Song>)
 {
+    //this is the only way how to fetch 'artistId' (it is present only in a AlbumSongsCollection)
+    var artistInfo: ArtistInfo? = null
+
+
     /**
      * Used when the source is ArtistSongsCollection list
      * The source is a model object generated from the original JSON.
@@ -136,6 +142,9 @@ class SongCollection constructor (val list: List<Song>)
         artistSongsCollection.results?.forEach {
             (list as MutableList).add(Song(it))
         }
+
+        //it does not have info on 'artistId'
+        artistInfo = null
     }
 
     /**
@@ -146,8 +155,18 @@ class SongCollection constructor (val list: List<Song>)
     {
         albumSongsCollection.results?.
         filter { it.wrapperType == "track" }?.
+
         forEach {
                 (list as MutableList).add(Song(it))
             }
+
+        //this is the only way how to fetch 'artistId' (it is present only in a AlbumSongsCollection)
+        val collectionEntry = albumSongsCollection.results?.
+        filter { it.wrapperType == "collection" }?.get(0)
+
+        artistInfo = ArtistInfo(collectionEntry?.artistId, collectionEntry?.artistName, collectionEntry?.artistViewUrl)
     }
 }
+
+@Parcelize
+data class ArtistInfo( val artistId: Int?, val artistName:String?,  val  artistViewUrl:String?): Parcelable

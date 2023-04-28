@@ -6,7 +6,6 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.music.topalbums.ui.topalbums.filter.AlbumFilter
-import com.music.topalbums.data.albums.topalbums.datamanager.ComplexTopAlbumsDataManager
 import com.music.topalbums.data.albums.topalbums.datamanager.ITopAlbumsDataManager
 import com.music.topalbums.data.albums.topalbums.datamanager.ITopAlbumsDataManagerFactory
 import com.music.topalbums.ui.topalbums.filter.FilterTranslator
@@ -37,7 +36,7 @@ class TopAlbumsViewModel @Inject constructor(): ViewModel()
 
     //provides the filtered list of albums
     private lateinit var topAlbumsDataManager: ITopAlbumsDataManager
-    private lateinit var currentPagingSource: AlbumsPagingSource
+    private lateinit var currentPagingSource: TopAlbumsPagingSource
 
     companion object const val PAGE_SIZE = 6
     val topAlbums = Pager(config = PagingConfig(pageSize = PAGE_SIZE,initialLoadSize = PAGE_SIZE ,prefetchDistance = PAGE_SIZE,
@@ -47,7 +46,7 @@ class TopAlbumsViewModel @Inject constructor(): ViewModel()
                 this.filter = FilterTranslator(albumFilter, searchText)::check
             }
 
-            currentPagingSource = AlbumsPagingSource(topAlbumsDataManager)
+            currentPagingSource = TopAlbumsPagingSource(topAlbumsDataManager)
             currentPagingSource
         })
         .flow.cachedIn(viewModelScope)

@@ -45,7 +45,7 @@ class TopAlbumsFragment : Fragment()
     private lateinit var searchHandler: SearchHandler
 
     //shows an item in the album list recycle view
-    private lateinit var albumsListAdapter: AlbumsListAdapter
+    private lateinit var topAlbumsListAdapter: TopAlbumsListAdapter
 
     //shows or hides GUI control displaying 'loading in progress' and error
     private lateinit var listLoadStateListener: ListLoadStateListener
@@ -69,8 +69,8 @@ class TopAlbumsFragment : Fragment()
     fun init()
     {
         viewModel.start(binding.selectorInclude.countryCodePicker.selectedCountryNameCode)
-        albumsListAdapter = AlbumsListAdapter(requireContext(), onSelectedItem =::goToSongsFragment)
-        listLoadStateListener = ListLoadStateListener(requireContext(), binding.listInclude, albumsListAdapter)
+        topAlbumsListAdapter = TopAlbumsListAdapter(requireContext(), onSelectedItem =::goToSongsFragment)
+        listLoadStateListener = ListLoadStateListener(requireContext(), binding.listInclude, topAlbumsListAdapter)
 
         initalizeView()
         bindEvents()
@@ -80,15 +80,15 @@ class TopAlbumsFragment : Fragment()
 
         // initialize recyclerView
         albumsList.setHasFixedSize(true)
-        albumsList.adapter = albumsListAdapter
+        albumsList.adapter = topAlbumsListAdapter
 
         //start collecting album list data to fill the adapter with it
         lifecycleScope.launch {
             viewModel.topAlbums.collectLatest {
-                albumsListAdapter.submitData(it)
+                topAlbumsListAdapter.submitData(it)
             }
         }
-        albumsListAdapter.addLoadStateListener(listLoadStateListener::process)
+        topAlbumsListAdapter.addLoadStateListener(listLoadStateListener::process)
     }
 
     private fun bindEvents() {
@@ -96,7 +96,7 @@ class TopAlbumsFragment : Fragment()
 
             //'retryButton' is shown in case when album list loading fails
             listInclude.retryButton.setOnClickListener {
-                albumsListAdapter.retry()
+                topAlbumsListAdapter.retry()
             }
 
             //when the user selects a new country
@@ -131,7 +131,7 @@ class TopAlbumsFragment : Fragment()
             searchHandler = SearchHandler(searchInclude, onSearchChanged = { searchText ->
                 withBlinkPrevention {
                     loggable.i(TAG, "The user entered a new search text, search text = '$searchText'")
-                    albumsListAdapter.applySearch(searchText)  //to highlight any found search text
+                    topAlbumsListAdapter.applySearch(searchText)  //to highlight any found search text
                     clearAdapter()
                     viewModel.applySearch(searchText) //to filter album list
                 }
@@ -163,7 +163,7 @@ class TopAlbumsFragment : Fragment()
     private fun clearAdapter()
     {
         albumsList.adapter = null
-        albumsList.adapter = albumsListAdapter
+        albumsList.adapter = topAlbumsListAdapter
     }
 
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     android:label="@string/top_albums_fragment_title"
-    app:startDestination="@id/topAlbumsFragment">
+    app:startDestination="@id/artistAlbumsFragment">
 
     <fragment
         android:id="@+id/topAlbumsFragment"
@@ -21,5 +21,16 @@
         <argument
             android:name="album"
             app:argType="com.music.topalbums.clientapi.collection.Album" />
+        <action
+            android:id="@+id/action_songsFragment_to_artistAlbumsFragment"
+            app:destination="@id/artistAlbumsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/artistAlbumsFragment"
+        android:name="com.music.topalbums.ui.artistalbums.ArtistAlbumsFragment"
+        android:label="@string/artist_albums_fragment_title">
+        <action
+            android:id="@+id/action_artistAlbumsFragment_to_songsFragment"
+            app:destination="@id/songsFragment" />
     </fragment>
 </navigation>

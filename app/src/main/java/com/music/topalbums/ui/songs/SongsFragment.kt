@@ -11,11 +11,14 @@ import androidx.core.text.scale
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.music.topalbums.R
 import com.music.topalbums.clientapi.collection.Album
+import com.music.topalbums.clientapi.collection.ArtistInfo
 import com.music.topalbums.databinding.FragmentSongsBinding
 import com.music.topalbums.ui.ListLoadStateListener
+import com.music.topalbums.ui.artistalbums.ArtistAlbumsFragment
 import com.music.topalbums.ui.songs.player.PlayerBottomSheet
 import com.music.topalbums.utilities.Utilities
 import com.music.topalbums.utilities.Utilities.loadImage
@@ -125,29 +128,7 @@ class SongsFragment : Fragment()
 
     private fun initFloatingButtonsHandler()
     {
-        FloatingButtonsHandler(binding.floatingButtonsInclude, ::goToAlbumWebPage, ::goToArtistWebPage).apply {
-            eventListener = object : FloatingButtonsHandler.IEventListener
-            {
-                override fun onChildrenShown()
-                {
-                    binding.parentLayout.alpha = 0.4f
-                }
-
-                override fun onChildrenHidden()
-                {
-                    binding.parentLayout.alpha = 1.0f
-                }
-            }
-        }
-    }
-
-    /** open the artist's web page */
-    private fun goToArtistWebPage()
-    {
-        viewModel.album.artistViewUrl?.let {
-            openWebPage(requireActivity(), it)
-        } ?:
-           showShortToastMessage(requireContext(), "No web page for this artist")
+        FloatingButtonsHandler(binding.floatingButtonsInclude, binding.parentLayout, ::goToAlbumWebPage, :: goToArtistAlbumsFragment )
     }
 
     /** open the album's web page*/
@@ -157,6 +138,13 @@ class SongsFragment : Fragment()
             openWebPage(requireActivity(), it)
         } ?:
             showShortToastMessage(requireContext(), "No web page for this album")
+    }
+
+    /** open the artist's web page */
+    private fun goToArtistAlbumsFragment()
+    {
+        val bundle = ArtistAlbumsFragment.ParamsHandler.createBundle(ArtistInfo(null, null, null))
+        findNavController().navigate(R.id.action_songsFragment_to_artistAlbumsFragment, bundle)
     }
 
 

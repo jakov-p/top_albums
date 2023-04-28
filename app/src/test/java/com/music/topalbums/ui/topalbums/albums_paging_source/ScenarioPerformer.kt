@@ -4,7 +4,7 @@ import androidx.paging.PagingSource
 import com.music.topalbums.AlbumCreator
 import com.music.topalbums.clientapi.collection.Album
 import com.music.topalbums.data.albums.topalbums.datamanager.ITopAlbumsDataManager
-import com.music.topalbums.ui.topalbums.AlbumsPagingSource
+import com.music.topalbums.ui.topalbums.TopAlbumsPagingSource
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.mockito.Mockito
@@ -12,7 +12,7 @@ import org.mockito.Mockito
 class ScenarioPerformer
 {
     val topAlbumsDataManager = Mockito.mock(ITopAlbumsDataManager::class.java)
-    val albumsPagingSource = AlbumsPagingSource(topAlbumsDataManager)
+    val topAlbumsPagingSource = TopAlbumsPagingSource(topAlbumsDataManager)
 
     fun runSingle(block: suspend ScenarioPerformer.() -> Unit, loadParams: PagingSource.LoadParams<Int>, expectedLoadResult: PagingSource.LoadResult.Page<Int, Album>)
     {
@@ -20,7 +20,7 @@ class ScenarioPerformer
             Mockito.reset(topAlbumsDataManager)
             block()
 
-            val loadResult: PagingSource.LoadResult<Int, Album> = this@ScenarioPerformer.albumsPagingSource.load(loadParams)
+            val loadResult: PagingSource.LoadResult<Int, Album> = this@ScenarioPerformer.topAlbumsPagingSource.load(loadParams)
 
             if(loadResult is PagingSource.LoadResult.Page)
             {

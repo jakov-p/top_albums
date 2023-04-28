@@ -38,6 +38,7 @@ open class SongsRepository(val collectionId: Int)
         loggable.i(TAG, "Fetching songs for an album, collectionId = $collectionId ...")
 
         val songsCollection = requireNotNull(clientApi.getAlbumSongs(collectionId))
+        songsCollection.artistInfo
         return songsCollection
             .also {
                 loggable.i(TAG, "Fetched songs for an album, total track number = ${it.list.size}")
@@ -93,4 +94,5 @@ open class SongsRepository(val collectionId: Int)
     {
         fun getClientApi(): IClientApi
     }
+
 }

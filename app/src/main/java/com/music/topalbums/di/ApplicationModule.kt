@@ -2,6 +2,8 @@ package com.music.topalbums.di
 
 import com.music.topalbums.clientapi.retrofit.RetrofitClient
 import com.music.topalbums.clientapi.retrofit.ServerUrl
+import com.music.topalbums.data.albums.artistalbums.ArtistAlbumsDataManager
+import com.music.topalbums.data.albums.artistalbums.IArtistAlbumsDataManagerFactory
 import com.music.topalbums.data.albums.topalbums.datamanager.ComplexTopAlbumsDataManager
 import com.music.topalbums.data.albums.topalbums.datamanager.ITopAlbumsDataManagerFactory
 import com.music.topalbums.data.songs.ISongsDataManagerFactory
@@ -21,6 +23,15 @@ object ApplicationModule
     fun createTopAlbumsDataManagerFactory(): ITopAlbumsDataManagerFactory
     {
         return ITopAlbumsDataManagerFactory { ComplexTopAlbumsDataManager(it) }
+    }
+
+
+
+    @Singleton
+    @Provides
+    fun createArtistAlbumsDataManagerFactory(): IArtistAlbumsDataManagerFactory
+    {
+        return IArtistAlbumsDataManagerFactory { ArtistAlbumsDataManager(it) }
     }
 
 

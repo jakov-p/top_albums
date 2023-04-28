@@ -6,7 +6,6 @@ import com.music.topalbums.clientapi.collection.Album
 import com.music.topalbums.data.albums.topalbums.datamanager.ITopAlbumsDataManager
 import kotlin.math.min
 import com.music.topalbums.logger.Logger.loggable
-import kotlin.properties.Delegates
 
 /**
  * The algorithm here is complicated. It uses two lists. One ('small') list contains only a limited number
@@ -28,9 +27,9 @@ import kotlin.properties.Delegates
  *
  * @param topAlbumsDataManager the provider of albums data
  */
-class AlbumsPagingSource constructor(val topAlbumsDataManager: ITopAlbumsDataManager) : PagingSource<Int, Album>()
+class TopAlbumsPagingSource constructor(val topAlbumsDataManager: ITopAlbumsDataManager) : PagingSource<Int, Album>()
 {
-    val TAG = AlbumsPagingSource::class.java.simpleName
+    val TAG = TopAlbumsPagingSource::class.java.simpleName
 
     override val jumpingSupported: Boolean = true
 

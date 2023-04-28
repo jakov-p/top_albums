@@ -41,24 +41,23 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:tint="@color/secondary_super_light" />
 
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/album_web_fab"
+        android:id="@+id/artist_web_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
+        android:layout_marginBottom="24dp"
 
-        app:tint="@color/secondary_super_light"
         app:backgroundTint="@color/primary_super_dark"
-
         app:fabSize="mini"
+
         app:layout_constraintBottom_toTopOf="@+id/main_second_fab"
         app:layout_constraintEnd_toEndOf="@+id/main_second_fab"
         app:layout_constraintStart_toStartOf="@+id/main_second_fab"
-        app:srcCompat="@android:drawable/ic_menu_send" />
+        app:srcCompat="@android:drawable/ic_menu_send"
+        app:tint="@color/secondary_super_light" />
 
     <TextView
-        android:id="@+id/album_web_text_view"
+        android:id="@+id/artist_web_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="0dp"
@@ -68,6 +67,7 @@
         android:paddingBottom="5dp"
         android:paddingRight="20dp"
         android:paddingLeft="20dp"
+
         android:textStyle="normal"
 
         android:layout_gravity="center_vertical"
@@ -76,47 +76,9 @@
 
         android:textSize="16sp"
 
-        android:text="@string/go_to_album_web_page"
-        app:layout_constraintBottom_toBottomOf="@+id/album_web_fab"
-        app:layout_constraintEnd_toStartOf="@+id/album_web_fab"
-        app:layout_constraintTop_toTopOf="@+id/album_web_fab" />
+        android:text="@string/go_to_artist_web_page"
+        app:layout_constraintBottom_toBottomOf="@+id/artist_web_fab"
+        app:layout_constraintEnd_toStartOf="@+id/artist_web_fab"
+        app:layout_constraintTop_toTopOf="@+id/artist_web_fab" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/artist_albums_fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
-
-        app:tint="@color/secondary_super_light"
-        app:backgroundTint="@color/primary_super_dark"
-
-        app:fabSize="mini"
-        app:layout_constraintBottom_toTopOf="@+id/album_web_fab"
-        app:layout_constraintEnd_toEndOf="@+id/album_web_fab"
-        app:layout_constraintStart_toStartOf="@+id/album_web_fab"
-        app:srcCompat="@android:drawable/ic_menu_send" />
-
-    <TextView
-        android:id="@+id/artist_albums_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="0dp"
-
-        android:background="@drawable/rounded_area"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:paddingRight="20dp"
-        android:paddingLeft="20dp"
-        android:textStyle="normal"
-
-        android:layout_gravity="center_vertical"
-        android:textColor = "@color/secondary_super_light"
-        android:backgroundTint ="@color/primary_super_dark"
-
-        android:textSize="16sp"
-
-        android:text="@string/go_to_artist_albums_fragment"
-        app:layout_constraintBottom_toBottomOf="@+id/artist_albums_fab"
-        app:layout_constraintEnd_toStartOf="@+id/artist_albums_fab"
-        app:layout_constraintTop_toTopOf="@+id/artist_albums_fab" />
 </androidx.constraintlayout.widget.ConstraintLayout>

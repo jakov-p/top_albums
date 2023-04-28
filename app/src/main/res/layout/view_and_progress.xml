@@ -18,7 +18,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/item" />
+        tools:listitem="@layout/album_item" />
 
     <TextView
         android:id="@+id/no_results_text_view"

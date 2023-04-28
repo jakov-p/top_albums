@@ -40,7 +40,6 @@ class TopAlbumsListAdapter(context: Context, onSelectedItem:(album: Album, posit
      */
     override fun fillText(album: Album, binding: AlbumItemBinding)
     {
-        TODO("Not yet implemented")
         with(binding)
         {
             val releaseDateShortened = album.releaseDate?.split("T")?.get(0)

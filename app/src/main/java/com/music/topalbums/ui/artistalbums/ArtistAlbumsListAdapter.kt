@@ -26,7 +26,7 @@ class ArtistAlbumsListAdapter(context: Context, onSelectedItem:(album: Album, po
         with(binding)
         {
             val releaseDateAsText = album.releaseDate?.let {
-                DateConverter.fromStringToDate(it).format(DateTimeFormatter.ofPattern("dd MM yyyy"))
+                DateConverter.fromStringToDate(it).format(DateTimeFormatter.ofPattern("yyyy, MMMM"))
             } ?: "-"
 
 

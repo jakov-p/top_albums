@@ -14,7 +14,8 @@ import com.music.topalbums.databinding.FloatingButtonsSongsBinding
  * @param onGoToAlbumWeb  action when the 'Go to album web page' is clicked
  * @param onGoToArtistAlbums action when the 'Go to artist's albums fragment' is clicked
  */
-class FloatingButtonsHandler(floatingButtonsInclude: FloatingButtonsSongsBinding, val backgroundArea:View,  onGoToAlbumWeb: ()-> Unit,  onGoToArtistAlbums: ()-> Unit)
+class FloatingButtonsHandler(floatingButtonsInclude: FloatingButtonsSongsBinding, val backgroundArea:View,
+                             onGoToAlbumWeb: ()-> Unit, val onGoToArtistAlbums: (()-> Unit)?)
 {
     init
     {
@@ -35,15 +36,18 @@ class FloatingButtonsHandler(floatingButtonsInclude: FloatingButtonsSongsBinding
                 onGoToAlbumWeb()
             }
             artistAlbumsFab.setOnClickListener {
-                onGoToArtistAlbums()
+                onGoToArtistAlbums?.invoke()
             }
         }
     }
 
     private fun FloatingButtonsSongsBinding.showChildren()
     {
-        artistAlbumsFab.show()
-        artistAlbumsTextView.visibility = View.VISIBLE
+        if(onGoToArtistAlbums!=null) //do not show because we do not want this command
+        {
+            artistAlbumsFab.show()
+            artistAlbumsTextView.visibility = View.VISIBLE
+        }
 
         albumWebFab.show()
         albumWebTextView.visibility = View.VISIBLE

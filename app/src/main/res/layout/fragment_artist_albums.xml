@@ -13,7 +13,7 @@
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/secondary_light"
+            android:background="@color/secondary_super_light"
             android:orientation="vertical"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -27,22 +27,34 @@
                 android:paddingRight="20dp"
                 android:paddingBottom="10dp">
 
+
                 <TextView
                     android:id="@+id/all_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="25dp"
-                    android:layout_marginBottom="20dp"
                     android:text="Artist Name Artist Name Artist Name Artist Name Artist Name "
                     android:textAlignment="center"
                     android:textColor="@color/secondary_super_light"
                     android:textSize="22sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/album_cover_image_view"
 
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias='0.5'
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/album_cover_image_view"
+                    android:layout_width="50sp"
+                    android:layout_height="50sp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginBottom="20dp"
+                    app:layout_constraintHorizontal_bias='0.0'
+                    android:src="@drawable/albums"
+                    android:foregroundTint="@color/secondary_super_light"
+                    android:background="@drawable/rounded_corner_small"
+                    android:layout_gravity="center_horizontal" />
             </LinearLayout>
 
             <include

@@ -15,7 +15,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.music.topalbums.R
 import com.music.topalbums.clientapi.collection.Album
-import com.music.topalbums.clientapi.collection.ArtistInfo
 import com.music.topalbums.databinding.FragmentSongsBinding
 import com.music.topalbums.ui.ListLoadStateListener
 import com.music.topalbums.ui.artistalbums.ArtistAlbumsFragment
@@ -40,6 +39,7 @@ class SongsFragment : Fragment()
     private lateinit var binding : FragmentSongsBinding
 
     private val album: Album by lazy { requireNotNull( ParamsHandler.getAlbum(arguments))}
+    private val isFromTopAlbums: Boolean by lazy { requireNotNull( ParamsHandler.isFromTopAlbums(arguments))}
 
     @Inject
     lateinit var songsViewModelFactory: SongsViewModel.ISongsViewModelFactory
@@ -128,7 +128,8 @@ class SongsFragment : Fragment()
 
     private fun initFloatingButtonsHandler()
     {
-        FloatingButtonsHandler(binding.floatingButtonsInclude, binding.parentLayout, ::goToAlbumWebPage, :: goToArtistAlbumsFragment )
+        val goToArtistAlbumsFragmentFunct =  if (isFromTopAlbums) ::goToArtistAlbumsFragment else null
+        FloatingButtonsHandler(binding.floatingButtonsInclude, binding.parentLayout, ::goToAlbumWebPage, goToArtistAlbumsFragmentFunct )
     }
 
     /** open the album's web page*/
@@ -143,8 +144,10 @@ class SongsFragment : Fragment()
     /** open the artist's web page */
     private fun goToArtistAlbumsFragment()
     {
-        val bundle = ArtistAlbumsFragment.ParamsHandler.createBundle(ArtistInfo(null, null, null))
-        findNavController().navigate(R.id.action_songsFragment_to_artistAlbumsFragment, bundle)
+        viewModel.artistInfo?.let {
+            val bundle = ArtistAlbumsFragment.ParamsHandler.createBundle(it)
+            findNavController().navigate(R.id.action_songsFragment_to_artistAlbumsFragment, bundle)
+        }
     }
 
 
@@ -164,12 +167,15 @@ class SongsFragment : Fragment()
      */
     object ParamsHandler
     {
-        const val PARAM_NAME = "album"
+        const val PARAM_ALBUM = "album"
+        const val PARAM_IS_FROM_TOP = "is_from_top"
 
-        fun getAlbum(bundle:Bundle?) : Album? = bundle?.getParcelable(PARAM_NAME) as Album?
+        fun getAlbum(bundle:Bundle?) : Album? = bundle?.getParcelable(PARAM_ALBUM) as Album?
+        fun isFromTopAlbums(bundle:Bundle?) : Boolean? = bundle?.getBoolean(PARAM_IS_FROM_TOP)
 
-        fun createBundle(album: Album): Bundle = Bundle().apply {
-            putParcelable(PARAM_NAME, album)
+        fun createBundle(album: Album, isFromTopAlbums: Boolean): Bundle = Bundle().apply {
+            putParcelable(PARAM_ALBUM, album)
+            putBoolean(PARAM_IS_FROM_TOP, isFromTopAlbums)
         }
     }
 

@@ -187,7 +187,7 @@ class TopAlbumsFragment : Fragment()
 
     private fun goToSongsFragment(album: Album, position: Int)
     {
-        val bundle = SongsFragment.ParamsHandler.createBundle(album)
+        val bundle = SongsFragment.ParamsHandler.createBundle(album, true)
         findNavController().navigate(R.id.action_topAlbumsFragment_to_songsFragment, bundle)
     }
 

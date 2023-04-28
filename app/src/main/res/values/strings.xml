@@ -42,7 +42,7 @@
     <string name="no_album_web_page">No web page for this album</string>
     <string name="no_artist_web_page">No web page for this artist</string>
 
-    <string name="go_to_artist_albums_fragment">Go to Artist\'s albums</string>
+    <string name="go_to_artist_albums_fragment">Artist\'s albums</string>
     <string name="go_to_album_web_page">Album web page</string>
     <string name="go_to_artist_web_page">Artist web page</string>
 </resources>

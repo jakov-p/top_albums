@@ -164,7 +164,11 @@ class SongCollection constructor (val list: List<Song>)
         val collectionEntry = albumSongsCollection.results?.
         filter { it.wrapperType == "collection" }?.get(0)
 
-        artistInfo = ArtistInfo(collectionEntry?.artistId, collectionEntry?.artistName, collectionEntry?.artistViewUrl)
+        artistInfo = ArtistInfo(
+            collectionEntry?.artistId,
+            collectionEntry?.artistName,
+            collectionEntry?.artistViewUrl
+        )
     }
 }
 

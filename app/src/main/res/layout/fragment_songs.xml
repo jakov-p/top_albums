@@ -62,8 +62,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/primary_super_light" />
+                android:layout_height="1dp"/>
 
             <View
                 android:id="@+id/divider"

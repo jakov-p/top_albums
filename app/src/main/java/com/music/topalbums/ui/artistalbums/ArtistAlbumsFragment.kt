@@ -1,10 +1,13 @@
 package com.music.topalbums.ui.artistalbums
 
 import android.os.Bundle
+import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.text.bold
+import androidx.core.text.scale
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -32,8 +35,8 @@ class ArtistAlbumsFragment : Fragment()
 {
     private val TAG = ArtistAlbumsFragment::class.java.simpleName
 
-    //private val artistInfo: ArtistInfo by lazy { requireNotNull( ParamsHandler.getArtistInfo(arguments))}
-    private val artistInfo = ArtistInfo( 164449, "Artist Name Artist Name Artist Name Artist Name", null)
+    private val artistInfo: ArtistInfo by lazy { requireNotNull( ParamsHandler.getArtistInfo(arguments))}
+    //private val artistInfo = ArtistInfo( 164449, "Artist Name Artist Name Artist Name Artist Name", null)
 
     @Inject
     lateinit var artistAlbumsViewModelFactory: ArtistAlbumsViewModel.IArtistAlbumsViewModelFactory
@@ -63,7 +66,7 @@ class ArtistAlbumsFragment : Fragment()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?)
     {
         super.onViewCreated(view, savedInstanceState)
-        initToolbar(requireContext().getString(R.string.top_albums_fragment_title))
+        initToolbar(requireContext().getString(R.string.artist_albums_fragment_title))
         init()
         initFloatingButtonsHandler()
     }
@@ -90,7 +93,13 @@ class ArtistAlbumsFragment : Fragment()
             }
         }
         artistAlbumsListAdapter.addLoadStateListener(listLoadStateListener::process)
-    }
+
+        //compose a formatted text with a few album fields written one under another
+        binding.allTextView.text = SpannableStringBuilder().
+                                   scale(0.8f)  {append("Albums").append("\n")}.
+                                   scale(0.6f)  {append("of").append("\n")}.
+                                   bold { scale(1.5f)  {append(artistInfo.artistName)}}}
+
 
     private fun bindEvents() {
         with(binding) {
@@ -119,7 +128,7 @@ class ArtistAlbumsFragment : Fragment()
 
     private fun goToSongsFragment(album: Album, position: Int)
     {
-        val bundle = SongsFragment.ParamsHandler.createBundle(album)
+        val bundle = SongsFragment.ParamsHandler.createBundle(album, false)
         findNavController().navigate(R.id.action_artistAlbumsFragment_to_songsFragment, bundle)
     }
 

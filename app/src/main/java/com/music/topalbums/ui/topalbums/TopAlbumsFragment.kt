@@ -14,7 +14,7 @@ import com.music.topalbums.clientapi.collection.Album
 import com.music.topalbums.databinding.FragmentTopAlbumsBinding
 import com.music.topalbums.logger.Logger.loggable
 import com.music.topalbums.ui.common.ListLoadStateListener
-import com.music.topalbums.ui.songs.SongsFragment
+import com.music.topalbums.ui.songs.helpers.ParamsHandler
 import com.music.topalbums.ui.topalbums.filter.FilterBottomSheet
 import com.music.topalbums.ui.topalbums.filter.FilterDisplayer
 import com.music.topalbums.ui.topalbums.search.SearchHandler
@@ -187,7 +187,7 @@ class TopAlbumsFragment : Fragment()
 
     private fun goToSongsFragment(album: Album, position: Int)
     {
-        val bundle = SongsFragment.ParamsHandler.createBundle(album, true)
+        val bundle = ParamsHandler.createBundle(album, true)
         findNavController().navigate(R.id.action_topAlbumsFragment_to_songsFragment, bundle)
     }
 

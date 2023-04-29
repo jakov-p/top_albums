@@ -12,6 +12,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/primary_super_dark</item>
         <!-- Customize your theme here. -->
+
     </style>
 
     <style name="Theme.Top_albums.NoActionBar">

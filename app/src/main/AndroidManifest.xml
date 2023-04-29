@@ -15,10 +15,12 @@
         android:theme="@style/Theme.Top_albums"
         android:name="TopAlbumsApp"
         tools:targetApi="31">
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.Top_albums.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

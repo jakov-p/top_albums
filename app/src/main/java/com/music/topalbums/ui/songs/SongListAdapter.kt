@@ -8,10 +8,11 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.music.topalbums.R
-import com.music.topalbums.utilities.Utilities.formatTimeMinSec
 import com.music.topalbums.clientapi.collection.Song
 import com.music.topalbums.databinding.SongItemBinding
+import com.music.topalbums.ui.songs.helpers.PlayingAnimation
 import com.music.topalbums.utilities.ClickListenerHandler
+import com.music.topalbums.utilities.Utilities.formatTimeMinSec
 
 /**
  * Defines the look of the song recycle view item.
@@ -20,6 +21,10 @@ import com.music.topalbums.utilities.ClickListenerHandler
  */
 class SongListAdapter(val context: Context, val onSelectedItem:(song: Song) -> Unit):PagingDataAdapter<Song, SongListAdapter.SongListViewHolder>(DiffCallback)
 {
+    val TAG = SongListAdapter::class.java.simpleName
+
+    val playingAnimation =  PlayingAnimation(this)
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongListViewHolder
     {
         val binding = SongItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -32,6 +37,11 @@ class SongListAdapter(val context: Context, val onSelectedItem:(song: Song) -> U
             holder.bind(it, position) }
         ?:
             holder.bindPlaceHolder()
+    }
+
+    fun notifyPlayFinished()
+    {
+        playingAnimation.notifyPlayFinished()
     }
 
     inner class SongListViewHolder(val binding: SongItemBinding) : ViewHolder(binding.root)
@@ -51,10 +61,10 @@ class SongListAdapter(val context: Context, val onSelectedItem:(song: Song) -> U
                     setLongClickListener(song, position)
                 }
 
+                playingAnimation.show(binding, position)
                 setAlternateColor(position)
             }
         }
-
 
         fun onSelectedSong(song: Song, position: Int)
         {
@@ -66,6 +76,8 @@ class SongListAdapter(val context: Context, val onSelectedItem:(song: Song) -> U
 
             //send the event
             onSelectedItem(song)
+
+            playingAnimation.onSelectedSong(position)
         }
 
 
@@ -96,9 +108,7 @@ class SongListAdapter(val context: Context, val onSelectedItem:(song: Song) -> U
                 "-:-" //unknow duration
             }
         }
-
     }
-
 
 
     fun isEmpty() = (itemCount == 0)
@@ -115,4 +125,7 @@ class SongListAdapter(val context: Context, val onSelectedItem:(song: Song) -> U
             return oldItem == newItem
         }
     }
+
+
+
 }

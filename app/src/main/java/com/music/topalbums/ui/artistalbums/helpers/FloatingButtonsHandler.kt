@@ -1,9 +1,7 @@
-package com.music.topalbums.ui.common
+package com.music.topalbums.ui.artistalbums.helpers
 
 import android.view.View
 import com.music.topalbums.databinding.FloatingButtonsArtistAlbumsBinding
-import com.music.topalbums.databinding.FloatingButtonsSongsBinding
-import com.music.topalbums.ui.songs.FloatingButtonsHandler
 
 /**
  * Creates and handles floating buttons  with commands

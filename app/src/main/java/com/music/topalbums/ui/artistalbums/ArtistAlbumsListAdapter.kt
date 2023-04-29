@@ -27,8 +27,8 @@ class ArtistAlbumsListAdapter(context: Context, onSelectedItem:(album: Album, po
         {
             val releaseDateAsText = album.releaseDate?.let {
                 DateConverter.fromStringToDate(it).format(DateTimeFormatter.ofPattern("yyyy, MMMM"))
-            } ?: "-"
-
+            } ?:
+                "-" //no release date
 
             /* One under another:
              *  Album Name
@@ -40,11 +40,12 @@ class ArtistAlbumsListAdapter(context: Context, onSelectedItem:(album: Album, po
                                scale(0.8f) { append(releaseDateAsText).append("\n") }.
                                scale(0.6f) { append(album.primaryGenreName).append("\n") }
 
+
             //TODO these two fields are not used, to remove later if no purpose for them is found
             middleTextView.visibility = View.GONE
             bottomTextView.visibility = View.GONE
 
-            //position in the list
+            //the number of the songs on this album
             lastTextView.text = "${album.trackCount?:"-"}"
         }
     }

@@ -1,4 +1,4 @@
-package com.music.topalbums.ui.songs
+package com.music.topalbums.ui.songs.helpers
 
 import android.text.SpannableStringBuilder
 import android.view.View

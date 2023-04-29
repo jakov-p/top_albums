@@ -22,6 +22,7 @@ import com.music.topalbums.logger.Logger.loggable
 class PlayerBottomSheet(val song: Song) : BottomSheetDialogFragment()
 {
     val TAG = PlayerBottomSheet::class.java.simpleName
+    var eventListener: IEventListener? = null
 
     private lateinit var binding: BottomSheetPlayerBinding
     private val playerWrapper: PlayerWrapper = PlayerWrapper(requireNotNull( song.previewUrl), ::onPlayerError)
@@ -160,5 +161,12 @@ class PlayerBottomSheet(val song: Song) : BottomSheetDialogFragment()
     {
         super.onDestroy()
         playerWrapper.destroy()
+        eventListener?.onFinished()
+    }
+
+
+    fun interface IEventListener
+    {
+        fun onFinished()
     }
 }

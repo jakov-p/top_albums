@@ -17,8 +17,8 @@ import com.music.topalbums.clientapi.collection.Album
 import com.music.topalbums.clientapi.collection.ArtistInfo
 import com.music.topalbums.databinding.FragmentArtistAlbumsBinding
 import com.music.topalbums.ui.common.ListLoadStateListener
-import com.music.topalbums.ui.common.FloatingButtonsHandler
-import com.music.topalbums.ui.songs.SongsFragment
+import com.music.topalbums.ui.artistalbums.helpers.FloatingButtonsHandler
+import com.music.topalbums.ui.artistalbums.helpers.ParamsHandler
 import com.music.topalbums.utilities.Utilities
 import com.music.topalbums.utilities.Utilities.initToolbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -69,7 +69,7 @@ class ArtistAlbumsFragment : Fragment()
         super.onViewCreated(view, savedInstanceState)
         initToolbar(requireContext().getString(R.string.artist_albums_fragment_title))
         init()
-        initFloatingButtonsHandler()
+        FloatingButtons()
     }
 
     fun init()
@@ -111,41 +111,34 @@ class ArtistAlbumsFragment : Fragment()
         }
     }
 
-    private fun initFloatingButtonsHandler()
-    {
-        FloatingButtonsHandler(binding.floatingButtonsInclude, binding.listInclude.root, ::goToArtistWebPage )
-    }
-
-    /** open the artist's web page */
-    private fun goToArtistWebPage()
-    {
-        artistInfo.artistViewUrl?.let {
-            Utilities.openWebPage(requireActivity(), it)
-        } ?:
-            Utilities.showShortToastMessage(requireContext(), "No web page for this artist")
-    }
-
 
 
     private fun goToSongsFragment(album: Album, position: Int)
     {
-        val bundle = SongsFragment.ParamsHandler.createBundle(album, false)
+        val bundle = com.music.topalbums.ui.songs.helpers.ParamsHandler.createBundle(album, false)
         findNavController().navigate(R.id.action_artistAlbumsFragment_to_songsFragment, bundle)
     }
 
+
+
+
     /**
-     * Puts artist data into and extracts from a bundle.
-     * Helps with the transfer of the artist parameters from one fragment to another.
+     * Floating buttons
+     * Just groups the code related to floating buttons handling
      */
-    object ParamsHandler
+    private inner class FloatingButtons
     {
-        const val PARAM_ARTIST_INFO = "artist_info"
+        init
+        {
+            FloatingButtonsHandler(binding.floatingButtonsInclude, binding.listInclude.root, ::goToArtistWebPage)
+        }
 
-        fun getArtistInfo(bundle:Bundle?) : ArtistInfo? = bundle?.getParcelable(PARAM_ARTIST_INFO ) as ArtistInfo?
-
-        fun createBundle(artistInfo: ArtistInfo): Bundle = Bundle().apply {
-            putParcelable(PARAM_ARTIST_INFO, artistInfo)
+        /** open the artist's web page */
+        private fun goToArtistWebPage()
+        {
+            artistInfo.artistViewUrl?.let {
+                Utilities.openWebPage(requireActivity(), it)
+            } ?: Utilities.showShortToastMessage(requireContext(), "No web page for this artist")
         }
     }
-
 }

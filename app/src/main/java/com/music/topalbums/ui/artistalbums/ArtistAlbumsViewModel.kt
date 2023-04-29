@@ -8,6 +8,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.music.topalbums.data.albums.artistalbums.IArtistAlbumsDataManager
 import com.music.topalbums.data.albums.artistalbums.IArtistAlbumsDataManagerFactory
+import com.music.topalbums.ui.common.SimpleItemsPagingSource
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject

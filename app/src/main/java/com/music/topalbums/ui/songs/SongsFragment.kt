@@ -16,12 +16,13 @@ import com.music.topalbums.R
 import com.music.topalbums.clientapi.collection.Album
 import com.music.topalbums.databinding.FragmentSongsBinding
 import com.music.topalbums.ui.common.ListLoadStateListener
-import com.music.topalbums.ui.artistalbums.ArtistAlbumsFragment
+import com.music.topalbums.ui.songs.helpers.FloatingButtonsHandler
+import com.music.topalbums.ui.songs.helpers.ParamsHandler
 import com.music.topalbums.ui.songs.player.PlayerBottomSheet
+import com.music.topalbums.ui.songs.player.PlayerBottomSheet.IEventListener
 import com.music.topalbums.utilities.Utilities
 import com.music.topalbums.utilities.Utilities.initToolbar
 import com.music.topalbums.utilities.Utilities.loadImage
-import com.music.topalbums.utilities.Utilities.openWebPage
 import com.music.topalbums.utilities.Utilities.showShortToastMessage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -72,23 +73,26 @@ class SongsFragment : Fragment()
         super.onViewCreated(view, savedInstanceState)
         initToolbar(requireContext().getString(R.string.songs_fragment_title))
         init()
-        initFloatingButtonsHandler()
+        initFloatingButtons()
     }
 
     fun init()
     {
-        songListAdapter = SongListAdapter(requireContext(), onSelectedItem = {
-            if(it.previewUrl!= null)
+        songListAdapter = SongListAdapter(requireContext()) {
+            if (it.previewUrl != null)
             {
                 //show the GUI for playing a song
                 val bottomSheetFragment = PlayerBottomSheet(it)
                 bottomSheetFragment.show(requireActivity().supportFragmentManager, "PlayerDialogFragment")
+                bottomSheetFragment.eventListener = IEventListener { //fire when the 'PlayerBottomSheet' closes
+                    songListAdapter.notifyPlayFinished()
+                }
             }
             else
             {
                 showShortToastMessage(requireContext(), "No song URL for this song.")
             }
-        })
+        }
 
         listLoadStateListener = ListLoadStateListener(requireContext(), binding.listInclude, songListAdapter)
 
@@ -131,7 +135,9 @@ class SongsFragment : Fragment()
         }
     }
 
-    private fun initFloatingButtonsHandler()
+
+
+    private fun initFloatingButtons()
     {
         /*
         Show the floating button command for going to the artist albums fragment only if we have come here from the 'TopAlbumsFragment'.
@@ -145,7 +151,7 @@ class SongsFragment : Fragment()
     private fun goToAlbumWebPage()
     {
         viewModel.album.collectionViewUrl?.let {
-            openWebPage(requireActivity(), it)
+            Utilities.openWebPage(requireActivity(), it)
         } ?:
             showShortToastMessage(requireContext(), "No web page for this album")
     }
@@ -154,32 +160,10 @@ class SongsFragment : Fragment()
     private fun goToArtistAlbumsFragment()
     {
         viewModel.artistInfo?.let {
-            val bundle = ArtistAlbumsFragment.ParamsHandler.createBundle(it)
+            val bundle = com.music.topalbums.ui.artistalbums.helpers.ParamsHandler.createBundle(it)
             findNavController().navigate(R.id.action_songsFragment_to_artistAlbumsFragment, bundle)
+        } ?: {
+            showShortToastMessage(requireContext(), "Not possible to fetch the artist's albums.")
         }
     }
-
-
-    /**
-     * Puts album object into and extracts from a bundle. Also provides information from which
-     * fragment we have come from.
-     * Helps with the transfer of the album parameter from one fragment to another.
-     */
-    object ParamsHandler
-    {
-        const val PARAM_ALBUM = "album"
-        const val PARAM_IS_FROM_TOP = "is_from_top"
-
-        /** album for which the songs are to be shown */
-        fun getAlbum(bundle:Bundle?) : Album? = bundle?.getParcelable(PARAM_ALBUM) as Album?
-
-        /** have we come here from 'TopAlbumsFragment' */
-        fun isFromTopAlbums(bundle:Bundle?) : Boolean? = bundle?.getBoolean(PARAM_IS_FROM_TOP)
-
-        fun createBundle(album: Album, isFromTopAlbums: Boolean): Bundle = Bundle().apply {
-            putParcelable(PARAM_ALBUM, album)
-            putBoolean(PARAM_IS_FROM_TOP, isFromTopAlbums)
-        }
-    }
-
 }

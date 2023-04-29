@@ -61,7 +61,8 @@ class ListLoadStateListener(private val context:Context, private val binding: Vi
             else
             {
                 binding.errorMessageTextView.isVisible = false
-                Utilities.showLongToastMessage(context, "An error has occurred, " + errorMessage)
+                Utilities.showShortToastMessage(context, "An error has occurred when downloading data.")
+                //Utilities.showShortToastMessage(context, "An error has occurred, " + errorMessage)
             }
         }
     }

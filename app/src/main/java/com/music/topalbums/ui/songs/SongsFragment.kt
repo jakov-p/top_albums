@@ -163,10 +163,11 @@ class SongsFragment : Fragment()
         /** open the artist's web page */
         private fun goToArtistAlbumsFragment()
         {
-            viewModel.artistInfo?.let {
-                val bundle = com.music.topalbums.ui.artistalbums.helpers.ParamsHandler.createBundle(it)
+            if(viewModel.artistInfo?.artistId !=null) {
+                val bundle = com.music.topalbums.ui.artistalbums.helpers.ParamsHandler.createBundle(requireNotNull( viewModel.artistInfo))
                 findNavController().navigate(R.id.action_songsFragment_to_artistAlbumsFragment, bundle)
-            } ?: {
+            }
+            else {
                 showShortToastMessage(requireContext(), "Not possible to fetch the artist's albums.")
             }
         }

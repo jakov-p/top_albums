@@ -97,12 +97,15 @@ object Utilities
         }
     }
 
-
+    /**
+     * Convert milliseconds into minutes and seconds
+     * @param durationMs
+     * @return  e.g. 309 000 --> "05:09"
+     */
     fun composeDurationText(durationMs: Int?):String
     {
         return if(durationMs!=null)
         {
-            // e.g. 309 000 --> "05:09"
             formatTimeMinSec(durationMs/ 1000)
         }
         else

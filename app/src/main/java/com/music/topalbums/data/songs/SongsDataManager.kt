@@ -6,7 +6,10 @@ import com.music.topalbums.clientapi.collection.ArtistInfo
 /**
  * Fetches songs from the internet.
  *
- * Provides partial fetching (paging) , although the list was downloaded from the internet as a whole
+ * Provides partial fetching (paging), although the list was downloaded from the internet as a whole
+ *
+ * Additionally offers info on artist (only in the json containing songs the artistId can be found, and that is
+ * the only reason why the artist info is returned together with songs)
  *
  * @param album the album for which the songs are fetched
  */

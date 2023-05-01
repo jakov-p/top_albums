@@ -5,7 +5,6 @@ import com.music.topalbums.logger.loggable.SimpleNameDefaultLoggable
 
 object Logger
 {
-    //var loggable: Loggable = TestLoggable()
     var loggable: Loggable = SimpleNameDefaultLoggable()
 
 

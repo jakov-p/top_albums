@@ -25,6 +25,8 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="40dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="5dp"
 
                 android:scaleType="fitXY"
                 android:src="@drawable/musical_notes"

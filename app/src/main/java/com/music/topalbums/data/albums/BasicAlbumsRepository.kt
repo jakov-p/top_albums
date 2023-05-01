@@ -1,5 +1,6 @@
 package com.music.topalbums.data.albums
 
+import android.content.Context
 import com.music.topalbums.TopAlbumsApp
 import com.music.topalbums.clientapi.IClientApi
 import com.music.topalbums.clientapi.collection.Album
@@ -8,6 +9,7 @@ import com.music.topalbums.logger.Logger.loggable
 import dagger.hilt.EntryPoint
 import dagger.hilt.EntryPoints
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 
 /**
@@ -17,6 +19,7 @@ import dagger.hilt.components.SingletonComponent
 abstract class BasicAlbumsRepository
 {
     val TAG = BasicAlbumsRepository::class.java.simpleName
+
 
     open protected val  clientApi: IClientApi by lazy {
         EntryPoints.get(TopAlbumsApp.appContext, IBasicAlbumsRepositoryEntryPoint::class.java).getClientApi()

@@ -29,6 +29,7 @@ class SongsViewModel @AssistedInject   constructor(@Assisted val album: Album): 
     val artistInfo: ArtistInfo? by lazy{ songsDataManager.getArtistInfo()}
 
     companion object const val PAGE_SIZE = 10
+
     val songs = Pager(config = PagingConfig(pageSize = PAGE_SIZE,initialLoadSize = PAGE_SIZE ,prefetchDistance = PAGE_SIZE,
                                     jumpThreshold = PAGE_SIZE * 3, enablePlaceholders = true),
         pagingSourceFactory = {

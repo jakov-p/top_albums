@@ -37,7 +37,7 @@
                     android:textAlignment="center"
                     android:textColor="@color/secondary_super_light"
                     android:textSize="22sp"
-                    app:layout_constraintBottom_toTopOf="@+id/album_cover_image_view"
+                    app:layout_constraintBottom_toTopOf="@+id/decoration_image_view"
 
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias='0.5'
@@ -45,7 +45,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
-                    android:id="@+id/album_cover_image_view"
+                    android:id="@+id/decoration_image_view"
                     android:layout_width="50sp"
                     android:layout_height="50sp"
                     android:layout_marginTop="0dp"

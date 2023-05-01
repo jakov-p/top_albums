@@ -20,13 +20,13 @@ data class Album(
     //(It is useful when filtering, when many albums are missing in a filtered list)
     val originalPos: Int?,
 
-    val artistName: String?, //the singer(group)'s name
-    val artistViewUrl: String?, //link to the artist's web page
+    val artistName: String? = null, //the singer(group)'s name
+    val artistViewUrl: String?= null, //link to the artist's web page
     val collectionImageUrl: String? = null, //album's image
-    val collectionViewUrl: String?, //link to the album's web page
+    val collectionViewUrl: String? = null, //link to the album's web page
     val primaryGenreName: String? = null, //pop, rock, country,...
     val primaryGenreId:Int? = null, // a number assigned to the genre above
-    val collectionId:Int? = null,  //unique id in the Server's dbase (used for fetching songs)
+    val collectionId:Int,  //unique id in the Server's dbase (used for fetching songs)
     val collectionName: String? = null, //the album name
     val collectionPrice: Float? = null, //the album's price
     val currency: String? = null, //$, Euro, Lira,..
@@ -73,7 +73,7 @@ data class Album(
         primaryGenreName = topAlbum.category?.attributes?.term,
         primaryGenreId = topAlbum.category?.attributes?.im_id?.toInt(),
 
-        collectionId = topAlbum.id?.attributes?.im_id?.toInt(),
+        collectionId = topAlbum.id?.attributes?.im_id?.toInt()?:0,
         collectionName = topAlbum.title?.label,
         collectionPrice = topAlbum.im_price?.attributes?.amount?.toFloat(),
         currency = topAlbum.im_price?.attributes?.currency,

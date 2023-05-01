@@ -162,7 +162,7 @@ class SongCollection constructor (val list: List<Song>)
 
         //this is the only way how to fetch 'artistId' (it is present only in a AlbumSongsCollection)
         val collectionEntry = albumSongsCollection.results?.
-        filter { it.wrapperType == "collection" }?.get(0)
+        filter { it.wrapperType == "collection" }?.firstOrNull()
 
         artistInfo = ArtistInfo(
             collectionEntry?.artistId,

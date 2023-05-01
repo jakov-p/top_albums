@@ -73,7 +73,7 @@ class SongsFragment : Fragment()
         super.onViewCreated(view, savedInstanceState)
         initToolbar(requireContext().getString(R.string.songs_fragment_title))
         init()
-        initFloatingButtons()
+        FloatingButtons()
     }
 
     fun init()
@@ -135,35 +135,40 @@ class SongsFragment : Fragment()
         }
     }
 
-
-
-    private fun initFloatingButtons()
+    /**
+     * Floating buttons
+     * Just groups the code related to floating buttons handling
+     */
+    private inner class FloatingButtons
     {
-        /*
-        Show the floating button command for going to the artist albums fragment only if we have come here from the 'TopAlbumsFragment'.
-        The passed null value tells 'FloatingButtonsHandler' that we are not interested in that floating button .
-         */
-        val goToArtistAlbumsFragmentFunct =  if (isFromTopAlbums) ::goToArtistAlbumsFragment else null
-        FloatingButtonsHandler(binding.floatingButtonsInclude, binding.parentLayout, ::goToAlbumWebPage, goToArtistAlbumsFragmentFunct )
-    }
+       init
+        {
+            /*
+            Show the floating button command for going to the artist albums fragment only if we have come here from the 'TopAlbumsFragment'.
+            The passed null value tells 'FloatingButtonsHandler' that we are not interested in that floating button .
+            */
+            val goToArtistAlbumsFragmentFunct = if (isFromTopAlbums) ::goToArtistAlbumsFragment else null
+            FloatingButtonsHandler(binding.floatingButtonsInclude, binding.parentLayout, ::goToAlbumWebPage, goToArtistAlbumsFragmentFunct)
+        }
 
-    /** open the album's web page*/
-    private fun goToAlbumWebPage()
-    {
-        viewModel.album.collectionViewUrl?.let {
-            Utilities.openWebPage(requireActivity(), it)
-        } ?:
-            showShortToastMessage(requireContext(), "No web page for this album")
-    }
+        /** open the album's web page*/
+        private fun goToAlbumWebPage()
+        {
+            viewModel.album.collectionViewUrl?.let {
+                Utilities.openWebPage(requireActivity(), it)
+            } ?:
+                showShortToastMessage(requireContext(), "No web page for this album")
+        }
 
-    /** open the artist's web page */
-    private fun goToArtistAlbumsFragment()
-    {
-        viewModel.artistInfo?.let {
-            val bundle = com.music.topalbums.ui.artistalbums.helpers.ParamsHandler.createBundle(it)
-            findNavController().navigate(R.id.action_songsFragment_to_artistAlbumsFragment, bundle)
-        } ?: {
-            showShortToastMessage(requireContext(), "Not possible to fetch the artist's albums.")
+        /** open the artist's web page */
+        private fun goToArtistAlbumsFragment()
+        {
+            viewModel.artistInfo?.let {
+                val bundle = com.music.topalbums.ui.artistalbums.helpers.ParamsHandler.createBundle(it)
+                findNavController().navigate(R.id.action_songsFragment_to_artistAlbumsFragment, bundle)
+            } ?: {
+                showShortToastMessage(requireContext(), "Not possible to fetch the artist's albums.")
+            }
         }
     }
 }

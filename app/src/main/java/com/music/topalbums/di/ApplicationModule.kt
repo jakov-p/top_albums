@@ -18,6 +18,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object ApplicationModule
 {
+
     @Singleton
     @Provides
     fun createTopAlbumsDataManagerFactory(): ITopAlbumsDataManagerFactory

@@ -18,7 +18,7 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <ImageView
-                android:id="@+id/album_cover_image_view"
+                android:id="@+id/decoration_image_view"
                 android:layout_width="match_parent"
                 android:layout_height="80sp"
 
@@ -70,7 +70,7 @@
         </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/set_filter__fab"
+            android:id="@+id/set_filter_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"

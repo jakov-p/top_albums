@@ -27,7 +27,7 @@ object AlbumCreator
             primaryGenreName = genre?.name?.capitalize(),
             primaryGenreId = genre?.value,
 
-            collectionId = collectionId,
+            collectionId = collectionId ?: 0,
             collectionName = collectionName,
             collectionPrice = 100.0f,
             currency = "dollar",

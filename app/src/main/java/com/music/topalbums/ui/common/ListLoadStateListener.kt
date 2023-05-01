@@ -6,10 +6,21 @@ import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.PagingDataAdapter
 import com.music.topalbums.R
+import com.music.topalbums.TopAlbumsApp
+import com.music.topalbums.clientapi.IClientApi
+import com.music.topalbums.clientapi.retrofit.ServerUrl
+import com.music.topalbums.data.songs.SongsRepository
 import com.music.topalbums.databinding.ViewAndProgressBinding
 import com.music.topalbums.utilities.InternetConnectionChecker
 import com.music.topalbums.utilities.Utilities
 import com.music.topalbums.logger.Logger.loggable
+import com.music.topalbums.utilities.IInternetConnectionChecker
+import dagger.hilt.EntryPoint
+import dagger.hilt.EntryPoints
+import dagger.hilt.InstallIn
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Inject
 
 /**
  * Shows or hides GUI control displaying 'loading in progress' and error.
@@ -17,6 +28,8 @@ import com.music.topalbums.logger.Logger.loggable
 class ListLoadStateListener(private val context:Context, private val binding: ViewAndProgressBinding, private val listAdapter: PagingDataAdapter<*,*>)
 {
     val TAG = ListLoadStateListener::class.java.simpleName
+
+    val internetConnectionChecker = EntryPoints.get(TopAlbumsApp.appContext, IListLoadStateListenerEntryPoint::class.java).getInternetConnectionChecker()
 
     fun process(loadStates:CombinedLoadStates)
     {
@@ -52,7 +65,7 @@ class ListLoadStateListener(private val context:Context, private val binding: Vi
             val errorMessage = it.error.message.toString()
             loggable.e(TAG, "An error has occurred, error = $errorMessage")
 
-            if(!InternetConnectionChecker(context).isConnected)
+            if(!internetConnectionChecker.isConnected)
             {
                 loggable.w(TAG, "Internet connection failure.")
                 binding.errorMessageTextView.isVisible = true
@@ -76,5 +89,13 @@ class ListLoadStateListener(private val context:Context, private val binding: Vi
             loadState.prepend is LoadState.Error -> loadState.prepend as LoadState.Error
             else -> null
         }
+    }
+
+
+    @EntryPoint
+    @InstallIn(SingletonComponent::class)
+    interface IListLoadStateListenerEntryPoint
+    {
+        fun getInternetConnectionChecker(): IInternetConnectionChecker
     }
 }

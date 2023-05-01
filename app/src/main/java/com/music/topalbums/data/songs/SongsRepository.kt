@@ -1,5 +1,6 @@
 package com.music.topalbums.data.songs
 
+import android.content.Context
 import com.music.topalbums.TopAlbumsApp
 import com.music.topalbums.clientapi.IClientApi
 import com.music.topalbums.clientapi.collection.Song
@@ -9,6 +10,7 @@ import com.music.topalbums.logger.Logger.loggable
 import dagger.hilt.EntryPoint
 import dagger.hilt.EntryPoints
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 
 /**

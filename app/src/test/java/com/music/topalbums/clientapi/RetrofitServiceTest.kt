@@ -2,10 +2,13 @@ package com.music.topalbums.clientapi
 
 import com.music.topalbums.clientapi.collection.SongCollection
 import com.music.topalbums.clientapi.retrofit.ClientApi
+import com.music.topalbums.clientapi.retrofit.IServiceApi
 import com.music.topalbums.clientapi.retrofit.RetrofitClient
 import com.music.topalbums.clientapi.retrofit.ServiceApi
 import com.music.topalbums.logger.Logger
 import com.music.topalbums.logger.loggable.TestLoggable
+import dagger.Binds
+import dagger.Provides
 import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -17,6 +20,7 @@ import org.junit.runner.RunWith
 import org.mockito.junit.MockitoJUnitRunner
 import java.io.File
 import java.net.HttpURLConnection
+
 
 //TODO UNFINISHED
 @RunWith(MockitoJUnitRunner::class)

@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.music.topalbums.R
 import com.music.topalbums.clientapi.collection.Album
+import com.music.topalbums.clientapi.retrofit.ServerUrl
 import com.music.topalbums.databinding.FragmentTopAlbumsBinding
 import com.music.topalbums.logger.Logger.loggable
 import com.music.topalbums.ui.common.ListLoadStateListener
@@ -22,6 +23,7 @@ import com.music.topalbums.utilities.Utilities.initToolbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * Shows the list of top albums of a country
@@ -30,6 +32,8 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class TopAlbumsFragment : Fragment()
 {
+
+
     private val TAG = TopAlbumsFragment::class.java.simpleName
 
     private lateinit var binding : FragmentTopAlbumsBinding

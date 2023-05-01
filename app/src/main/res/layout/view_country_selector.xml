@@ -19,7 +19,7 @@
 
         app:ccp_rememberLastSelection="true"
         app:ccp_defaultNameCode="bg"
-        app:ccp_countryPreference="us,gb,de,fr,it,jp,br,in,ca,au,cz,bg,pl"
+        app:ccp_countryPreference="us,gb,de"
         app:ccp_contentColor="@color/secondary_super_light"
         app:ccp_showFullName="true"
         app:ccp_showNameCode="false"

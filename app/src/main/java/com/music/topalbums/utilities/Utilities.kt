@@ -97,6 +97,20 @@ object Utilities
         }
     }
 
+
+    fun composeDurationText(durationMs: Int?):String
+    {
+        return if(durationMs!=null)
+        {
+            // e.g. 309 000 --> "05:09"
+            formatTimeMinSec(durationMs/ 1000)
+        }
+        else
+        {
+            "-:-" //unknow duration
+        }
+    }
+
     fun Fragment.initToolbar(title: String)
     {
         // initialize toolbar

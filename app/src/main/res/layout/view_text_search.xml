@@ -3,6 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingTop="10dp"
+    android:paddingBottom="0dp"
+    android:layout_marginBottom="-5dp"
     >
 
     <TextView
@@ -10,7 +13,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp"
+        android:paddingBottom="10dp"
+
         app:layout_constraintHorizontal_bias='0.5'
+        app:layout_constraintVertical_bias='1.0'
         android:textAlignment="center"
         android:textColor="@color/primary_super_dark"
         android:text="@string/search"
@@ -30,6 +36,10 @@
         android:text=""
         android:textColor="@color/primary_dark"
         android:textSize="18sp"
+
+        app:layout_constraintHorizontal_bias='0.5'
+        app:layout_constraintVertical_bias='1.0'
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/search_text_view"

@@ -3,6 +3,7 @@ package com.music.topalbums.ui.common
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import kotlin.math.min
+import com.music.topalbums.logger.Logger.loggable
 
 /**
  * A naive approach where it is assumed that all the pages are of the same size (except
@@ -18,6 +19,8 @@ open class SimpleItemsPagingSource<Item:Any> constructor(
             val getItems: suspend (fromIndex:Int, toIndex:Int)->List<Item>)
     : PagingSource<Int, Item>()
 {
+    val TAG = SimpleItemsPagingSource::class.java.simpleName
+
     override val jumpingSupported: Boolean = true
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Item>
@@ -33,7 +36,7 @@ open class SimpleItemsPagingSource<Item:Any> constructor(
 
             val songs = getItems(fromIndex, toIndex)
 
-            println("nextKey = " + if (pageNumber < maxPageNumber) pageNumber + 1 else null)
+            loggable.d(TAG, "nextKey = " + if (pageNumber < maxPageNumber) pageNumber + 1 else null)
             return LoadResult.Page(
                 data = songs,
                 prevKey = if (pageNumber > 0) pageNumber - 1 else null,
@@ -42,9 +45,10 @@ open class SimpleItemsPagingSource<Item:Any> constructor(
                 itemsAfter = maxIndex - toIndex,
             )
         }
-        catch (e: Exception)
+        catch (ex: Exception)
         {
-            return LoadResult.Error(e)
+            loggable.e(TAG, "A failure in 'load' method ", ex)
+            return LoadResult.Error(ex)
         }
     }
 

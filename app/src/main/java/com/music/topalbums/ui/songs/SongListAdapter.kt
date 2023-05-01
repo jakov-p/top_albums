@@ -12,6 +12,7 @@ import com.music.topalbums.clientapi.collection.Song
 import com.music.topalbums.databinding.SongItemBinding
 import com.music.topalbums.ui.songs.helpers.PlayingAnimation
 import com.music.topalbums.utilities.ClickListenerHandler
+import com.music.topalbums.utilities.Utilities
 import com.music.topalbums.utilities.Utilities.formatTimeMinSec
 
 /**
@@ -53,7 +54,7 @@ class SongListAdapter(val context: Context, val onSelectedItem:(song: Song) -> U
                 //e.g.  '01.   SongName    03:18'
                 startTextView.text = "${position + 1}.".padStart(3, '0') //e.g. '05.', '15.'
                 midTextView.text = "${song.trackName}"
-                endTextView.text = composeDurationText(song.trackTimeMillis)
+                endTextView.text = Utilities.composeDurationText(song.trackTimeMillis)
 
                 //make this item double and long clickable
                 ClickListenerHandler(root, ::onSelectedSong).apply {
@@ -96,18 +97,6 @@ class SongListAdapter(val context: Context, val onSelectedItem:(song: Song) -> U
             //nothing here to be done
         }
 
-        private fun composeDurationText(durationMs: Int?):String
-        {
-            return if(durationMs!=null)
-            {
-                // e.g. 309 000 --> "05:09"
-                formatTimeMinSec(durationMs/ 1000)
-            }
-            else
-            {
-                "-:-" //unknow duration
-            }
-        }
     }
 
 

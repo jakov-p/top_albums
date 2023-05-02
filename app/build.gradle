@@ -64,7 +64,6 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.4.1'
     implementation 'androidx.navigation:navigation-ui-ktx:2.4.1'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
-    implementation 'androidx.test.espresso:espresso-contrib:3.5.1'
 
     testImplementation 'androidx.test.ext:junit:1.1.5'
 

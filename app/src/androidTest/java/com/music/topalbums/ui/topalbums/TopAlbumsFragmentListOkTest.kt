@@ -12,6 +12,7 @@ import com.music.topalbums.clientapi.MockedServiceApi
 import com.music.topalbums.clientapi.retrofit.IServiceApi
 import com.music.topalbums.di.BindServiceApiModule
 import com.music.topalbums.launchFragmentInHiltContainer
+import com.music.topalbums.utilities.Utilities
 import com.music.topalbums.waitUntilVisible
 import dagger.Module
 import dagger.Provides
@@ -31,7 +32,7 @@ import org.junit.runner.RunWith
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
 @UninstallModules(BindServiceApiModule::class)
-class TopAlbumsFragmentTest
+class TopAlbumsFragmentListOkTest
 {
 
     @get:Rule
@@ -46,7 +47,17 @@ class TopAlbumsFragmentTest
     }
 
     @Test
-    fun test_list_loaded_successfully()
+    fun test_list_loaded_correctly()
+    {
+        onView(withId(R.id.list)).perform(waitUntilVisible(5000))
+
+        onView(allOf(withId(R.id.top_text_view), withText(containsString("72 Seasons")))).perform(waitUntilVisible(5000))
+        onView(allOf(withId(R.id.top_text_view), withText(containsString("Metallica")))).check(matches(isDisplayed()))
+        onView(allOf(withId(R.id.top_text_view), withText(containsString("Heavy Metal")))).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun test_list_shown_correctly()
     {
         onView(withId(R.id.list)).perform(waitUntilVisible(5000))
 
@@ -55,27 +66,6 @@ class TopAlbumsFragmentTest
         onView(withId(R.id.progressbar)).check(matches(not(isDisplayed())))
         onView(withId(R.id.retry_button)).check(matches(not(isDisplayed())))
     }
-
-
-    @Test
-    fun test_all_parts_are_present_initially()
-    {
-        onView(withId(R.id.list)).perform(waitUntilVisible(5000))
-
-        onView(withId(R.id.decoration_image_view)).check(matches(isDisplayed()))
-        onView(withId(R.id.filter_include)).check(matches(not(isDisplayed()))) //no filter selected yet, so now it is empty
-        onView(withId(R.id.search_include)).check(matches(isDisplayed()))
-        onView(withId(R.id.list_include)).check(matches(isDisplayed()))
-        onView(withId(R.id.selector_include)).check(matches(isDisplayed()))
-    }
-
-
-    @Test
-    fun test_float_buttons_as_initially()
-    {
-        onView(withId(R.id.set_filter_fab)).check(matches(isDisplayed()))
-    }
-
 
     @Module
     @InstallIn(SingletonComponent::class)

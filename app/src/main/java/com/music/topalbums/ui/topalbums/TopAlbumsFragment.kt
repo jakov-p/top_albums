@@ -32,8 +32,6 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class TopAlbumsFragment : Fragment()
 {
-
-
     private val TAG = TopAlbumsFragment::class.java.simpleName
 
     private lateinit var binding : FragmentTopAlbumsBinding

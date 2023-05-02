@@ -164,7 +164,6 @@ class Test3: BasicSongFragmentListFailureTest()
 
 
 @HiltAndroidTest
-@RunWith(AndroidJUnit4::class)
 open class BasicSongFragmentListFailureTest
 {
     @get:Rule

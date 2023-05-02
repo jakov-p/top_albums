@@ -120,7 +120,6 @@ class TopAlbumsListFailureTest3: BasicTopAlbumsFragmentListFailureTest()
 
 
 @HiltAndroidTest
-@RunWith(AndroidJUnit4::class)
 open class BasicTopAlbumsFragmentListFailureTest
 {
     @get:Rule

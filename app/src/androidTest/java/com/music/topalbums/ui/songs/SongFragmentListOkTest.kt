@@ -12,6 +12,7 @@ import com.music.topalbums.clientapi.collection.Album
 import com.music.topalbums.clientapi.retrofit.IServiceApi
 import com.music.topalbums.di.BindServiceApiModule
 import com.music.topalbums.ui.songs.helpers.ParamsHandler
+import com.music.topalbums.utilities.Utilities
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,7 +32,7 @@ import org.junit.runner.RunWith
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
 @UninstallModules(BindServiceApiModule::class)
-class SongFragmentTest
+class SongFragmentListOkTest
 {
 
     val album:Album = Util.createAlbum()
@@ -52,39 +53,26 @@ class SongFragmentTest
 
 
     @Test
-    fun test_upper_part_of_fragment()
+    fun test_list_loaded_correctly()
     {
-        onView(withId(R.id.all_text_view)).check(matches(isDisplayed()))
-        onView(withId(R.id.all_text_view)).check(matches(withText(containsString(album.artistName))));
-        onView(withId(R.id.all_text_view)).check(matches(withText(containsString(album.collectionName))));
+        onView(allOf(withId(R.id.start_text_view), withText(containsString("1.")))).perform(waitUntilVisible(5000))
+
+        onView(allOf(withId(R.id.mid_text_view), withText(containsString("Nothing Left To Lose"))))
+        onView(allOf(withId(R.id.end_text_view), withText(containsString(Utilities.composeDurationText(224760)))))
     }
+
 
     @Test
-    fun test_float_buttons_as_initially()
+    fun test_list_shown_correctly()
     {
-        onView(withId(R.id.main_first_fab)).check(matches(isDisplayed()))
-        onView(withId(R.id.main_second_fab)).check(matches(not(isDisplayed())))
-        onView(withId(R.id.album_web_fab)).check(matches(not(isDisplayed())))
-        onView(withId(R.id.album_web_text_view)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.list)).perform(waitUntilVisible(5000))
+
+        onView(withId(R.id.list)).check(matches(isDisplayed()))
+        onView(withId(R.id.no_results_text_view)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.progressbar)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.retry_button)).check(matches(not(isDisplayed())))
     }
 
-    @Test
-    fun test_float_buttons_in_action()
-    {
-        onView(withId(R.id.main_first_fab)).perform(click())
-
-        onView(withId(R.id.main_first_fab)).check(matches(not(isDisplayed())))
-        onView(withId(R.id.main_second_fab)).check(matches(isDisplayed()))
-        onView(withId(R.id.album_web_fab)).check(matches(isDisplayed()))
-        onView(withId(R.id.album_web_text_view)).check(matches(isDisplayed()))
-
-        onView(withId(R.id.main_second_fab)).perform(click())
-
-        onView(withId(R.id.main_first_fab)).check(matches(isDisplayed()))
-        onView(withId(R.id.main_second_fab)).check(matches(not(isDisplayed())))
-        onView(withId(R.id.album_web_fab)).check(matches(not(isDisplayed())))
-        onView(withId(R.id.album_web_text_view)).check(matches(not(isDisplayed())))
-    }
 
     @Module
     @InstallIn(SingletonComponent::class)

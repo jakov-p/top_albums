@@ -30,12 +30,20 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
+ * The classes with  @AndroidEntryPoints don’t show up in Jacoco’s code coverage reports as covered,
+ * so this hack with inheritance is a way how to include them.
+ * See https://medium.com/livefront/dagger-hilt-testing-injected-android-components-with-code-coverage-30089a1f6872
+ */
+@AndroidEntryPoint
+class SongsFragment : SongsFragmentImpl()
+
+
+/**
  * Shows the list of songs on an album. The album is passed as a parameter to the fragment.
  *
  * It offers playing a particular song, going to the  album's and going to the artist's web page.
  */
-@AndroidEntryPoint
-class SongsFragment : Fragment()
+open class SongsFragmentImpl : Fragment()
 {
     private lateinit var binding : FragmentSongsBinding
 

@@ -36,24 +36,8 @@ import java.time.format.DateTimeFormatter
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
 @UninstallModules(BindServiceApiModule::class)
-class ArtistAlbumsFragmentListOkTest
+class ArtistAlbumsFragmentListOkTest: ArtistAlbumsFragmentCommon()
 {
-    @get:Rule
-    var hiltRule = HiltAndroidRule(this)
-
-    @Before
-    fun setup() {
-
-        TopAlbumsApp.appContext = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext
-
-        hiltRule.inject()
-
-        val fragmentArgs =  ParamsHandler.createBundle(artistInfo)
-        launchFragmentInHiltContainer<ArtistAlbumsFragment>(themeResId = R.style.Theme_Top_albums, fragmentArgs = fragmentArgs ){
-        }
-
-    }
-
 
 //{"wrapperType":"collection", "collectionType":"Album", "artistId":909253, "collectionId":1677034579, "amgArtistId":468749, "artistName":"Jack Johnson", "collectionName":"In Between Dub", "collectionCensoredName":"In Between Dub", "artistViewUrl":"https://music.apple.com/us/artist/jack-johnson/909253?uo=4", "collectionViewUrl":"https://music.apple.com/us/album/in-between-dub/1677034579?uo=4", "artworkUrl60":"https://is2-ssl.mzstatic.com/image/thumb/Music116/v4/8c/52/cb/8c52cb3d-a7cf-0248-5df4-d38939cbda8b/23UMGIM25138.rgb.jpg/60x60bb.jpg", "artworkUrl100":"https://is2-ssl.mzstatic.com/image/thumb/Music116/v4/8c/52/cb/8c52cb3d-a7cf-0248-5df4-d38939cbda8b/23UMGIM25138.rgb.jpg/100x100bb.jpg", "collectionExplicitness":"notExplicit", "trackCount":11, "copyright":"℗ 2023 Jack Johnson", "country":"USA", "currency":"USD", "releaseDate":"2023-06-02T07:00:00Z", "primaryGenreName":"Reggae"},
     @Test
@@ -85,8 +69,7 @@ class ArtistAlbumsFragmentListOkTest
     class ProvideModule
     {
         @Provides
-        fun  getServiceApi(): IServiceApi = MockedServiceApi(MockedServiceApi.readFromAssets("artist_albums.json")).getServiceApi()
+        fun  getServiceApi(): IServiceApi = getMockedServiceApi()
     }
 
-    val artistInfo =  ArtistInfo( 12345, "Jack Johnson" , "https://music.apple.com/us/artist/jack-johnson/909253?uo=4")
 }

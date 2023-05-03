@@ -35,7 +35,7 @@ import org.mockito.Mockito
 @RunWith(AndroidJUnit4::class)
 class TopAlbumsListFailureTest1: BasicTopAlbumsFragmentListFailureTest()
 {
-    val jsonText:String = "aaaaaaa"
+    val jsonText:String = "eeeeee"
     val isInternetConnected = true
 
     @Test
@@ -81,7 +81,7 @@ class TopAlbumsListFailureTest1: BasicTopAlbumsFragmentListFailureTest()
 @UninstallModules(BindServiceApiModule::class, InternetConnectionModule::class )
 class TopAlbumsListFailureTest3: BasicTopAlbumsFragmentListFailureTest()
 {
-    val jsonText:String = "aaaaaaa"
+    val jsonText:String = "eeeee"
     val isInternetConnected = false
 
     @Test

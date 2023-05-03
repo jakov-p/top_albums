@@ -26,12 +26,20 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+
+/**
+* The classes with  @AndroidEntryPoints don’t show up in Jacoco’s code coverage reports as covered,
+* so this hack with inheritance is a way how to include them.
+* See https://medium.com/livefront/dagger-hilt-testing-injected-android-components-with-code-coverage-30089a1f6872
+*/
+@AndroidEntryPoint
+class ArtistAlbumsFragment : ArtistAlbumsFragmentImpl()
+
 /**
  * Shows the list of all the albums of a particular artist.
  * The artist info is passed as a parameter to the fragment.
  */
-@AndroidEntryPoint
-class ArtistAlbumsFragment : Fragment()
+open class ArtistAlbumsFragmentImpl : Fragment()
 {
     private val TAG = ArtistAlbumsFragment::class.java.simpleName
 

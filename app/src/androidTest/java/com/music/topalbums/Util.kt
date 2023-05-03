@@ -1,5 +1,6 @@
 package com.music.topalbums
 
+import android.support.test.uiautomator.UiDevice
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.platform.app.InstrumentationRegistry
 import com.music.topalbums.clientapi.collection.Album
@@ -7,6 +8,13 @@ import com.music.topalbums.clientapi.collection.Album
 
 object Util
 {
+
+    fun closeDialogByClickingOutside()
+    {
+        UiDevice.getInstance(InstrumentationRegistry.getInstrumentation()).click(100, 100)
+    }
+
+
     fun getResourceString(id:Int) = InstrumentationRegistry.getInstrumentation().targetContext.resources.getString(id)
 
 

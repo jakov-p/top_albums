@@ -1,8 +1,10 @@
 package com.music.topalbums.ui.topalbums
 
+import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.*
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.*
+import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -46,6 +48,7 @@ class TopAlbumsFragmentListOkTest
         launchFragmentInHiltContainer<TopAlbumsFragment>(themeResId = R.style.Theme_Top_albums )
     }
 
+
     @Test
     fun test_list_loaded_correctly()
     {
@@ -55,6 +58,21 @@ class TopAlbumsFragmentListOkTest
         onView(allOf(withId(R.id.top_text_view), withText(containsString("Metallica")))).check(matches(isDisplayed()))
         onView(allOf(withId(R.id.top_text_view), withText(containsString("Heavy Metal")))).check(matches(isDisplayed()))
     }
+
+
+    @Test
+    fun test_list_loaded_correctly__scroll_to_bottom()
+    {
+        onView(withId(R.id.list)).perform(waitUntilVisible(5000))
+
+        onView(withId(R.id.list)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(6))
+
+
+        onView(allOf(withId(R.id.top_text_view), withText(containsString("MTV Unplugged (Live)")))).perform(waitUntilVisible(5000))
+        onView(allOf(withId(R.id.top_text_view), withText(containsString("twenty one pilots")))).check(matches(isDisplayed()))
+        onView(allOf(withId(R.id.top_text_view), withText(containsString("Alternative")))).check(matches(isDisplayed()))
+    }
+
 
     @Test
     fun test_list_shown_correctly()

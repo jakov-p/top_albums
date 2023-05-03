@@ -26,11 +26,19 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
+ * The classes with  @AndroidEntryPoints don’t show up in Jacoco’s code coverage reports as covered,
+ * so this hack with inheritance is a way how to include them.
+ * See https://medium.com/livefront/dagger-hilt-testing-injected-android-components-with-code-coverage-30089a1f6872
+ */
+@AndroidEntryPoint
+class TopAlbumsFragment : TopAlbumsFragmentImpl()
+
+
+/**
  * Shows the list of top albums of a country
  * It offers country selection, filtering and search functionality.
  */
-@AndroidEntryPoint
-class TopAlbumsFragment : Fragment()
+open class TopAlbumsFragmentImpl : Fragment()
 {
     private val TAG = TopAlbumsFragment::class.java.simpleName
 

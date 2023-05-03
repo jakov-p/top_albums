@@ -37,86 +37,11 @@ import org.junit.runner.RunWith
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
 @UninstallModules(BindServiceApiModule::class)
-class SongFragmentTest
+class SongFragmentPlayingSongTest: SongFragmentCommon()
 {
 
-    val album:Album = Util.createAlbum()
-
-    @get:Rule
-    var hiltRule = HiltAndroidRule(this)
-
-
-    lateinit var navController: TestNavHostController
-
-    @Before
-    fun setup() {
-
-        TopAlbumsApp.appContext = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext
-        navController = TestNavHostController(ApplicationProvider.getApplicationContext())
-
-        hiltRule.inject()
-
-        val fragmentArgs =  ParamsHandler.createBundle(album , true)
-        launchFragmentInHiltContainer<SongsFragment>(themeResId = R.style.Theme_Top_albums, fragmentArgs = fragmentArgs ){
-            navController.setGraph(R.navigation.nav_graph)
-
-            // Make the NavController available via the findNavController() APIs
-            Navigation.setViewNavController(requireView(), navController)
-
-            navController.setCurrentDestination(R.id.songsFragment)
-        }
-    }
-
-
     @Test
-    fun test_upper_part_of_fragment()
-    {
-        onView(withId(R.id.all_text_view)).check(matches(isDisplayed()))
-        onView(withId(R.id.all_text_view)).check(matches(withText(containsString(album.artistName))));
-        onView(withId(R.id.all_text_view)).check(matches(withText(containsString(album.collectionName))));
-    }
-
-    @Test
-    fun test_float_buttons_as_initially()
-    {
-        onView(withId(R.id.main_first_fab)).check(matches(isDisplayed()))
-        onView(withId(R.id.main_second_fab)).check(matches(not(isDisplayed())))
-        onView(withId(R.id.album_web_fab)).check(matches(not(isDisplayed())))
-        onView(withId(R.id.album_web_text_view)).check(matches(not(isDisplayed())))
-    }
-
-    @Test
-    fun test_float_buttons_in_action()
-    {
-        onView(withId(R.id.main_first_fab)).perform(click())
-
-        onView(withId(R.id.main_first_fab)).check(matches(not(isDisplayed())))
-        onView(withId(R.id.main_second_fab)).check(matches(isDisplayed()))
-
-        onView(withId(R.id.album_web_fab)).check(matches(isDisplayed()))
-        onView(withId(R.id.album_web_text_view)).check(matches(isDisplayed()))
-
-        onView(withId(R.id.artist_albums_text_view)).check(matches(isDisplayed()))
-        onView(withId(R.id.artist_albums_fab)).check(matches(isDisplayed()))
-
-
-
-
-        onView(withId(R.id.main_second_fab)).perform(click())
-
-        onView(withId(R.id.main_first_fab)).check(matches(isDisplayed()))
-        onView(withId(R.id.main_second_fab)).check(matches(not(isDisplayed())))
-
-        onView(withId(R.id.album_web_fab)).check(matches(not(isDisplayed())))
-        onView(withId(R.id.album_web_text_view)).check(matches(not(isDisplayed())))
-
-        onView(withId(R.id.artist_albums_text_view)).check(matches(not(isDisplayed())))
-        onView(withId(R.id.artist_albums_fab)).check(matches(not(isDisplayed())))
-    }
-
-
-    @Test
-    fun play__1()
+    fun test_when_click_on_song_then_duration_view_disappears()
     {
         val durationView: Matcher<View> = allOf(withId(R.id.end_text_view), withText(containsString(Utilities.composeDurationText(224760))))
 
@@ -133,7 +58,7 @@ class SongFragmentTest
 
 
     @Test
-    fun play__2()
+    fun test_when_player_dialog_opens_then_all_controls_present()
     {
         onView(allOf(withId(R.id.start_text_view), withText(containsString("1.")))).perform(longClick())
         waitUntilPlayerIsShown()
@@ -148,7 +73,7 @@ class SongFragmentTest
     }
 
     @Test
-    fun play__3()
+    fun test_when_song_starts_playing_then_all_controls_look_as_expected()
     {
         onView(allOf(withId(R.id.start_text_view), withText(containsString("1.")))).perform(longClick())
         waitUntilPlayerIsShown()
@@ -164,7 +89,7 @@ class SongFragmentTest
     }
 
     @Test
-    fun play__4()
+    fun test_when_a_button_is_clicked_then_other_buttons_look_as_expected()
     {
         onView(allOf(withId(R.id.start_text_view), withText(containsString("1.")))).perform(longClick())
         waitUntilPlayerIsShown()
@@ -180,29 +105,16 @@ class SongFragmentTest
         onView(withId(R.id.stop_button)).check(matches(isEnabled()))
     }
 
-
-    @Test
-    fun navigation()
+    private fun waitUntilPlayerIsShown()
     {
-        onView(withId(R.id.main_first_fab)).perform(click())
-        onView(withId(R.id.artist_albums_fab)).perform(click())
-
-        assertEquals(R.id.artistAlbumsFragment, navController.currentDestination?.id)
+        onView(withId(R.id.play_button)).perform(waitUntilVisible(5000))
     }
-
 
     @Module
     @InstallIn(SingletonComponent::class)
     class SongsProvideModule
     {
         @Provides
-        fun  getServiceApi(): IServiceApi = MockedServiceApi(MockedServiceApi.readFromAssets("album_songs.json")).getServiceApi()
+        fun  getServiceApi(): IServiceApi = getMockedServiceApi()
     }
-
-
-    private fun waitUntilPlayerIsShown()
-    {
-        onView(withId(R.id.play_button)).perform(waitUntilVisible(5000))
-    }
-
 }

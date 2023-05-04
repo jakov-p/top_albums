@@ -34,6 +34,8 @@ open class TopAlbumsFragmentCommon
 
             // Make the NavController available via the findNavController() APIs
             Navigation.setViewNavController(requireView(), navController)
+
+            navController.setCurrentDestination(R.id.topAlbumsFragment)
         }
     }
 

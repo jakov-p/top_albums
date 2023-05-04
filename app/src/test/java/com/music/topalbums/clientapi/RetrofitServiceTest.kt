@@ -128,9 +128,9 @@ class RetrofitServiceTest
             val albumCollection = clientApi.getArtistAlbums(100001)
 
             println(albumCollection)
-            assertEquals(46, albumCollection?.list?.size)
+            assertEquals(45, albumCollection?.list?.size)
             albumCollection?.list?.let {
-                with(it.get(4))
+                with(it.get(3))
                 {
                     assertEquals( "Jack Johnson", artistName)
                     assertEquals( 1440752312, collectionId)

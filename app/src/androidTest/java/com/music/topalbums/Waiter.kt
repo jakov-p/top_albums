@@ -19,7 +19,7 @@ import java.util.concurrent.TimeoutException
 /**
  * A [ViewAction] that waits up to [timeout] milliseconds for a [View]'s visibility value to change to [visibility].
  */
-class WaitUntilConditionMet(private val condition:(view: View )->Boolean, private val timeout: Long) : ViewAction {
+class WaitUntilConditionMet(private val condition:(view: View )->Boolean, private val timeout: Long, ) : ViewAction {
 
     override fun getConstraints(): Matcher<View> {
         return any(View::class.java)

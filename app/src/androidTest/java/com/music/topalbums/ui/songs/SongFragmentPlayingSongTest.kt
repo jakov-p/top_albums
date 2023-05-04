@@ -1,6 +1,8 @@
 package com.music.topalbums.ui.songs
 
 import android.view.View
+import android.widget.EditText
+import android.widget.TextView
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
@@ -82,10 +84,9 @@ class SongFragmentPlayingSongTest: SongFragmentCommon()
         onView(withId(R.id.pause_button)).check(matches(isEnabled()))
         onView(withId(R.id.stop_button)).check(matches(isEnabled()))
 
-        onView(withId(R.id.left_side_text_view)).check(matches(withText("Nothing Left To Lose")))
+        val waitUntilTextAppears = WaitUntilConditionMet({ if(it is TextView) it.text.contains("Nothing Left To Lose") else false }, 2000)
+        onView(withId(R.id.left_side_text_view)).perform(waitUntilTextAppears)
         onView(withId(R.id.right_side_text_view)).check(matches(withText(containsString("29")))) //each sample has 30 seconds (29+1)
-
-
     }
 
     @Test

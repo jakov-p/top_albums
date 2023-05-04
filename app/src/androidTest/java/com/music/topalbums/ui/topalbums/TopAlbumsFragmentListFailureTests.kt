@@ -11,7 +11,6 @@ import com.music.topalbums.clientapi.MockedServiceApi
 import com.music.topalbums.clientapi.retrofit.IServiceApi
 import com.music.topalbums.di.BindServiceApiModule
 import com.music.topalbums.di.InternetConnectionModule
-import com.music.topalbums.ui.songs.helpers.ParamsHandler
 import com.music.topalbums.utilities.IInternetConnectionChecker
 import dagger.Module
 import dagger.Provides

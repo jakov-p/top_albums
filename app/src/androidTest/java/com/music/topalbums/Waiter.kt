@@ -2,22 +2,23 @@ package com.music.topalbums
 
 
 import android.view.View
-import androidx.test.espresso.*
-import androidx.test.espresso.Espresso.*
-import androidx.test.espresso.action.ViewActions.*
-import androidx.test.espresso.assertion.ViewAssertions.*
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.NoMatchingViewException
+import androidx.test.espresso.PerformException
+import androidx.test.espresso.UiController
+import androidx.test.espresso.ViewAction
+import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.util.HumanReadables
-import com.music.topalbums.*
 import org.hamcrest.CoreMatchers.any
 import org.hamcrest.CoreMatchers.not
 import org.hamcrest.Matcher
-import org.hamcrest.Matchers.*
-import org.junit.Assert.*
+import org.hamcrest.Matchers.allOf
 import java.util.concurrent.TimeoutException
 
 /**
- * A [ViewAction] that waits up to [timeout] milliseconds for a [View]'s visibility value to change to [visibility].
+ * A [ViewAction] that waits up to [timeout] milliseconds for a [View] to meet a condition [condition].
  */
 class WaitUntilConditionMet(private val condition:(view: View )->Boolean, private val timeout: Long, ) : ViewAction {
 

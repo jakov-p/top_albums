@@ -15,7 +15,7 @@ import java.io.InputStream
 import java.net.HttpURLConnection
 
 /**
- * @property jsonText represents text in json fo,mat as if downloaded from the server
+ * @property jsonText represents text in json format as if downloaded from the server
  */
 class MockedServiceApi(val jsonText:String)
 {

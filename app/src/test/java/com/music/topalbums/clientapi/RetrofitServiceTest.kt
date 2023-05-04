@@ -22,7 +22,6 @@ import java.io.File
 import java.net.HttpURLConnection
 
 
-//TODO UNFINISHED
 @RunWith(MockitoJUnitRunner::class)
 class RetrofitServiceTest
 {

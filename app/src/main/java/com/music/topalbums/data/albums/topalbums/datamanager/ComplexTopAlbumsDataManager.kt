@@ -113,7 +113,7 @@ class ComplexTopAlbumsDataManager constructor(country: String): ITopAlbumsDataMa
     private fun startFullLoad()
     {
         //started in the background
-        //TODO fix scope
+        //TODO fix scope (use viewModelScope)
         fullDeferredJob = CoroutineScope(Dispatchers.IO).async {
             fullTopAlbumsRepository.getAlbumsCount()
             isFullyLoaded = true

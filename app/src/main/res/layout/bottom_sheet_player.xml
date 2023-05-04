@@ -40,7 +40,7 @@
             android:layout_marginRight="10dp"
             android:textColor="@color/text"
             android:textAlignment="viewEnd"
-            android:text="00:01/03:50"
+            android:text=""
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true" />
 

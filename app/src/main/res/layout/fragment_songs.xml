@@ -42,7 +42,7 @@
                     android:id="@+id/all_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Album Name Album Name Album Name Album Name Album N a m e"
+                    android:text=""
                     android:textSize="22sp"
                     app:layout_constraintHorizontal_bias='0.5'
                     android:textAlignment="center"

@@ -25,7 +25,7 @@
                 android:id="@+id/start_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="10"
+                android:text=""
                 android:textSize="14sp"
                 android:textAlignment="viewStart"
                 android:textColor="@color/text"
@@ -42,7 +42,7 @@
                 android:id="@+id/mid_text_view"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Name of the song Name of the s o n g N a m e of the song"
+                android:text=""
                 android:textSize="18sp"
                 app:layout_constraintHorizontal_bias='0.0'
                 android:textColor="@color/text"
@@ -73,7 +73,7 @@
                 android:id="@+id/end_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="10:10"
+                android:text=""
                 android:textSize="14sp"
                 app:layout_constraintHorizontal_bias='1.0'
                 android:textAlignment="viewEnd"

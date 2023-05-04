@@ -1,9 +1,10 @@
 ### In short
 
 ‘Top albums’ application downloads and shows the current top albums list of a chosen country.  The list can be filtered and searched. Additionally with a click on an album the application will show the song list of the album. Any song can be played (the first 30 seconds).  Also, it is possible to get the list of all the albums ever released by an author.
+
 By clicking on floating buttons it is possible to visit the album’s or artist’s web page.
 
-
+You can see the application in action in "videos" subfolder. 
 
 
 # ‘Top albums’ fragment
@@ -121,3 +122,13 @@ In some cases the returned JSON is of proper structure, but contains no entry - 
 ### The country selector control 
 The country selector control is a third-party control taken from this place
 [https://github.com/hbb20/CountryCodePickerProject](https://github.com/hbb20/CountryCodePickerProject)
+
+
+### Clicking on an album (a song)
+Clicking is done either by a double click or a long click. A single click is not enough. 
+
+
+### The last selected country is remembered
+The last selected country is remembered after exiting application. On the next start that country will be already preselected.
+
+

@@ -92,7 +92,7 @@ There is a floating button at the bottom of the page leading to the artist’s w
 
 # Technical considerations 
 
-Note that `https://itunes.apple.com/us/rss/topalbums/limit=100/json`  never returns 100 albums, the number is significantly smaller - often less than 50.  
+Note that https://itunes.apple.com/us/rss/topalbums/limit=100/json  never returns 100 albums, the number is significantly smaller - often less than 50.  
 
 Top album list loading time can be quite long - in a range from a fraction of a second up to 10 seconds. Once a country is selected again the next download of the same country will be significantly faster, so there is no need for caching them on the mobile device for better subsequential downloads.
 

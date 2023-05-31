@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.music.topalbums.R
 import com.music.topalbums.clientapi.collection.Album
 import com.music.topalbums.databinding.FragmentSongsBinding
+import com.music.topalbums.logger.Logger.loggable
 import com.music.topalbums.ui.common.ListLoadStateListener
 import com.music.topalbums.ui.songs.helpers.FloatingButtonsHandler
 import com.music.topalbums.ui.songs.helpers.ParamsHandler
@@ -45,6 +46,8 @@ class SongsFragment : SongsFragmentImpl()
  */
 open class SongsFragmentImpl : Fragment()
 {
+    val TAG = SongsFragmentImpl::class.java.simpleName
+
     private lateinit var binding : FragmentSongsBinding
 
     //album for which the songs are to be shown
@@ -87,18 +90,26 @@ open class SongsFragmentImpl : Fragment()
     fun init()
     {
         songListAdapter = SongListAdapter(requireContext()) {
-            if (it.previewUrl != null)
+
+            if (!PlayerBottomSheet.isShownOnScreen)
             {
-                //show the GUI for playing a song
-                val bottomSheetFragment = PlayerBottomSheet(it)
-                bottomSheetFragment.show(requireActivity().supportFragmentManager, "PlayerDialogFragment")
-                bottomSheetFragment.eventListener = IEventListener { //fire when the 'PlayerBottomSheet' closes
-                    songListAdapter.notifyPlayFinished()
+                PlayerBottomSheet.isShownOnScreen = true
+                if (it.previewUrl != null)
+                {
+                    //show the GUI for playing a song
+                    val bottomSheetFragment = PlayerBottomSheet(it)
+                    bottomSheetFragment.show(requireActivity().supportFragmentManager, "PlayerDialogFragment")
+                    bottomSheetFragment.eventListener = IEventListener { //fire when the 'PlayerBottomSheet' closes
+                        songListAdapter.notifyPlayFinished()
+                    }
+                } else
+                {
+                    showShortToastMessage(requireContext(), "No song URL for this song.")
                 }
             }
             else
             {
-                showShortToastMessage(requireContext(), "No song URL for this song.")
+                loggable.w(TAG, "'PlayerBottomSheet' is already on the screen --> the click will be ignored")
             }
         }
 

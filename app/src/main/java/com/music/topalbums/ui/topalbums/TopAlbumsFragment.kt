@@ -11,7 +11,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.music.topalbums.R
 import com.music.topalbums.clientapi.collection.Album
-import com.music.topalbums.clientapi.retrofit.ServerUrl
 import com.music.topalbums.databinding.FragmentTopAlbumsBinding
 import com.music.topalbums.logger.Logger.loggable
 import com.music.topalbums.ui.common.ListLoadStateListener
@@ -23,7 +22,6 @@ import com.music.topalbums.utilities.Utilities.initToolbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 /**
  * The classes with  @AndroidEntryPoints don’t show up in Jacoco’s code coverage reports as covered,
@@ -179,8 +177,10 @@ open class TopAlbumsFragmentImpl : Fragment()
 
     private fun showFilterBottomSheet()
     {
-        if(!FilterBottomSheet.isShownOnScreen)
+        if (!FilterBottomSheet.isShownOnScreen)
         {
+            FilterBottomSheet.isShownOnScreen = true
+
             val filterBottomSheetFragment = FilterBottomSheet(viewModel.albumFilter, onClosed = {
                 withBlinkPrevention {
                     filterDisplayer.applyFilter(it)

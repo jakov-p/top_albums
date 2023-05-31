@@ -1,5 +1,6 @@
 package com.music.topalbums.ui.songs.player
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -27,7 +28,7 @@ class PlayerBottomSheet(val song: Song) : BottomSheetDialogFragment()
     private lateinit var binding: BottomSheetPlayerBinding
     private val playerWrapper: PlayerWrapper = PlayerWrapper(requireNotNull( song.previewUrl), ::onPlayerError)
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View
     {
         binding = BottomSheetPlayerBinding.inflate(inflater, container, false)
         return binding.root
@@ -154,7 +155,7 @@ class PlayerBottomSheet(val song: Song) : BottomSheetDialogFragment()
     override fun onPause()
     {
         super.onPause()
-        dismiss();
+        dismiss()
     }
 
     override fun onDestroy()
@@ -164,9 +165,22 @@ class PlayerBottomSheet(val song: Song) : BottomSheetDialogFragment()
         eventListener?.onFinished()
     }
 
+    override fun onDismiss(dialog: DialogInterface)
+    {
+        super.onDismiss(dialog)
+        isShownOnScreen = false
+    }
+
 
     fun interface IEventListener
     {
         fun onFinished()
+    }
+
+    companion object
+    {
+        //Keeps track if an instance of this dialog is currently shown on the screen.
+        //The purpose of this is to prevent opening two dialogs at the same time
+        var isShownOnScreen: Boolean = false
     }
 }

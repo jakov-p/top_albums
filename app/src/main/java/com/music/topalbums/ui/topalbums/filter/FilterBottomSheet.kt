@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
-import android.widget.Toast
 import androidx.core.view.children
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.chip.Chip
@@ -26,9 +25,8 @@ class FilterBottomSheet(val initAlbumFilter: AlbumFilter, val onClosed: (AlbumFi
 {
     private lateinit var binding: BottomSheetFilterSelectorBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View
     {
-        isShownOnScreen = true
         binding = BottomSheetFilterSelectorBinding.inflate(inflater, container, false)
         return binding.root
     }

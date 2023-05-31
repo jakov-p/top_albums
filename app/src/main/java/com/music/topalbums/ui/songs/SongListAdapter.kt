@@ -13,7 +13,6 @@ import com.music.topalbums.databinding.SongItemBinding
 import com.music.topalbums.ui.songs.helpers.PlayingAnimation
 import com.music.topalbums.utilities.ClickListenerHandler
 import com.music.topalbums.utilities.Utilities
-import com.music.topalbums.utilities.Utilities.formatTimeMinSec
 
 /**
  * Defines the look of the song recycle view item.
@@ -58,8 +57,7 @@ class SongListAdapter(val context: Context, val onSelectedItem:(song: Song) -> U
 
                 //make this item double and long clickable
                 ClickListenerHandler(root, ::onSelectedSong).apply {
-                    setDoubleClickListener(song, position)
-                    setLongClickListener(song, position)
+                    setClickListener(song, position)
                 }
 
                 playingAnimation.show(binding, position)
@@ -98,9 +96,6 @@ class SongListAdapter(val context: Context, val onSelectedItem:(song: Song) -> U
         }
 
     }
-
-
-    fun isEmpty() = (itemCount == 0)
 
     object DiffCallback: DiffUtil.ItemCallback<Song>()
     {

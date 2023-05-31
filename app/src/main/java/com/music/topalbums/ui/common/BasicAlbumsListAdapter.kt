@@ -54,8 +54,7 @@ abstract class BasicAlbumsListAdapter(val context: Context, val onSelectedItem:(
         private fun addClickListeners(album: Album, position: Int)
         {
             ClickListenerHandler(binding.root, ::onSelectedAlbum).apply {
-                setDoubleClickListener(album, position)
-                setLongClickListener(album, position)
+                setClickListener(album, position)
             }
         }
 
@@ -83,9 +82,6 @@ abstract class BasicAlbumsListAdapter(val context: Context, val onSelectedItem:(
         }
 
     }
-
-
-    fun isEmpty() = (itemCount == 0)
 
     object DiffCallback: DiffUtil.ItemCallback<Album>()
     {

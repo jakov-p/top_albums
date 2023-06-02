@@ -17,7 +17,7 @@ The albums are shown in the same order as they are positioned in the top list.
 
 Each row has the album's cover image, the albums name, the artist's name and its genre. At the end of the line the position in the list is given. The list rows are of alternate colours so that the rows are recognized from each other.
 
-When an album is selected  (double-clicked or long clicked) a new fragment with the album songs will be opened.
+When an album is selected (clicked) a new fragment with the album songs will be opened.
 
 
 ### Country selection
@@ -84,7 +84,7 @@ The other one opens the album's web page in a browser.
 
 
 ### Song playing
-When a song is selected (double clicked or long clicked) it will begin to play. It usually takes a second or two before the player is shown at the bottom of the screen. When the song is selected its row will flash for a moment to give the user a clear indication that the song's playing is about to start.
+When a song is selected (clicked) it will begin to play. It usually takes a second or two before the player is shown at the bottom of the screen. When the song is selected its row will flash for a moment to give the user a clear indication that the song's playing is about to start.
 
 ![playing_a_song](https://github.com/jakov-p/top_albums/assets/134881206/a3eb76e0-28ce-4e1c-8213-e993877ca46a)
 
@@ -108,7 +108,7 @@ The albums are sorted by the release date - the newest ones are at the top. Each
 
 ![artist_albums](https://github.com/jakov-p/top_albums/assets/134881206/3af73fcc-e5a1-4e06-af4e-f0cb63924d3a)
 
-When an album is selected (double-clicked or long clicked) a new fragment with the album songs will be opened.
+When an album is selected (clicked) a new fragment with the album songs will be opened.
 
 
 
@@ -154,10 +154,6 @@ In some cases the returned JSON is of proper structure, but contains no entry - 
 ### The country selector control 
 The country selector control is a third-party control taken from this place
 [https://github.com/hbb20/CountryCodePickerProject](https://github.com/hbb20/CountryCodePickerProject)
-
-
-### Clicking on an album (a song)
-Clicking is done either by a double click or a long click. A single click is not enough. 
 
 
 ### The last selected country is remembered

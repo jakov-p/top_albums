@@ -1,2 +1,0 @@
-# android-developer-challenge-rrhqfx
-

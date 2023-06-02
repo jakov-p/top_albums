@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: com.github.pedromassango:doubleClick:3.0@aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/95451a9e0e2a49abd264ea7f33e97527/transformed/doubleClick-3.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/95451a9e0e2a49abd264ea7f33e97527/transformed/doubleClick-3.0/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.pedromassango/doubleClick/3.0/18cce7e4efd25a2aed8a2808b8686d3f49e0be13/doubleClick-3.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
